@@ -1,8 +1,31 @@
+@font-face {
+  font-family: 'MuseoModerno-bold';
+  src: url(fonts/MuseoModerno-Bold.ttf);
+  font-weight: bold;
+  font-style: normal;
+}
+
+* , *:before, *:after{ 
+  box-sizing:border-box; 
+  -moz-box-sizing:border-box; 
+  -webkit-box-sizing:border-box; 
+  -ms-box-sizing:border-box;
+}
+ 
+* {
+  margin: 0;
+  padding: 0;
+
+  transition: color 0.2s ease;
+  transition: background-color 0.2s ease;
+}
+
+
 :root {
   --font-color: #1D1B1A;
-  --link-color: #4549DD;
-  --link-hover-color: #04006D;
-  --bg-color: #FFFBFF;
+  --link-color: #1D1B1A;
+  --link-hover-color: #1D1B1A;
+  --bg-color: #f8f8f8;
   --border-colour: #1D1B1A;
   --border-small-colour: #1D1B1A55;
   --disabled-colour: #777680;
@@ -26,13 +49,12 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  transition: 0.3s;
 }
 
 [data-theme="dark"] {
   --font-color: #d6d6d6;
-  --link-color: #C0C1FF;
-  --link-hover-color: #E1E0FF;
+  --link-color: #d6d6d6;
+  --link-hover-color: #d6d6d6;
   --bg-color: #1D1B1A;
   --border-colour: #E8E1DF;
   --border-small-colour: #E8E1DF55;
@@ -42,30 +64,53 @@
   --header-inactive: #918F9A;
   --header-inactive-hover: #C0C1FF;
 
-  transition: 0.3s;
+
+}
+
+/* This is the element between body and the application */
+#root{ 
+  height:100%;
+  width:100%;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  padding:25px;
+  
+
+  max-width: 100vw;
+  height: 100vh;
+}
+
+h1 {
+  font-family: 'MuseoModerno-bold', sans-serif;
+  font-size: 3.2em;
+  line-height: 1.1;
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--link-color);
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--link-hover-color);
+}
+a:visited {
+  color: var(--link-color);
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
 
 button {
   border-radius: 8px;
@@ -84,17 +129,4 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }

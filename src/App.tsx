@@ -1,22 +1,36 @@
 import { useContext, useState } from 'react';
-import './App.css';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Test from './Test';
+import Layout from './components/Layout';
 
 import { SettingsContext, SettingsProvider } from './providers/SettingsProvider';
+import Create from './routes/Create';
+import Menu, { menuLoader } from './routes/Menu';
+
 
 
 function App() {
-  const settings = useContext(SettingsContext);
+	const settings = useContext(SettingsContext);
 
+	const router = createBrowserRouter([
+		{
+			path: '/',
+			element: <Menu title="Main Menu | UNO!" />
+		},
+		{
+			path: '/create',
+			element: <Create title="New Game | UNO!" />
+		}
 
+	])
 
-
-  return (
-    <SettingsProvider>
-      <Test />
-    </SettingsProvider>
-  )
+	return (
+		<SettingsProvider>
+			<Layout>
+				<RouterProvider router={router} />
+			</Layout>
+		</SettingsProvider>
+	)
 }
 
 export default App
