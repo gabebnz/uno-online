@@ -16,6 +16,7 @@ export default function Test({ children }: Props) {
 	return (
 		<div className={styles.wrapper}>
 			<Navbar />
+				{/* Holds main application */}
 				<div className={styles.childWrapper}>
 					{children}
 				</div>

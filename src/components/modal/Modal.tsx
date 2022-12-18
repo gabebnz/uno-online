@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { SettingsContext } from '../../providers/SettingsProvider';
 import styles from './modal.module.css';
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function Modal({open, setOpen, title, children}: Props) {
+    const settings = useContext(SettingsContext)
 
     return(
         <>
@@ -24,7 +26,12 @@ export default function Modal({open, setOpen, title, children}: Props) {
                                 {children}
                             </div>
                             <div className={styles.modalFooter}>
-                                <button onClick={() => setOpen(false)}>Close</button>
+                                <button 
+                                    onClick={() => setOpen(false)} 
+                                    disabled={settings.username === '' ? true : false} 
+                                    className="titleFont"
+                                >   save & close
+                                </button>
                             </div>
                         </div>
                     </div>

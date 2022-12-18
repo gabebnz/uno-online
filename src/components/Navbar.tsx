@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { SettingsContext } from '../providers/SettingsProvider';
 import Modal from './modal/Modal';
 
@@ -7,24 +7,25 @@ import styles from './layout.module.css';
  
 export default function Navbar() {
     const settings = useContext(SettingsContext);
-    const [settingsOpen, setSettingsOpen] = React.useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
 
-
+    const darkThemeCheckbox = useRef<HTMLInputElement>(null);
+    const usernameInputBox = useRef<HTMLInputElement>(null)
 
 	const updateSettings = () => {
 		settings.updateSettings(curSettings => {
 			const newSettings = { ...curSettings };
 
-			// TODO: change to take data from checkboxes/settings modal
-			// also needs to set username setting 
+            // if darkthemecheckbox != null, set settings.darktheme to value
+			darkThemeCheckbox.current && (newSettings.darkTheme = darkThemeCheckbox.current.checked)
+            usernameInputBox.current  && (newSettings.username = usernameInputBox.current.value)
 
-			newSettings.darkTheme = !newSettings.darkTheme;
 			return newSettings;
 		});
 	}
 
 
-
+ 
     return(
         <>
             <div className={styles.navbar}>
@@ -34,13 +35,26 @@ export default function Navbar() {
                 <CiSettings onClick={() => setSettingsOpen(true)} className={styles.navSettings}/>
             </div>
             
-            <Modal open={settingsOpen} setOpen={setSettingsOpen} title="Settings">
-                    <h2>darkTheme: {settings.darkTheme.toString()}</h2>
-					<h2>username: {settings.username === '' ? "not set" : settings.username.toString()}</h2>
-					<p>settings loaded: {settings.loaded.toString()}</p>
+            <Modal open={settingsOpen} setOpen={setSettingsOpen} title="user settings">
+                    <div className={styles.darkThemeInput}>
+                        <p className="titleFont">dark theme:</p>
+                        <input
+                            type='checkbox'
+                            ref={darkThemeCheckbox}
+                            checked={settings.darkTheme}
+                            onChange={() => updateSettings()}
+                        />
+                    </div>
 
-					<button onClick={() => updateSettings()}>Toggle Dark Theme</button>
-                
+                    <div className={styles.usernameInput}>
+                        <p className="titleFont">username:</p>
+                        <input 
+                            type='text' 
+                            ref={usernameInputBox} 
+                            value={settings.username}
+                            onChange={() => updateSettings()}
+                        />
+                    </div>
             </Modal>
         </>
     )

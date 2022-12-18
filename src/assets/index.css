@@ -31,6 +31,12 @@
   --border-small-colour: #1D1B1A55;
   --disabled-colour: #777680;
 
+  --accent-color: rgb(240, 46, 170);
+
+  --button-bg: #1D1B1A;
+  --button-bg-disabled: #616161;
+  --button-color: #f9f9f9;
+
   --header-active: #1D1B1A;
   --header-inactive: #777680;
   --header-inactive-hover: #4549DD;
@@ -61,6 +67,11 @@
   --border-colour: #E8E1DF;
   --border-small-colour: #E8E1DF55;
   --disabled-colour: #918F9A;
+
+  --button-bg: #f8f8f8;
+  --button-bg-disabled: #8f8f8f;
+  --button-color: #1D1B1A;
+  
 
   --header-active: #E8E1DF;
   --header-inactive: #918F9A;
@@ -117,7 +128,6 @@ a:visited {
   color: var(--link-color);
 }
 
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -125,14 +135,19 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-bg);
+  color: var(--button-color);
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
+button:disabled:hover {
+  border-color: red;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+button:disabled {
+  background-color: var(--button-bg-disabled);
+  transition: 0.2s ease;
 }

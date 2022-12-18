@@ -57,3 +57,45 @@
     width:auto;
     height:100%;
 }
+
+.darkThemeInput{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:20px;
+
+    font-size: 1.3em;
+
+    width:100%;
+}
+
+.darkThemeInput input{
+    height: 25px;
+    width:25px;
+    accent-color: var(--accent-color);
+}
+
+.usernameInput {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:20px;
+    width:100%;
+}
+
+.usernameInput p{
+    font-size: 1.3em;
+}
+
+.usernameInput input{
+    all:unset;
+
+    display:block;
+
+    border-bottom:1px solid;
+    padding-left:5px;
+    padding-bottom:1px;
+    
+    width:100%;
+
+}
