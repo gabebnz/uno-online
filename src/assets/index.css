@@ -26,6 +26,7 @@
   --link-color: #1D1B1A;
   --link-hover-color: #1D1B1A;
   --bg-color: #f8f8f8;
+  --bg-up-color: #f8f8f8;
   --border-colour: #1D1B1A;
   --border-small-colour: #1D1B1A55;
   --disabled-colour: #777680;
@@ -56,6 +57,7 @@
   --link-color: #d6d6d6;
   --link-hover-color: #d6d6d6;
   --bg-color: #1D1B1A;
+  --bg-up-color: #292929;
   --border-colour: #E8E1DF;
   --border-small-colour: #E8E1DF55;
   --disabled-colour: #918F9A;
@@ -77,6 +79,10 @@
 
   justify-content: center;
   align-items: center;
+}
+
+.titleFont {
+  font-family: 'MuseoModerno-bold', sans-serif;
 }
 
 body {
