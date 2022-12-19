@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react';
+import { AiOutlineUser, AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { CiGlobe } from 'react-icons/ci';
 import { Link } from 'react-router-dom';
+import MenuCard from '../components/MenuCard';
+
 
 export const menuLoader = () => {
     
@@ -16,11 +20,12 @@ export default function Menu({ title } : Props ) {
           document.title = title;
         } 
       }, []);
-
+ 
     return(
-        <>
+        <>  
             <h1>Menu</h1>
-            <Link to="/create">Create</Link>
+            <MenuCard title="play" link="/play" icon={<AiOutlineUser className='icon'/>}/>
+            
         </>
     )
 }

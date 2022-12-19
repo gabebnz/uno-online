@@ -1,0 +1,42 @@
+
+
+.Card{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    aspect-ratio: 0.75;
+    height: 60%;
+
+    padding:10px;
+
+
+    border-radius: 0px 20px 0px 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: var(--menu-card-bg);
+
+    transition: transform 0.2s;
+
+}
+
+.Card:hover{
+    transform: translateY(-15px);
+    transition: transform 0.2s;
+}
+
+
+.CardHeader {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.5em ;
+
+    height:auto;
+}
+
+.CardHeader p{
+
+}

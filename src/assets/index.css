@@ -37,6 +37,8 @@
   --button-bg-disabled: #616161;
   --button-color: #f9f9f9;
 
+  --menu-card-bg: #f8f8f8;
+
   --header-active: #1D1B1A;
   --header-inactive: #777680;
   --header-inactive-hover: #4549DD;
@@ -71,6 +73,8 @@
   --button-bg: #f8f8f8;
   --button-bg-disabled: #8f8f8f;
   --button-color: #1D1B1A;
+
+  --menu-card-bg: #292929;
   
 
   --header-active: #E8E1DF;
