@@ -53,6 +53,9 @@
 
   --menu-card-bg: #f8f8f8;
 
+  --svg-filter: invert(0) sepia(0) saturate(0) hue-rotate(0) brightness(0%) contrast(0%);
+
+
   --header-active: #1D1B1A;
   --header-inactive: #777680;
   --header-inactive-hover: #4549DD;
@@ -61,6 +64,7 @@
   --font-regular: 'MuseoModerno-regular', sans-serif;
   --font-bold: 'MuseoModerno-bold', sans-serif;
   --font-black: 'MuseoModerno-black', sans-serif;
+
   
 
   font-family: Helvetica, Arial, sans-serif;
@@ -96,6 +100,7 @@
 
   --menu-card-bg: #292929;
   
+  --svg-filter: invert(99%) sepia(0%) saturate(6078%) hue-rotate(215deg) brightness(118%) contrast(68%);
 
   --header-active: #E8E1DF;
   --header-inactive: #918F9A;
@@ -116,9 +121,7 @@
   align-items: center;
 }
 
-.titleFont {
-  font-family: 'MuseoModerno-bold', sans-serif;
-}
+
 
 body {
   display: flex;

@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
+import signSVG from '../assets/signature.svg';
 import styles from './layout.module.css';
 
 
@@ -8,8 +9,10 @@ export default function Footer() {
     return(
         <>
             <div className={styles.footer}>
-                <p>gabriel | GitHub</p>
+                <a href="https://github.com/gabebnz" >
+                    <img src={signSVG} alt='made by gabriel'/>
+                </a>
             </div>
         </>
     )
-}
+} 

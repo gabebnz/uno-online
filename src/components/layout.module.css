@@ -20,8 +20,14 @@
     height:100px;
     padding: 0 25px;
 
+    
+
     align-items: center;
     justify-content: space-between;
+}
+
+.navbar h1{
+    font-family: var(--font-black);
 }
 
 .navLeftInvis{
@@ -45,6 +51,16 @@
     justify-content: center;
 }
 
+.footer a{
+    height:100%;
+}
+
+.footer img{
+    height:100%;
+    filter: var(--svg-filter);
+}
+
+
 .childWrapper {
     display:flex;
     flex-direction: row;
@@ -52,7 +68,7 @@
     align-items: center;
     justify-content: center;
 
-    border: 5px dotted ;
+    
 
     width:auto;
     height:100%;
