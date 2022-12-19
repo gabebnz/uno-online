@@ -3,6 +3,7 @@ import { AiOutlineUser, AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { CiGlobe } from 'react-icons/ci';
 import { Link } from 'react-router-dom';
 import MenuCard from '../components/MenuCard';
+import styles from './Menu.module.css';
 
 
 export const menuLoader = () => {
@@ -22,10 +23,10 @@ export default function Menu({ title } : Props ) {
       }, []);
  
     return(
-        <>  
-            <h1>Menu</h1>
+        <div className={styles.MenuWrapper}>  
             <MenuCard title="play" link="/play" icon={<AiOutlineUser className='icon'/>}/>
-            
-        </>
+            <MenuCard title="create" link="/create" icon={<AiOutlineUsergroupAdd className='icon'/>}/>
+            <MenuCard title="join" link="/join" icon={<CiGlobe className='icon'/>}/>
+        </div>
     )
 }

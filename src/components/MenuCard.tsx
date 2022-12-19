@@ -13,10 +13,10 @@ interface Props {
 export default function MenuCard({title, icon, link}:Props){
 
     return(
-        <Link className={styles.Card}to={link}>
+        <Link className={styles[title]}to={link}>
             <div className={styles.CardHeader}>
                 {icon}
-                <p>{title}</p>
+                <p className={styles.regularFont}>{title}</p>
             </div>
         </Link>
     )

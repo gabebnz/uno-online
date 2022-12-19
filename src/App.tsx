@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ErrorBoundary from './routes/ErrorBoundary';
 
 import Layout from './components/Layout';
 
@@ -15,14 +16,25 @@ function App() {
 	const router = createBrowserRouter([
 		{
 			path: '/',
-			element: <Menu title="Main Menu | UNO!" />
+			element: <Menu title="Main Menu | UNO!" />,
+			errorElement: <ErrorBoundary />,
+		},
+		{
+			path: '/play',
+			//element: <Game title="UNO!" />,
+			errorElement: <ErrorBoundary />,
 		},
 		{
 			path: '/create',
-			element: <Create title="New Game | UNO!" />
-		}
-
-	])
+			element: <Create title="New Game | UNO!" />,
+			errorElement: <ErrorBoundary />,
+		},
+		{
+			path: '/join',
+			//element: <Join title="Multiplayer | UNO!" />,
+			errorElement: <ErrorBoundary />,
+		},
+	]);
 
 	return (
 		<SettingsProvider>

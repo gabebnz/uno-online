@@ -1,6 +1,19 @@
 
+.play {
+    z-index:3;
+}
 
-.Card{
+.create{
+    margin-left: -35px;
+    margin-right: -35px;
+    z-index:2;
+}
+
+.join{
+    z-index:1;
+}
+
+.play, .create, .join {
     display:flex;
     flex-direction: row;
     justify-content: center;
@@ -9,22 +22,30 @@
     aspect-ratio: 0.75;
     height: 60%;
 
-    padding:10px;
-
-
     border-radius: 0px 20px 0px 20px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     background-color: var(--menu-card-bg);
 
-    transition: transform 0.2s;
+    transition:  0.2s;
 
 }
 
-.Card:hover{
-    transform: translateY(-15px);
+
+.create:hover,.join:hover{
+    transform: translateY(-15px) rotate(2deg);
+    transition: transform 0.2s;
+    
+}
+
+.play:hover{
+    transform: translateY(-15px) rotate(-2deg);
     transition: transform 0.2s;
 }
 
+.play:hover .CardHeader, .create:hover .CardHeader, .join:hover .CardHeader{
+    color: var(--accent-color);
+    transition: color 0.2s;
+}
 
 .CardHeader {
     display:flex;
@@ -32,11 +53,12 @@
     justify-content: center;
     align-items: center;
 
-    font-size: 1.5em ;
+    gap:10px;
+
+    font-family: var(--font-regular);
+    font-size:3em ;
+
 
     height:auto;
 }
 
-.CardHeader p{
-
-}

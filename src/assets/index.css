@@ -1,7 +1,21 @@
 @font-face {
+  font-family: 'MuseoModerno-black';
+  src: url(fonts/MuseoModerno-Black.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'MuseoModerno-bold';
   src: url(fonts/MuseoModerno-Bold.ttf);
   font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MuseoModerno-regular';
+  src: url(fonts/MuseoModerno-Regular.ttf);
+  font-weight: normal;
   font-style: normal;
 }
 
@@ -42,6 +56,12 @@
   --header-active: #1D1B1A;
   --header-inactive: #777680;
   --header-inactive-hover: #4549DD;
+
+
+  --font-regular: 'MuseoModerno-regular', sans-serif;
+  --font-bold: 'MuseoModerno-bold', sans-serif;
+  --font-black: 'MuseoModerno-black', sans-serif;
+  
 
   font-family: Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -152,6 +172,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 button:disabled {
+  cursor: default;
   background-color: var(--button-bg-disabled);
   transition: 0.2s ease;
 }
