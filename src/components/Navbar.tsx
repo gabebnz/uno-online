@@ -3,6 +3,7 @@ import { SettingsContext } from '../providers/SettingsProvider';
 import Modal from './modal/Modal';
 
 import { CiSettings } from 'react-icons/ci';
+import { Link } from 'react-router-dom';
 import styles from './layout.module.css';
  
 export default function Navbar() {
@@ -24,14 +25,16 @@ export default function Navbar() {
 		});
 	}
 
-
- 
     return(
         <>
             <div className={styles.navbar}>
                 {/* first ciSettings HIDDEN for justify-content symmetry */}
                 <CiSettings className={styles.navLeftInvis}/> 
-                <h1>uno online</h1>
+
+                    <Link to="/" className={styles.navLogo}>
+                        <h1>uno<span>online</span></h1>
+                    </Link>
+                
                 <CiSettings onClick={() => setSettingsOpen(true)} className={styles.navSettings}/>
             </div>
             

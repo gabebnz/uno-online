@@ -30,6 +30,10 @@
     font-family: var(--font-black);
 }
 
+.navbar span{
+    color: var(--accent-color);
+}
+
 .navLeftInvis{
     visibility: hidden;
     font-size: 2.5em;
@@ -51,8 +55,8 @@
     justify-content: center;
 }
 
-.footer a{
-    height:100%;
+.footer a{ 
+    height:85%;
 }
 
 .footer img{

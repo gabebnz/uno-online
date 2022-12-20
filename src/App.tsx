@@ -1,12 +1,13 @@
 import { useContext, useState } from 'react';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import ErrorBoundary from './routes/ErrorBoundary';
 
 import Layout from './components/Layout';
 
 import { SettingsContext, SettingsProvider } from './providers/SettingsProvider';
 import Create from './routes/Create';
-import Menu, { menuLoader } from './routes/Menu';
+import Game from './routes/Game';
+import Menu from './routes/Menu';
 
 
 
@@ -15,32 +16,36 @@ function App() {
 
 	const router = createBrowserRouter([
 		{
-			path: '/',
-			element: <Menu title="Main Menu | UNO!" />,
+			element: <Layout />,
 			errorElement: <ErrorBoundary />,
-		},
-		{
-			path: '/play',
-			//element: <Game title="UNO!" />,
-			errorElement: <ErrorBoundary />,
-		},
-		{
-			path: '/create',
-			element: <Create title="New Game | UNO!" />,
-			errorElement: <ErrorBoundary />,
-		},
-		{
-			path: '/join',
-			//element: <Join title="Multiplayer | UNO!" />,
-			errorElement: <ErrorBoundary />,
-		},
+			children: [
+				{
+					path: '/',
+					element: <Menu title="Main Menu | UNO!" />,
+				},
+				{
+					path: '/game',
+					element: <Game title="UNO!" />,
+				},
+				{
+					path: '/game/:gameID',
+					element: <Game title="UNO!" />,
+				},
+				{
+					path: '/create',
+					element: <Create title="Create Game | UNO!" />,
+				},
+				{
+					path: '/join',
+					//element: <Join title="Multiplayer | UNO!" />,
+				},
+			]
+		}
 	]);
 
 	return (
 		<SettingsProvider>
-			<Layout>
-				<RouterProvider router={router} />
-			</Layout>
+			<RouterProvider router={router} />
 		</SettingsProvider>
 	)
 }

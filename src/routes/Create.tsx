@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Layout from '../components/Layout';
 
 type Props = {
 	title?: string;
@@ -13,8 +14,6 @@ export default function Create({ title } : Props ) {
 	  }, []);
 
 	return(
-		<>
-			<h1>Create</h1>
-		</>
+		<h1>Create</h1>
 	)
 }

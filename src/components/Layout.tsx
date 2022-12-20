@@ -3,6 +3,7 @@ import { SettingsContext } from '../providers/SettingsProvider';
 
 import styles from './layout.module.css';
 
+import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
 import Navbar from './Navbar';
 
@@ -19,6 +20,7 @@ export default function Test({ children }: Props) {
 				{/* Holds main application */}
 				<div className={styles.childWrapper}>
 					{children}
+					<Outlet />
 				</div>
 			<Footer />
 		</div>

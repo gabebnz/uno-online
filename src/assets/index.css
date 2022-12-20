@@ -46,6 +46,9 @@
   --disabled-colour: #777680;
 
   --accent-color: rgb(240, 46, 170);
+  --accent-color: rgb(255, 67, 92);
+  --accent-color-v: 240,46,170; /* for use in variable: rgba(var(--accent-color-v), 1) */
+  --accent-color-v: 255,67,92;
 
   --button-bg: #1D1B1A;
   --button-bg-disabled: #616161;
@@ -55,18 +58,15 @@
 
   --svg-filter: invert(0) sepia(0) saturate(0) hue-rotate(0) brightness(0%) contrast(0%);
 
-
   --header-active: #1D1B1A;
   --header-inactive: #777680;
   --header-inactive-hover: #4549DD;
-
 
   --font-regular: 'MuseoModerno-regular', sans-serif;
   --font-bold: 'MuseoModerno-bold', sans-serif;
   --font-black: 'MuseoModerno-black', sans-serif;
 
   
-
   font-family: Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
