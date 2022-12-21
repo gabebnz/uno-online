@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 import { SettingsContext, SettingsProvider } from './providers/SettingsProvider';
 import Create from './routes/Create';
 import Game from './routes/Game';
+import Join from './routes/Join';
 import Menu from './routes/Menu';
 
 
@@ -37,7 +38,7 @@ function App() {
 				},
 				{
 					path: '/join',
-					//element: <Join title="Multiplayer | UNO!" />,
+					element: <Join title="Multiplayer | UNO!" />,
 				},
 			]
 		}
