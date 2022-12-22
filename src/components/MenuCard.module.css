@@ -30,7 +30,7 @@
     align-items: center;
 
     aspect-ratio: 0.75;
-    height: 475px;
+    height: 45vh;
 
     border-radius: 0px 20px 0px 20px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -38,6 +38,8 @@
 
     transition:  0.2s;
 }
+
+
 
 .create:hover,.join:hover{
     transform: translateY(-15px) rotate(2deg);

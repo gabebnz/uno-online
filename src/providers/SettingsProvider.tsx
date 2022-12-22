@@ -27,7 +27,7 @@ const loadSettingString = (settings: Settings, key: keyof Settings) => {
     const value = localStorage.getItem(`uno.${key}`);
     value && ((settings[key] as string) = value);
 }
-
+ 
 // load existing settings from local storage
 const findExistingSettings = (): Settings => {
     const settings = { ...InitialSettings };
@@ -64,7 +64,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = (props) => {
     useEffect(() => {
         setSettings(findExistingSettings)
     }, []);
-
 
     // toggle dark theme attribute on settings state change
     useEffect(() => {

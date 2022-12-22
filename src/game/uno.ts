@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { SettingsContext } from "../providers/SettingsProvider";
 import { getBotNames } from './bot';
 import { Card, cardToString, getShuffledDeck } from "./deck";
 
@@ -11,6 +10,7 @@ export interface PlayerState {
     hand: Card[];
     name: string;
 
+    isSkipped: boolean;
     isUno: boolean;
     isTurn: boolean;
     isWinner: boolean;
@@ -31,12 +31,14 @@ export interface GameState {
     isUnoCallPossible: boolean; // true = player has 1 card left hasnt called uno
     wasUnoCalled: boolean; // true = uno has been called by player with last card
 
+    winner : PlayerState | null;
     playing: boolean;
 
 }
 
-export const UnoInitializeState = ():GameState => {
-    const settings = useContext(SettingsContext);
+export const UnoInitialState: GameState = InitializeState();
+
+function InitializeState ():GameState {
     const shuffledDeck = getShuffledDeck();
     const botNames = getBotNames();
 
@@ -45,7 +47,8 @@ export const UnoInitializeState = ():GameState => {
             {
                 type: 'local',
                 hand: shuffledDeck.splice(0, 7),
-                name: settings.username,
+                name:'', // updatein a component -- cant use settings context here
+                isSkipped: false,
                 isUno: false,
                 isTurn: false,
                 isWinner: false,
@@ -55,6 +58,7 @@ export const UnoInitializeState = ():GameState => {
                 type: 'bot',
                 hand: shuffledDeck.splice(0, 7),
                 name: botNames[0],
+                isSkipped: false,
                 isUno: false,
                 isTurn: false,
                 isWinner: false,
@@ -64,6 +68,7 @@ export const UnoInitializeState = ():GameState => {
                 type: 'bot',
                 hand: shuffledDeck.splice(0, 7),
                 name: botNames[1],
+                isSkipped: false,
                 isUno: false,
                 isTurn: false,
                 isWinner: false,
@@ -73,6 +78,7 @@ export const UnoInitializeState = ():GameState => {
                 type: 'bot',
                 hand: shuffledDeck.splice(0, 7),
                 name: botNames[2],
+                isSkipped: false,
                 isUno: false,
                 isTurn: false,
                 isWinner: false,
@@ -90,9 +96,9 @@ export const UnoInitializeState = ():GameState => {
         isUnoCallPossible: false,
         wasUnoCalled: false,
 
+        winner: null,
         playing: false,
-    }
-
+    }    
     return state;
 }
 
@@ -114,32 +120,26 @@ export const UnoPlayCard = (state: GameState, card: Card): boolean => {
 
     state.isUnoCallPossible = false;
 
-    // 
+    // card cannot be played
     if (!UnoCheckCard(state, card)) {
         return false;
     }
 
     // Remove card from player's hand
     state.discard.push(card);
-    state.currentPlayer!.hand.splice(state.currentPlayer!.hand.indexOf(card), 1);
+    state.currentPlayer!.hand.splice(state.currentPlayer!.hand.indexOf(card), 1); // maybe dont use splice
 
-
+    // Update the games current color
     state.currentColor = card.color;
-
-
-
-    // TODO: keep doing card logic
-    // To the comments
-    // I actually dont think i need a reducer for this. just do it all here.
-
-
 
     // check if player has won
     if (state.currentPlayer!.hand.length === 0 && state.currentPlayer!.isUno && state.wasUnoCalled) {
-        state.currentPlayer!.isWinner = true;
 
-        // when reducer is written?
-        //Dispatch({type: 'winner');
+        state.playing = false;
+        state.currentPlayer!.isWinner = true;
+        state.winner = state.currentPlayer;
+
+        return true;
     }
 
     // check if player has 1 card left: they need to call uno before next player begins their turn
@@ -150,29 +150,56 @@ export const UnoPlayCard = (state: GameState, card: Card): boolean => {
     // card actions
     switch (card.value) {
         case 'skip':
-            //dispatch({type: 'skip'});  <-- for reducer
+            skipNextPlayer(state);
             break;
         case 'reverse':
             state.direction = !state.direction; // will have state watching this value
             break;
         case '+2':
+            pickUp(state, getNextPlayer(state), 2)
             //dispatch({type: 'draw', payload: card.value}); //reducer
             break;
         case '+4':
+            // The CHALLENGE +4 card logic should go here
+            pickUp(state, getNextPlayer(state), 4)
             state.askForColor = true;
             // THIS WILL TRIGGER A USEEFFECT TO BRING UP A MODAL TO CHOOSE A COLOR
             // THAT MODAL CAN CALL THE DISPATCH TO ADD THE COLOR TO THE STATE AND +4
             break;
         case 'wild':
-            //dispatch({type: 'color', payload: card.color}); //reducer
+            state.askForColor = true;
             break;
         default:
             break;
     }
 
-
-
-
-
     return true;
+}
+
+export function pickUp(state:GameState, target:PlayerState, quantity: number){
+    const drawn = state.deck.splice(0, quantity)
+
+    for(let i = 0; i < quantity; i++){
+        target.hand.push(drawn[i])
+    }
+}
+
+function skipNextPlayer(state: GameState){
+    const nextPlayer = getNextPlayer(state)
+    nextPlayer.isSkipped = true;
+}
+
+function getNextPlayer(state: GameState){
+    const currPlayerIndex = state.players.indexOf(state.currentPlayer!)
+
+    if(state.direction){ // clockwise
+        return state.players[(currPlayerIndex + 1) % state.players.length]
+    }
+    else{ // counter clockwise
+        return state.players[(currPlayerIndex - 1) % state.players.length]
+    }
+}
+
+export function setNextPlayer(state: GameState){    
+    state.currentPlayer = getNextPlayer(state);
 }
