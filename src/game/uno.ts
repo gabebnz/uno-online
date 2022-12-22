@@ -99,6 +99,7 @@ function InitializeState ():GameState {
         winner: null,
         playing: false,
     }    
+
     return state;
 }
 

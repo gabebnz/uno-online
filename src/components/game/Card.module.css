@@ -1,0 +1,68 @@
+
+.CardWrapper {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    aspect-ratio: 0.75;
+    height: 200px;
+
+    border: 5px solid;
+
+    border-radius: 20px;
+    cursor: pointer;
+
+    padding:15px;
+
+    transition:  0.2s;
+    -webkit-animation: fade-in-top 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) backwards;
+    animation: fade-in-top 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) backwards;
+}
+
+.red{
+    border-color: red;
+}
+.green{
+    border-color: green;
+}
+.blue{
+    border-color: blue;
+}
+.yellow{
+    border-color: yellow;
+}
+.wild{
+    border-color: black;
+}
+
+/**
+ * ----------------------------------------
+ * animation fade-in-top
+ * ----------------------------------------
+ */
+ @-webkit-keyframes fade-in-top {
+    0% {
+      -webkit-transform: translateY(-35px);
+              transform: translateY(-35px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes fade-in-top {
+    0% {
+      -webkit-transform: translateY(-35px);
+              transform: translateY(-35px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateY(0);
+              transform: translateY(0);
+      opacity: 1;
+    }
+  }
