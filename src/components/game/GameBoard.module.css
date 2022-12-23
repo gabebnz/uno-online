@@ -1,0 +1,92 @@
+
+.InnerBoard {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.InnerBoardBorder{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    position:relative;
+
+    border-radius: 50px;
+
+    overflow: hidden;
+
+    width: 35vw;
+    height: 30vh;
+}
+
+
+
+.InnerBoardBorder[class~="red"]::before{
+    background: var(--game-color-red);
+}
+.InnerBoardBorder[class~="blue"]::before{
+    background: var(--game-color-blue);
+}
+.InnerBoardBorder[class~="green"]::before{
+    background: var(--game-color-green);
+}
+.InnerBoardBorder[class~="yellow"]::before{
+    background: var(--game-color-yellow);
+}
+.InnerBoardBorder[class~="wild"]::before{
+    background: var(--game-color-wild);
+}
+
+.InnerBoardBorder[class~="false"]::before{
+    -webkit-animation: rotate-reverse 10s linear infinite;
+    animation: rotate-reverse 10s linear infinite;
+}
+
+.InnerBoardBorder[class~="true"]::before{
+    -webkit-animation: rotate 10s linear infinite;
+    animation: rotate 10s linear infinite;
+}
+
+.InnerBoardBorder::before{
+    content: "";
+    position: absolute;
+    
+    width: 100px;
+    height: 250%;
+}
+
+.InnerBoardBorder::after{
+    content: "";
+    position: absolute;
+    background-color: var(--bg-color);
+    inset:5px;
+    border-radius: 45px;
+
+
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+      }
+    to {
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotate-reverse {
+    from {
+        transform: rotate(360deg);
+      }
+    to {
+        transform: rotate(0deg);
+    }
+}

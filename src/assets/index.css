@@ -45,10 +45,14 @@
   --border-small-colour: #1D1B1A55;
   --disabled-colour: #777680;
 
-  --accent-color: rgb(240, 46, 170);
   --accent-color: rgb(255, 67, 92);
-  --accent-color-v: 240,46,170; /* for use in variable: rgba(var(--accent-color-v), 1) */
   --accent-color-v: 255,67,92;
+
+  --game-color-red: #FF434C;
+  --game-color-blue: #4549DD;
+  --game-color-green: #00C48C;
+  --game-color-yellow: #FFD600;
+  --game-color-wild: #1D1B1A;
 
   --button-bg: #1D1B1A;
   --button-bg-disabled: #616161;
@@ -97,6 +101,10 @@
   --button-bg: #f8f8f8;
   --button-bg-disabled: #8f8f8f;
   --button-color: #1D1B1A;
+
+
+  --game-color-wild: white;
+
 
   --menu-card-bg: #292929;
   

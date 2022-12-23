@@ -1,6 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+
 import GameCard from '../components/game/Card';
+import GameBoard from '../components/game/GameBoard';
+
 import Layout from '../components/Layout';
 import { GameContext, GameProvider } from '../providers/GameProvider';
 
@@ -13,6 +16,8 @@ export default function Game({ title } : Props ) {
     const { gameID } = useParams<{ gameID: string }>();
 	const game = useContext(GameContext)
 
+	//Todo: multiplayer
+
 	useEffect(() => {
 		if (title) {
 		  document.title = title;
@@ -21,17 +26,7 @@ export default function Game({ title } : Props ) {
 
 	return(
         <GameProvider>
-			<>
-				{game.discard.at(-1)?.color}
-				{
-					game?.players[0].hand.map((card, index) => {
-						return <GameCard key={index} card={card}>{card.value}</GameCard>
-					})
-				}
-					
-
-				
-			</>
+			<GameBoard />
         </GameProvider>
 	)
 }
