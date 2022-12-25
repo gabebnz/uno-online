@@ -3,7 +3,7 @@ import { GameState, UnoInitialState } from '../game/uno';
 import { SettingsContext } from './SettingsProvider';
 
 
-type UpdateGame = React.Dispatch<React.SetStateAction<GameState>>
+export type UpdateGame = React.Dispatch<React.SetStateAction<GameState>>
 
 export const GameContext = createContext<GameState & {updateGame: UpdateGame}>({...UnoInitialState, updateGame: () => undefined});
 
@@ -13,7 +13,10 @@ interface GameProviderProps {
 
 export const GameProvider: React.FC<GameProviderProps> = (props) => {
     const settings = useContext(SettingsContext);
-    const [game, setGame] = useState<GameState>(UnoInitialState);
+    const [game, setGame] = useState<GameState>(UnoInitialState);  
+    
+    console.log(game.discard);
+    
     
     useEffect(()=>{ 
         // Weird function where i have to set username state here, cant do it in init method

@@ -14,7 +14,6 @@ type Props = {
 
 export default function Game({ title } : Props ) {
     const { gameID } = useParams<{ gameID: string }>();
-	const game = useContext(GameContext)
 
 	//Todo: multiplayer
 

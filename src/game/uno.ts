@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { UpdateGame } from '../providers/GameProvider';
 import { getBotNames } from './bot';
 import { Card, cardToString, getShuffledDeck } from "./deck";
 
@@ -20,7 +21,7 @@ export interface PlayerState {
 
 export interface GameState {
     players: PlayerState[];
-    currentPlayer: PlayerState | null;
+    currentPlayer: number | null;
     deck: Card[];
     discard: Card[];
     direction: boolean; // true = clockwise, false = counterclockwise
@@ -114,71 +115,88 @@ const UnoCheckCard = (state: GameState, card: Card): boolean => {
     if (card.value === 'wild' || card.value === '+4') {
         return true;
     }
+
     return false;
 }
 
-export const UnoPlayCard = (state: GameState, card: Card): boolean => {
-
-    state.isUnoCallPossible = false;
-
+export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: Card): boolean => {
     // card cannot be played
     if (!UnoCheckCard(state, card)) {
+        console.log('card cannot be played');
+        
         return false;
     }
 
-    // Remove card from player's hand
-    state.discard.push(card);
-    state.currentPlayer!.hand.splice(state.currentPlayer!.hand.indexOf(card), 1); // maybe dont use splice
+    // It is VERY possible to clean this up
+    // expecially the current player calls.
 
-    // Update the games current color
-    state.currentColor = card.color;
+    
+    state.updateGame(prev =>{
+        const newState = {...prev};
+        // MOVE EVERYTHING HERE
+        newState.isUnoCallPossible = false;
 
-    // check if player has won
-    if (state.currentPlayer!.hand.length === 0 && state.currentPlayer!.isUno && state.wasUnoCalled) {
+        // Remove card from player's hand
+        newState.discard= [card, ...newState.discard];
+        
+        newState.players[newState.currentPlayer!].hand = newState.players[newState.currentPlayer!].hand.filter(item => {            
+            return item !== card;
+        }); 
+        
 
-        state.playing = false;
-        state.currentPlayer!.isWinner = true;
-        state.winner = state.currentPlayer;
+        // Update the games current color
+        newState.currentColor = card.color;
 
-        return true;
-    }
+        // check if player has won
+        if (state.players[newState.currentPlayer!].hand.length === 0 && state.players[newState.currentPlayer!].isUno && state.wasUnoCalled) {
 
-    // check if player has 1 card left: they need to call uno before next player begins their turn
-    if (state.currentPlayer!.hand.length === 1) {
-        state.isUnoCallPossible = true;
-    }
+            newState.playing = false;
+            newState.players[newState.currentPlayer!].isWinner = true;
+            newState.winner = newState.players[newState.currentPlayer!];
 
-    // card actions
-    switch (card.value) {
-        case 'skip':
-            skipNextPlayer(state);
-            break;
-        case 'reverse':
-            state.direction = !state.direction; // will have state watching this value
-            break;
-        case '+2':
-            pickUp(state, getNextPlayer(state), 2)
-            //dispatch({type: 'draw', payload: card.value}); //reducer
-            break;
-        case '+4':
-            // The CHALLENGE +4 card logic should go here
-            pickUp(state, getNextPlayer(state), 4)
-            state.askForColor = true;
-            // THIS WILL TRIGGER A USEEFFECT TO BRING UP A MODAL TO CHOOSE A COLOR
-            // THAT MODAL CAN CALL THE DISPATCH TO ADD THE COLOR TO THE STATE AND +4
-            break;
-        case 'wild':
-            state.askForColor = true;
-            break;
-        default:
-            break;
-    }
+            return newState;
+        }
+
+        // check if player has 1 card left: they need to call uno before next player begins their turn
+        if (state.players[newState.currentPlayer!].hand.length === 1) {
+            newState.isUnoCallPossible = true;
+        }
+
+        // card actions
+        switch (card.value) {
+            case 'skip':
+                skipNextPlayer(newState);
+                break;
+            case 'reverse':
+                newState.direction = !state.direction; // will have state watching this value
+                break;
+            case '+2':
+                pickUp(newState, getNextPlayer(newState), 2)
+                //dispatch({type: 'draw', payload: card.value}); //reducer
+                break;
+            case '+4':
+                // The CHALLENGE +4 card logic should go here
+                pickUp(newState, getNextPlayer(newState), 4)
+                newState.askForColor = true;
+                // THIS WILL TRIGGER A USEEFFECT TO BRING UP A MODAL TO CHOOSE A COLOR
+                // THAT MODAL CAN CALL THE DISPATCH TO ADD THE COLOR TO THE STATE AND +4
+                break;
+            case 'wild':
+                newState.askForColor = true;
+                break;
+            default:
+                break;
+        }
+            return newState;
+    });
+
+
 
     return true;
 }
 
 export function pickUp(state:GameState, target:PlayerState, quantity: number){
-    const drawn = state.deck.splice(0, quantity)
+    const drawn = state.deck.splice(0, quantity) // dont use splice
 
     for(let i = 0; i < quantity; i++){
         target.hand.push(drawn[i])
@@ -186,21 +204,28 @@ export function pickUp(state:GameState, target:PlayerState, quantity: number){
 }
 
 function skipNextPlayer(state: GameState){
-    const nextPlayer = getNextPlayer(state)
-    nextPlayer.isSkipped = true;
+    // state is new state
+    //const nextPlayer = getNextPlayer(state)
+    //nextPlayer.isSkipped = true;
 }
 
 function getNextPlayer(state: GameState){
-    const currPlayerIndex = state.players.indexOf(state.currentPlayer!)
-
     if(state.direction){ // clockwise
-        return state.players[(currPlayerIndex + 1) % state.players.length]
+        return state.players[(state.currentPlayer! + 1) % state.players.length]
     }
     else{ // counter clockwise
-        return state.players[(currPlayerIndex - 1) % state.players.length]
+        return state.players[(state.currentPlayer!  - 1) % state.players.length]
     }
 }
 
+export function setInitialPlayer(state:GameState & {updateGame: UpdateGame}){
+    state.updateGame(prev => {
+        prev.currentPlayer = 0;
+        prev.players[prev.currentPlayer].isTurn = true;
+        return {...prev}
+    })
+}
+
 export function setNextPlayer(state: GameState){    
-    state.currentPlayer = getNextPlayer(state);
+    //state.currentPlayer = getNextPlayer(state);
 }
