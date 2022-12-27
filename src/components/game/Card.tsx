@@ -5,22 +5,46 @@ import { GameContext } from '../../providers/GameProvider';
 import styles from './Card.module.css';
 
 interface  CardProps {
-    card: Card
+    card?: Card
+    show?: boolean
+    display?: boolean
     children?: React.ReactNode
 }
 
-export default function GameCard({ card }: CardProps){
+export default function GameCard({ card, show, display }: CardProps){
     const game = useContext(GameContext);
-    const cardColor = card.color
+    const cardColor = card?.color
 
     const handleCardClick = () => {
-        UnoPlayCard(game, card)
+        UnoPlayCard(game, card!)
     }
-    
-    return(
-        <div className={`${styles.CardWrapper} ${styles[cardColor]}`} onClick={() => handleCardClick()}>
-            <p>{card.type}</p>
-            <p>{card.value}</p>
-        </div>
-    )
+
+
+    if(display && card){
+        return(
+            <div className={`${styles.CardWrapper} ${styles[cardColor!]}`}>
+                <p>{card.type}</p>
+                <p>{card.value}</p>
+            </div>
+        )
+    }
+    else if(!show){
+        return(
+            <div className={`${styles.CardWrapper}`}>
+                <p>UNO</p>
+            </div>
+        )
+    }
+    else if (card){ // LOCAL PLAYERS HAND
+        return(
+            <div className={`${styles.CardWrapper} ${styles[cardColor!]} ${styles.Selectable}`} onClick={() => handleCardClick()}>
+                <p>{card.type}</p>
+                <p>{card.value}</p>
+            </div>
+        )
+    }
+    else{
+        return(
+            <p>INVALID CARD TYPES</p>
+        )}
 }

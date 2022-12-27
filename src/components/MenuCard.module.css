@@ -39,12 +39,9 @@
     transition:  0.2s;
 }
 
-
-
 .create:hover,.join:hover{
     transform: translateY(-15px) rotate(2deg);
     transition: transform 0.2s;
-    
 }
 
 .play:hover{

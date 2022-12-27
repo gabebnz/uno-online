@@ -105,7 +105,7 @@ function InitializeState ():GameState {
 }
 
 const UnoCheckCard = (state: GameState, card: Card): boolean => {
-    const topCard = state.discard[state.discard.length - 1];
+    const topCard = state.discard[0];
     if (card.color === topCard.color) {
         return true;
     }
@@ -162,41 +162,58 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
             newState.isUnoCallPossible = true;
         }
 
-        // card actions
-        switch (card.value) {
-            case 'skip':
-                skipNextPlayer(newState);
-                break;
-            case 'reverse':
-                newState.direction = !state.direction; // will have state watching this value
-                break;
-            case '+2':
-                pickUp(newState, getNextPlayer(newState), 2)
-                //dispatch({type: 'draw', payload: card.value}); //reducer
-                break;
-            case '+4':
-                // The CHALLENGE +4 card logic should go here
-                pickUp(newState, getNextPlayer(newState), 4)
-                newState.askForColor = true;
-                // THIS WILL TRIGGER A USEEFFECT TO BRING UP A MODAL TO CHOOSE A COLOR
-                // THAT MODAL CAN CALL THE DISPATCH TO ADD THE COLOR TO THE STATE AND +4
-                break;
-            case 'wild':
-                newState.askForColor = true;
-                break;
-            default:
-                break;
-        }
+
             return newState;
     });
+    
+    // card actions
+    switch (card.value) {
+        case 'skip':
+            skipNextPlayer(state);
+            break;
+        case 'reverse':
+            state.updateGame(prev => {
+                prev.direction = !prev.direction;
+                return prev;
+            })
+            break;
+        case '+2':
+            pickUp(state, getNextPlayer(state), 2)
+            //dispatch({type: 'draw', payload: card.value}); //reducer
+            break;
+        case '+4':
+            // The CHALLENGE +4 card logic should go here
+            pickUp(state, getNextPlayer(state), 4)
+            state.updateGame(prev => {
+                prev.askForColor = !prev.askForColor;
+                return prev;
+            })
 
-
+            // THIS WILL TRIGGER A USEEFFECT TO BRING UP A MODAL TO CHOOSE A COLOR
+            // THAT MODAL CAN CALL THE DISPATCH TO ADD THE COLOR TO THE STATE AND +4
+            break;
+        case 'wild':
+            state.updateGame(prev => {
+                prev.askForColor = !prev.askForColor;
+                return prev;
+            })
+            break;
+        default:
+            break;
+    }
 
     return true;
 }
 
-export function pickUp(state:GameState, target:PlayerState, quantity: number){
-    const drawn = state.deck.splice(0, quantity) // dont use splice
+export function pickUp(state:GameState & {updateGame: UpdateGame}, target:PlayerState, quantity: number){
+    state.updateGame(prev => {
+        const newState = {...prev};
+        console.log(newState.deck.slice(0, quantity -1 ));
+        
+        return newState;
+    })
+
+    const drawn = state.deck.slice(0, quantity) // dont use splice
 
     for(let i = 0; i < quantity; i++){
         target.hand.push(drawn[i])

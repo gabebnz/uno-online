@@ -5,6 +5,7 @@ import { GameContext } from '../../providers/GameProvider';
 import styles from './GameBoard.module.css';
 
 import GameCard from './Card';
+import Hand from './Hand';
 
 interface Props {
     children?: React.ReactNode;
@@ -23,24 +24,25 @@ export default function GameBoard({ children }: Props) {
 
             <div className={`${styles.InnerBoardBorder} ${game.discard[0].color} ${game.direction}`} >
                 <div className={styles.InnerBoard}>
-                    <GameCard card={game.discard[0]}></GameCard>
+                    <GameCard key={Math.random()} display={true} card={game.discard[0]}></GameCard>
                 </div>
             </div>
 
             <div className={styles.HandWrapper}>
-                {
-                    game?.players[0].hand.map((card, index) => {
-                        return <GameCard key={index} card={card}>{card.value}</GameCard>
-                    })
-                }
+                <Hand show={true} player={0}/>
             </div>
 
             <div className={styles.TopHandWrapper}>
-                {/*
-                    game?.players[1].hand.map((card, index) => {
-                        return <GameCard key={index} card={card}>{card.value}</GameCard>
-                    })
-                */}
+                <Hand show={false} player={2}/>
+            </div>
+
+            <div className={styles.RightHandWrapper}>
+            <Hand show={false} player={3}/>
+
+            </div>
+
+            <div className={styles.LeftHandWrapper}>
+            <Hand show={false} player={1}/>
             </div>
         </div>
     )

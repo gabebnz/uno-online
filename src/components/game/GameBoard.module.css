@@ -4,11 +4,11 @@
     height:100%;
     width:100%;
 
-    grid-template-columns:1fr 2fr 1fr;
-    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-columns:minmax(0, 1fr) minmax(0,2fr) minmax(0,1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0,2fr) minmax(0,1fr);
 
-
-    border:1px solid white;
+    overflow:scroll;
+    padding:20px;
     gap: 5px;
 }
 
@@ -40,8 +40,42 @@
 
     width:100%;
     height:100%;
+
+    rotate:180deg;
 }
 
+.RightHandWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    grid-column: 3;
+    grid-row: 2;
+
+    max-width: 100%;
+
+    width:100%;
+    height:100%;
+    rotate:-90deg;
+}
+
+.LeftHandWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    grid-column: 1;
+    grid-row: 2;
+
+    max-width: 100%;
+
+    width:100%;
+    height:100%;
+
+    rotate:90deg;
+}
 
 .InnerBoard {
     display: flex;
@@ -51,7 +85,7 @@
     align-items: center;
 
     position: absolute;
-    width: 100%;
+    max-width: 100%;
     height: 100%;
     z-index: 2;
 }

@@ -21,7 +21,7 @@
     padding: 0 25px;
 
     
-
+    
     align-items: center;
     justify-content: space-between;
 }
@@ -74,7 +74,7 @@
 
     overflow:hidden;
     
-
+    padding: 0 25px;
     width:auto;
     height:100%;
 }
