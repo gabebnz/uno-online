@@ -137,7 +137,7 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
         newState.isUnoCallPossible = false;
 
         // Remove card from player's hand
-        newState.discard= [card, ...newState.discard];
+        newState.discard = [card, ...newState.discard];
         
         newState.players[newState.currentPlayer!].hand = newState.players[newState.currentPlayer!].hand.filter(item => {            
             return item !== card;
@@ -162,7 +162,6 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
             newState.isUnoCallPossible = true;
         }
 
-
             return newState;
     });
     
@@ -178,6 +177,8 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
             })
             break;
         case '+2':
+            console.log("called");
+            
             pickUp(state, getNextPlayer(state), 2)
             //dispatch({type: 'draw', payload: card.value}); //reducer
             break;
@@ -202,36 +203,54 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
             break;
     }
 
-    return true;
+    return true; // Card played successfully
 }
 
-export function pickUp(state:GameState & {updateGame: UpdateGame}, target:PlayerState, quantity: number){
+export function UnoFinishTurn(state: GameState & {updateGame: UpdateGame}) {
+    // Next player's turn
+    setNextPlayer(state);
+
+    if(state.players[state.currentPlayer!].type === 'bot'){
+        // bot logic
+    }
+}
+
+function pickUp(state:GameState & {updateGame: UpdateGame}, targetIndex:number, quantity: number){
     state.updateGame(prev => {
         const newState = {...prev};
-        console.log(newState.deck.slice(0, quantity -1 ));
         
+        const drawn = newState.deck.slice(0, quantity) // dont use splice
+
+        console.log(drawn);
+        
+
+        newState.players[targetIndex].hand = [...newState.players[targetIndex].hand, ...drawn];
+
         return newState;
     })
-
-    const drawn = state.deck.slice(0, quantity) // dont use splice
-
-    for(let i = 0; i < quantity; i++){
-        target.hand.push(drawn[i])
-    }
 }
 
-function skipNextPlayer(state: GameState){
-    // state is new state
-    //const nextPlayer = getNextPlayer(state)
-    //nextPlayer.isSkipped = true;
+function skipNextPlayer(state: GameState & {updateGame: UpdateGame}){
+    state.updateGame(prev => {
+        const newState = {...prev};
+
+        const skippedPlayer = newState.players[getNextPlayer(newState)];
+        
+        skippedPlayer.isSkipped = true;
+
+        console.log(skippedPlayer.name, "was skipped");
+        
+
+        return newState;
+    })
 }
 
-function getNextPlayer(state: GameState){
+function getNextPlayer(state: GameState): number{
     if(state.direction){ // clockwise
-        return state.players[(state.currentPlayer! + 1) % state.players.length]
+        return state.players.indexOf(state.players[(state.currentPlayer! + 1) % state.players.length])
     }
     else{ // counter clockwise
-        return state.players[(state.currentPlayer!  - 1) % state.players.length]
+        return state.players.indexOf(state.players[(state.currentPlayer! - 1) % state.players.length])
     }
 }
 
@@ -243,6 +262,12 @@ export function setInitialPlayer(state:GameState & {updateGame: UpdateGame}){
     })
 }
 
-export function setNextPlayer(state: GameState){    
-    //state.currentPlayer = getNextPlayer(state);
+function setNextPlayer(state: GameState & {updateGame: UpdateGame}){  
+    state.updateGame(prev => {
+        const newState = {...prev};
+        
+        newState.currentPlayer = getNextPlayer(newState);
+
+        return newState;
+    })  
 }

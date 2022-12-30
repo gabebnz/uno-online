@@ -4,7 +4,13 @@ export type Card = {
     type: string; // number, action, wild
     color: string; // red, blue, green, yellow, wild
     value?: string; // 0-9, +2, reverse, skip, wild, +4
+
+    rotation?: number;
+    offsetX?:number;
+    offsetY?:number;
 }
+
+const cardRotations = [5, 15, 35, 50, 75, 100, 120, 170, 200, 230]
 
 
 export const getShuffledDeck = (): Card[] => {
@@ -40,8 +46,17 @@ export const getShuffledDeck = (): Card[] => {
             array[j] = temp;
         }
     }
+
+    const addRotations = (array: Card[]) => {
+        for (let i = 0; i < array.length; i++) {
+            array[i].rotation = cardRotations[Math.floor(Math.random() * cardRotations.length)]
+            array[i].offsetX = Math.floor(Math.random() * 100) - 50
+            array[i].offsetY = Math.floor(Math.random() * 100) - 50
+        }
+    }
       
     shuffleArray(deck)
+    addRotations(deck)
     return deck;
 }
 

@@ -15,7 +15,6 @@ export const GameProvider: React.FC<GameProviderProps> = (props) => {
     const settings = useContext(SettingsContext);
     const [game, setGame] = useState<GameState>(UnoInitialState);  
     
-    console.log(game.discard);
     
     
     useEffect(()=>{ 

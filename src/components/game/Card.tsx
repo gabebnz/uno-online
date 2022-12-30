@@ -1,28 +1,30 @@
 import React, { useContext } from 'react';
 import { Card } from '../../game/deck';
-import { UnoPlayCard } from '../../game/uno';
+import { UnoFinishTurn, UnoPlayCard } from '../../game/uno';
 import { GameContext } from '../../providers/GameProvider';
 import styles from './Card.module.css';
 
 interface  CardProps {
-    card?: Card
+    card: Card
     show?: boolean
-    display?: boolean
+    discard?: boolean
     children?: React.ReactNode
 }
 
-export default function GameCard({ card, show, display }: CardProps){
+export default function GameCard({ card, show, discard }: CardProps){
     const game = useContext(GameContext);
     const cardColor = card?.color
 
     const handleCardClick = () => {
-        UnoPlayCard(game, card!)
+        UnoPlayCard(game, card!)//&& UnoFinishTurn(game)
     }
 
-
-    if(display && card){
+    if(discard && card){ // discard pile
         return(
-            <div className={`${styles.CardWrapper} ${styles[cardColor!]}`}>
+            <div 
+            className={`${styles.CardWrapper} ${styles.Discard} ${styles[cardColor!]}`}
+            style={{rotate:`${card.rotation}deg`, translate:`${card.offsetX}px ${card.offsetY}px`}}
+            >
                 <p>{card.type}</p>
                 <p>{card.value}</p>
             </div>
@@ -30,14 +32,14 @@ export default function GameCard({ card, show, display }: CardProps){
     }
     else if(!show){
         return(
-            <div className={`${styles.CardWrapper}`}>
+            <div className={`${styles.CardWrapper} ${styles.HandCard}`}>
                 <p>UNO</p>
             </div>
         )
     }
     else if (card){ // LOCAL PLAYERS HAND
         return(
-            <div className={`${styles.CardWrapper} ${styles[cardColor!]} ${styles.Selectable}`} onClick={() => handleCardClick()}>
+            <div className={`${styles.CardWrapper} ${styles.HandCard} ${styles[cardColor!]} ${game.currentPlayer === 0 && styles.Selectable}`} onClick={() => handleCardClick()}>
                 <p>{card.type}</p>
                 <p>{card.value}</p>
             </div>
