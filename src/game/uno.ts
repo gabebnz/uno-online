@@ -101,6 +101,9 @@ function InitializeState ():GameState {
         playing: false,
     }    
 
+    state.discard[0].rotation = Math.floor(Math.random() * 30)-15; // make sure first card has readable rotation
+    
+
     return state;
 }
 
@@ -126,6 +129,9 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
         
         return false;
     }
+
+    console.log(card);
+    
 
     // It is VERY possible to clean this up
     // expecially the current player calls.
@@ -177,8 +183,6 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
             })
             break;
         case '+2':
-            console.log("called");
-            
             pickUp(state, getNextPlayer(state), 2)
             //dispatch({type: 'draw', payload: card.value}); //reducer
             break;
@@ -210,20 +214,50 @@ export function UnoFinishTurn(state: GameState & {updateGame: UpdateGame}) {
     // Next player's turn
     setNextPlayer(state);
 
-    if(state.players[state.currentPlayer!].type === 'bot'){
-        // bot logic
+    // Check if next player is skipped
+    if(state.players[state.currentPlayer!].isSkipped) {
+
+        state.updateGame(prev => {
+            prev.players[prev.currentPlayer!].isSkipped = false;
+            return prev;
+        })
+
+        setNextPlayer(state);
     }
 }
 
-function pickUp(state:GameState & {updateGame: UpdateGame}, targetIndex:number, quantity: number){
+export function checkCards(state: GameState & {updateGame: UpdateGame}): Card[] | false {
+
+    const playableCards = state.players[state.currentPlayer!].hand.filter(card => {
+        return UnoCheckCard(state, card);
+    });
+
+    if(playableCards.length === 0) {
+        return false
+    }
+
+    return playableCards;
+}
+ 
+
+export function botTurn(state: GameState & {updateGame: UpdateGame}){
+    const playableCards = checkCards(state);
+
+    if(playableCards){
+        const card = playableCards[Math.floor(Math.random() * playableCards.length)];
+        UnoPlayCard(state, card);
+    } else {
+        pickUp(state, state.currentPlayer!, 1);
+    }
+
+    UnoFinishTurn(state);
+}
+
+export function pickUp(state:GameState & {updateGame: UpdateGame}, targetIndex:number, quantity: number){
     state.updateGame(prev => {
         const newState = {...prev};
         
         const drawn = newState.deck.slice(0, quantity) // dont use splice
-
-        console.log(drawn);
-        
-
         newState.players[targetIndex].hand = [...newState.players[targetIndex].hand, ...drawn];
 
         return newState;
@@ -235,38 +269,49 @@ function skipNextPlayer(state: GameState & {updateGame: UpdateGame}){
         const newState = {...prev};
 
         const skippedPlayer = newState.players[getNextPlayer(newState)];
-        
         skippedPlayer.isSkipped = true;
 
         console.log(skippedPlayer.name, "was skipped");
-        
-
+    
         return newState;
     })
 }
+
 
 function getNextPlayer(state: GameState): number{
     if(state.direction){ // clockwise
         return state.players.indexOf(state.players[(state.currentPlayer! + 1) % state.players.length])
     }
     else{ // counter clockwise
-        return state.players.indexOf(state.players[(state.currentPlayer! - 1) % state.players.length])
+        return state.players.indexOf(state.players[(state.currentPlayer! + (state.players.length - 1)) % state.players.length])
     }
+
 }
 
 export function setInitialPlayer(state:GameState & {updateGame: UpdateGame}){
     state.updateGame(prev => {
+        const newState = {...prev};
+
         prev.currentPlayer = 0;
         prev.players[prev.currentPlayer].isTurn = true;
-        return {...prev}
+        return newState;
     })
+
 }
 
 function setNextPlayer(state: GameState & {updateGame: UpdateGame}){  
     state.updateGame(prev => {
         const newState = {...prev};
         
+        // set current player to false
+        newState.players[newState.currentPlayer!].isTurn = false;
+
+
+        // set next player attributes
         newState.currentPlayer = getNextPlayer(newState);
+        newState.players[newState.currentPlayer!].isTurn = true;
+
+
 
         return newState;
     })  

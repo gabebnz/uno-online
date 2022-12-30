@@ -10,8 +10,7 @@ export type Card = {
     offsetY?:number;
 }
 
-const cardRotations = [5, 15, 35, 50, 75, 100, 120, 170, 200, 230]
-
+const cardRotations = [5, 15, 35, 50, 75, 100, 120, 145, 170, 185, 200, 215, 230, 250, 270, 290, 310, 330, 345, 350, 360]
 
 export const getShuffledDeck = (): Card[] => {
     // Could be better to not do this compute every time

@@ -16,14 +16,14 @@ export default function GameCard({ card, show, discard }: CardProps){
     const cardColor = card?.color
 
     const handleCardClick = () => {
-        UnoPlayCard(game, card!)//&& UnoFinishTurn(game)
+        UnoPlayCard(game, card!) && UnoFinishTurn(game)
     }
 
     if(discard && card){ // discard pile
         return(
             <div 
-            className={`${styles.CardWrapper} ${styles.Discard} ${styles[cardColor!]}`}
-            style={{rotate:`${card.rotation}deg`, translate:`${card.offsetX}px ${card.offsetY}px`}}
+                className={`${styles.CardWrapper} ${styles.Discard} ${styles[cardColor!]}`}
+                style={{rotate:`${card.rotation}deg`, translate:`${card.offsetX}px ${card.offsetY}px`}}
             >
                 <p>{card.type}</p>
                 <p>{card.value}</p>
@@ -39,7 +39,10 @@ export default function GameCard({ card, show, discard }: CardProps){
     }
     else if (card){ // LOCAL PLAYERS HAND
         return(
-            <div className={`${styles.CardWrapper} ${styles.HandCard} ${styles[cardColor!]} ${game.currentPlayer === 0 && styles.Selectable}`} onClick={() => handleCardClick()}>
+            <div 
+                className={`${styles.CardWrapper} ${styles.HandCard} ${styles[cardColor!]} ${game.currentPlayer === 0 && styles.Selectable}`} 
+                onClick={() => game.currentPlayer === 0 && handleCardClick()}
+            >
                 <p>{card.type}</p>
                 <p>{card.value}</p>
             </div>

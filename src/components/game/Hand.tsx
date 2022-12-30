@@ -17,12 +17,16 @@ export default function Hand({player, show}:Props) {
     //Also print player details: name, card count
 
     return(
-        <div className={Styles.Hand}>
-            {
-                hand.map((card, index) => {
-                    return <GameCard key={index} show={show} card={card}>{card.value}</GameCard>
-                })
-            }
-        </div>
+        <>
+            <p>{game.players[player].name}</p>
+            <div className={Styles.Hand}>
+                {
+                    hand.map((card, index) => {
+                        return <GameCard key={index} show={show} card={card}>{card.value}</GameCard>
+                    })
+                }
+            </div>
+        </>
+
     )
 }

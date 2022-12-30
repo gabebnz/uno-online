@@ -28,7 +28,12 @@ export const GameProvider: React.FC<GameProviderProps> = (props) => {
         players[0] = player;
 
         setGame({...game, players});
-    }, []);
+    },[]);
+
+    useEffect(() => {
+        
+    }, [game.currentPlayer]);
+
 
     // Here we can write the useEffect functions to store the game state locally
 

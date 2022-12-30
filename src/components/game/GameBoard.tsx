@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { setInitialPlayer } from '../../game/uno';
+import { botTurn, checkCards, pickUp, setInitialPlayer, UnoFinishTurn } from '../../game/uno';
 import { GameContext } from '../../providers/GameProvider';
 
 import Styles from './GameBoard.module.css';
@@ -17,6 +17,41 @@ export default function GameBoard({ children }: Props) {
     useEffect(() => {
         setInitialPlayer(game);
     }, []);
+
+    useEffect(() => { 
+        if (game.currentPlayer !== null){
+            if(game.players[game.currentPlayer!].type === 'bot'){
+                console.log(game.players[game.currentPlayer!].name,'\'s turn');
+                
+                setTimeout(() => {
+                    botTurn(game);
+                }, 1000);
+                
+            }
+            else if(game.players[game.currentPlayer!].type === 'local'){
+                console.log('player turn');
+                console.log(checkCards(game));
+                
+                if(!checkCards(game)){
+                    console.log('player has to pick up');
+                    
+                    pickUp(game, game.currentPlayer!, 1);
+                    UnoFinishTurn(game);
+                }
+            }
+            else{
+                console.error('invalid player type');
+            }
+        }
+
+
+    }, [game.currentPlayer])
+
+    useEffect(() => {
+        if(game.askForColor){
+            console.log('ask for color');
+        }
+    }, [game.askForColor])
 
     
     return (
