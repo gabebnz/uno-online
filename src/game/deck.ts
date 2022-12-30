@@ -49,8 +49,8 @@ export const getShuffledDeck = (): Card[] => {
     const addRotations = (array: Card[]) => {
         for (let i = 0; i < array.length; i++) {
             array[i].rotation = cardRotations[Math.floor(Math.random() * cardRotations.length)]
-            array[i].offsetX = Math.floor(Math.random() * 100) - 50
-            array[i].offsetY = Math.floor(Math.random() * 100) - 50
+            array[i].offsetX = Math.floor(Math.random() * 150) - 75
+            array[i].offsetY = Math.floor(Math.random() * 150) - 75
         }
     }
       

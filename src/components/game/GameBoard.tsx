@@ -13,6 +13,7 @@ interface Props {
 
 export default function GameBoard({ children }: Props) {
     const game = useContext(GameContext)
+    const [glowColor, setGlowColor] = useState('');
 
     useEffect(() => {
         setInitialPlayer(game);
@@ -21,7 +22,6 @@ export default function GameBoard({ children }: Props) {
     useEffect(() => { 
         if (game.currentPlayer !== null){
             if(game.players[game.currentPlayer!].type === 'bot'){
-                console.log(game.players[game.currentPlayer!].name,'\'s turn');
                 
                 setTimeout(() => {
                     botTurn(game);
@@ -29,23 +29,51 @@ export default function GameBoard({ children }: Props) {
                 
             }
             else if(game.players[game.currentPlayer!].type === 'local'){
-                console.log('player turn');
-                console.log(checkCards(game));
-                
                 if(!checkCards(game)){
-                    console.log('player has to pick up');
                     
-                    pickUp(game, game.currentPlayer!, 1);
-                    UnoFinishTurn(game);
+                    setTimeout(() => {
+                        pickUp(game, game.currentPlayer!, 1);
+                        UnoFinishTurn(game);
+                    }, 1000);
+                    
                 }
             }
             else{
                 console.error('invalid player type');
             }
         }
-
-
     }, [game.currentPlayer])
+
+    useEffect(() => {
+
+        switch (game.currentColor) {
+            case 'red':
+                setGlowColor(Styles.RedGlow);
+                break;
+            case 'blue':
+                setGlowColor(Styles.BlueGlow);
+                break;
+            case 'green':
+                setGlowColor(Styles.GreenGlow);
+                break;
+            case 'yellow':
+                setGlowColor(Styles.YellowGlow);
+                break;
+            case 'wild':
+                setGlowColor(Styles.WildGlow);
+                break;
+            default:
+                setGlowColor(Styles.DefaultGlow);
+                break;
+        }
+        
+        setTimeout(() => {
+            setGlowColor(Styles.DefaultGlow);
+
+        }, 500);
+
+
+    }, [game.currentColor])
 
     useEffect(() => {
         if(game.askForColor){
@@ -58,7 +86,7 @@ export default function GameBoard({ children }: Props) {
         <div className={Styles.BoardWrapper}>
 
             <div className={Styles.InnerBoardWrapper}>
-                <div className={`${Styles.InnerBoardBorder} ${game.discard[0].color} ${game.direction}`} >
+                <div className={`${Styles.InnerBoardBorder} ${glowColor} ${game.discard[0].color} ${game.direction}`} >
                     <div className={Styles.InnerBoard}>
                         <div className={Styles.DiscardWrapper}>
                             {

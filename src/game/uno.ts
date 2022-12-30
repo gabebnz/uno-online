@@ -92,7 +92,7 @@ function InitializeState ():GameState {
         direction: true, 
 
         askForColor: false,
-        currentColor: 'red',
+        currentColor: 'wild',
 
         isUnoCallPossible: false,
         wasUnoCalled: false,
@@ -211,19 +211,12 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
 }
 
 export function UnoFinishTurn(state: GameState & {updateGame: UpdateGame}) {
-    // Next player's turn
+
     setNextPlayer(state);
 
-    // Check if next player is skipped
-    if(state.players[state.currentPlayer!].isSkipped) {
 
-        state.updateGame(prev => {
-            prev.players[prev.currentPlayer!].isSkipped = false;
-            return prev;
-        })
 
-        setNextPlayer(state);
-    }
+    
 }
 
 export function checkCards(state: GameState & {updateGame: UpdateGame}): Card[] | false {
@@ -243,6 +236,18 @@ export function checkCards(state: GameState & {updateGame: UpdateGame}): Card[] 
 export function botTurn(state: GameState & {updateGame: UpdateGame}){
     const playableCards = checkCards(state);
 
+    // Check if next player is skipped
+    if(state.players[state.currentPlayer!].isSkipped) {
+
+        state.updateGame(prev => {
+            prev.players[prev.currentPlayer!].isSkipped = false;
+            return prev;
+        })
+
+        UnoFinishTurn(state);
+        return;
+    }
+
     if(playableCards){
         const card = playableCards[Math.floor(Math.random() * playableCards.length)];
         UnoPlayCard(state, card);
@@ -259,6 +264,8 @@ export function pickUp(state:GameState & {updateGame: UpdateGame}, targetIndex:n
         
         const drawn = newState.deck.slice(0, quantity) // dont use splice
         newState.players[targetIndex].hand = [...newState.players[targetIndex].hand, ...drawn];
+
+        console.log("deck: ", newState.deck)
 
         return newState;
     })
@@ -294,6 +301,9 @@ export function setInitialPlayer(state:GameState & {updateGame: UpdateGame}){
 
         prev.currentPlayer = 0;
         prev.players[prev.currentPlayer].isTurn = true;
+
+        prev.currentColor = prev.discard[0].color;
+
         return newState;
     })
 

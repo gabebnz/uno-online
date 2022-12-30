@@ -52,7 +52,13 @@
   --game-color-blue: #3f90d3;
   --game-color-green: #078b49;
   --game-color-yellow: #f3d643;
-  --game-color-wild: #1D1B1A;
+  --game-color-wild: #e7e7e7;
+
+  --game-color-red-v: 218, 55, 64;
+  --game-color-blue-v: 63, 144, 211;
+  --game-color-green-v: 8, 140, 74;
+  --game-color-yellow-v: 243, 214, 67;
+  --game-color-wild-v: 231, 231, 231;
 
   --button-bg: #1D1B1A;
   --button-bg-disabled: #616161;

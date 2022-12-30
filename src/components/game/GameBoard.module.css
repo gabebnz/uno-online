@@ -14,7 +14,7 @@
 
 .HandWrapper{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -29,7 +29,7 @@
 
 .TopHandWrapper{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -41,12 +41,12 @@
     width:100%;
     height:100%;
 
-    rotate:180deg;
+
 }
 
 .RightHandWrapper{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -57,12 +57,12 @@
 
     width:100%;
     height:100%;
-    rotate:-90deg;
+
 }
 
 .LeftHandWrapper{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -74,19 +74,17 @@
     width:100%;
     height:100%;
 
-    rotate:90deg;
 }
 
 .InnerBoard {
     display: flex;
-    flex-direction: row;
 
     justify-content: center;
     align-items: center;
 
     position: absolute;
     width:100%;
-    height: 250px;
+    height: 285px;
     padding:30px;
     z-index: 2;
 }
@@ -105,24 +103,49 @@
     display: flex;
     flex-direction: row;
 
-    justify-self: center;
-    align-self: center;
+    justify-content: center;
+    align-items: center;
 
     justify-content: center;
     align-items: center;
 
-
-
     position:relative;
 
-    border-radius: 500px;
+    border-radius: 1000px;
 
     overflow: hidden;
 
     aspect-ratio: 1/1;
 
     width: 80%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
 
+    transition: box-shadow 0.7s;
+
+}
+
+.GreenGlow{
+    box-shadow: rgba(var(--game-color-green-v), 0.2) 0px 60px 40px -7px;
+}
+
+.BlueGlow{
+    box-shadow: rgba(var(--game-color-blue-v), 0.2) 0px 60px 40px -7px;
+}
+
+.RedGlow{
+    box-shadow: rgba(var(--game-color-red-v), 0.2) 0px 60px 40px -7px;
+}
+
+.YellowGlow{
+    box-shadow: rgba(var(--game-color-yellow-v), 0.2) 0px 60px 40px -7px;
+}
+
+.WildGlow{
+    box-shadow: rgba(var(--game-color-wild-v), 0.2) 0px 60px 40px -7px;
+}
+
+.Defaultglow{
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
 }
 
 .InnerBoardWrapper{
@@ -137,7 +160,8 @@
     grid-row: 2;
 
     transform: perspective(2000px)  rotateX(50deg) ;
-    
+
+    margin-top:-70px;
     width:100%;
     height:100%;
 
@@ -186,7 +210,7 @@
     position: absolute;
     background-color: var(--bg-color);
     inset:15px;
-    border-radius: 500px;
+    border-radius: 1000px;
 }
 
 @keyframes rotate {
