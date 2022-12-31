@@ -5,18 +5,18 @@
     justify-content: center;
     align-items: center;
 
+
     aspect-ratio: 0.75;
     height: 100%;
 
     border: 5px solid;
 
-    
+    justify-self: center;
 
     background-color: var(--bg-up-color);
 
     border-radius: 0px 20px 0px 20px;
       
-    padding:15px;
 
     transition: transform 0.2s;
 
@@ -30,8 +30,6 @@
 }
 
 .HandCard{
-  margin-left:-15px;
-  margin-right:-15px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;  
   z-index: 1;
 
@@ -44,9 +42,9 @@
   position: absolute;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
   transition: all 0.5s;
-	-webkit-animation: roll-in-blurred-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
-	        animation: roll-in-blurred-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
 
+  -webkit-animation: roll-in-blurred-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+  animation: roll-in-blurred-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
 }
 
 
@@ -74,6 +72,8 @@
   transform: translateY(-15px) rotate(2deg);
   transition: transform 0.2s;
 }
+
+
 
 /**
  * ----------------------------------------

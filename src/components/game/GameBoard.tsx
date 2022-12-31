@@ -59,18 +59,25 @@ export default function GameBoard({ children }: Props) {
             case 'yellow':
                 setGlowColor(Styles.YellowGlow);
                 break;
-            case 'wild':
-                setGlowColor(Styles.WildGlow);
-                break;
             default:
                 setGlowColor(Styles.DefaultGlow);
                 break;
         }
-        
-        setTimeout(() => {
-            setGlowColor(Styles.DefaultGlow);
 
-        }, 500);
+        if(game.currentColor === 'wild'){ 
+            // dont reset when color is wild
+            // as the player will have to choose another color
+            setGlowColor(Styles.WildGlow);
+        }
+        else{ // if color is not wild, reset glow after 500ms
+            setTimeout(() => {
+                setGlowColor(Styles.DefaultGlow);
+    
+            }, 500);
+        }
+
+        
+
 
 
     }, [game.currentColor])
@@ -87,6 +94,8 @@ export default function GameBoard({ children }: Props) {
 
             <div className={Styles.InnerBoardWrapper}>
                 <div className={`${Styles.InnerBoardBorder} ${glowColor} ${game.discard[0].color} ${game.direction}`} >
+
+
                     <div className={Styles.InnerBoard}>
                         <div className={Styles.DiscardWrapper}>
                             {
@@ -99,6 +108,9 @@ export default function GameBoard({ children }: Props) {
                             }
                         </div>
                     </div>
+
+
+                    
                 </div>
             </div>
 

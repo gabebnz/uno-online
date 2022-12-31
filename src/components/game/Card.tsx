@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { ScrollRestoration } from 'react-router-dom';
 import { Card } from '../../game/deck';
 import { UnoFinishTurn, UnoPlayCard } from '../../game/uno';
 import { GameContext } from '../../providers/GameProvider';
@@ -8,12 +9,15 @@ interface  CardProps {
     card: Card
     show?: boolean
     discard?: boolean
+    player?: number
     children?: React.ReactNode
 }
 
-export default function GameCard({ card, show, discard }: CardProps){
+export default function GameCard({ player, card, show, discard }: CardProps){
     const game = useContext(GameContext);
     const cardColor = card?.color
+
+    
 
     const handleCardClick = () => {
         UnoPlayCard(game, card!) && UnoFinishTurn(game)
@@ -25,8 +29,7 @@ export default function GameCard({ card, show, discard }: CardProps){
                 className={`${styles.CardWrapper} ${styles.Discard} ${styles[cardColor!]}`}
                 style={{rotate:`${card.rotation}deg`, translate:`${card.offsetX}px ${card.offsetY}px`}}
             >
-                <p>{card.type}</p>
-                <p>{card.value}</p>
+                <h1>{card.value}</h1>
             </div>
         )
     }

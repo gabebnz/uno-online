@@ -19,7 +19,7 @@ export default function Hand({player, show}:Props) {
     return(
         <>
             <p>{game.players[player].name}</p>
-            <div className={Styles.Hand}>
+            <div className={`${Styles.Hand} ${player === 0 && Styles.PlayerHand}`}>
                 {
                     hand.map((card, index) => {
                         return <GameCard key={index} show={show} card={card}>{card.value}</GameCard>

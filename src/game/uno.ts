@@ -262,7 +262,7 @@ export function pickUp(state:GameState & {updateGame: UpdateGame}, targetIndex:n
     state.updateGame(prev => {
         const newState = {...prev};
         
-        const drawn = newState.deck.slice(0, quantity) // dont use splice
+        const drawn = newState.deck.splice(0, quantity)
         newState.players[targetIndex].hand = [...newState.players[targetIndex].hand, ...drawn];
 
         console.log("deck: ", newState.deck)
