@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollRestoration } from 'react-router-dom';
 import { Card } from '../../game/deck';
 import { UnoFinishTurn, UnoPlayCard } from '../../game/uno';
@@ -9,18 +9,22 @@ interface  CardProps {
     card: Card
     show?: boolean
     discard?: boolean
-    player?: number
     children?: React.ReactNode
 }
 
-export default function GameCard({ player, card, show, discard }: CardProps){
+export default function GameCard({ card, show, discard }: CardProps){
     const game = useContext(GameContext);
     const cardColor = card?.color
 
+    const [canfinish, setCanFinish] = useState(game.askForColor)
+
+    useEffect(() => {
+        setCanFinish(game.askForColor)
+    }, [game.askForColor])
     
 
     const handleCardClick = () => {
-        UnoPlayCard(game, card!) && UnoFinishTurn(game)
+        UnoPlayCard(game, card!) && UnoFinishTurn(game);
     }
 
     if(discard && card){ // discard pile

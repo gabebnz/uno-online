@@ -130,9 +130,6 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
         return false;
     }
 
-    console.log(card);
-    
-
     // It is VERY possible to clean this up
     // expecially the current player calls.
 
@@ -148,7 +145,7 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
         newState.players[newState.currentPlayer!].hand = newState.players[newState.currentPlayer!].hand.filter(item => {            
             return item !== card;
         }); 
-        
+
 
         // Update the games current color
         newState.currentColor = card.color;
@@ -189,30 +186,36 @@ export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: C
         case '+4':
             // The CHALLENGE +4 card logic should go here
             pickUp(state, getNextPlayer(state), 4)
-            state.updateGame(prev => {
-                prev.askForColor = !prev.askForColor;
-                return prev;
-            })
 
-            // THIS WILL TRIGGER A USEEFFECT TO BRING UP A MODAL TO CHOOSE A COLOR
-            // THAT MODAL CAN CALL THE DISPATCH TO ADD THE COLOR TO THE STATE AND +4
+            state.updateGame(prev => {
+                const newState = {...prev}
+                newState.askForColor = true;
+                return newState;
+            })
+            
             break;
         case 'wild':
             state.updateGame(prev => {
-                prev.askForColor = !prev.askForColor;
-                return prev;
+                const newState = {...prev}
+                newState.askForColor = true;
+                return newState;
             })
             break;
         default:
             break;
     }
 
+    console.log(state.askForColor);
+    
     return true; // Card played successfully
 }
 
 export function UnoFinishTurn(state: GameState & {updateGame: UpdateGame}) {
 
-    setNextPlayer(state);
+    if(!state.askForColor){
+        setNextPlayer(state);
+
+    }
 
 
 

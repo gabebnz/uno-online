@@ -76,25 +76,36 @@ export default function GameBoard({ children }: Props) {
             }, 500);
         }
 
-        
-
-
-
     }, [game.currentColor])
 
     useEffect(() => {
-        if(game.askForColor){
-            console.log('ask for color');
-        }
+
     }, [game.askForColor])
 
+
+	function handleColorSelect(color:string){
+		console.log('color selected: ' + color);
+		
+		game.updateGame(prev => {
+			const newState = {...prev};
+			
+			newState.currentColor = color;
+			newState.discard[0].color = color;
+
+
+			newState.askForColor = false;
+	
+			return newState;
+		})
+
+		UnoFinishTurn(game);
+	}
     
     return (
         <div className={Styles.BoardWrapper}>
 
             <div className={Styles.InnerBoardWrapper}>
                 <div className={`${Styles.InnerBoardBorder} ${glowColor} ${game.discard[0].color} ${game.direction}`} >
-
 
                     <div className={Styles.InnerBoard}>
                         <div className={Styles.DiscardWrapper}>
@@ -109,12 +120,24 @@ export default function GameBoard({ children }: Props) {
                         </div>
                     </div>
 
-
-                    
                 </div>
             </div>
 
+			{
+				game.askForColor && (
+					<div className={Styles.ColorSelect}>
+						<button className={Styles.SelectButton} onClick={() => handleColorSelect('red')}>Red</button>
+						<button className={Styles.SelectButton} onClick={() => handleColorSelect('blue')}>Blue</button>
+						<button className={Styles.SelectButton} onClick={() => handleColorSelect('green')}>Green</button>
+						<button className={Styles.SelectButton} onClick={() => handleColorSelect('yellow')}>Yellow</button>
+					</div>
+				)
+			}
 
+
+
+
+        
             <div className={`${Styles.HandWrapper} ${game.currentPlayer === 0 && Styles.ActivePlayer}`}>
                 <Hand show={true} player={0}/>
             </div>

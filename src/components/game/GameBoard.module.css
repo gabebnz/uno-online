@@ -131,12 +131,9 @@
     position: absolute;
 
     border-radius: 50%;
-    background-color: red;
-
-
+    
     height: 25%;
     width: 25%;
-
 }
 
 .InnerBoardBorder{
@@ -241,7 +238,7 @@
 .InnerBoardBorder::before{
     content: "";
     position: absolute;
-    width: 25px; /* width of the spinning circle */
+    width: 25px; /* width of the spinning circle bars */
     height: 2500px; /* make sure this is very long */
     transition: background 0.5s;
 }
@@ -253,6 +250,40 @@
 
     inset:15px;
     border-radius: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+.ColorSelect{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    grid-column: 1;
+    grid-row: 3;
+
+    border:5px solid black;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.ColorSelect button{
+    width:50%;
+}
+
+.SelectButton{
+    width:50%;
+    color:red;
 }
 
 
