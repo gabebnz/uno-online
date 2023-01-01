@@ -1,4 +1,14 @@
+.BotSection{
+    display:flex;
+    flex-direction: column;
 
+    justify-content: center;
+    align-items: center;
+
+
+    width:auto;
+    height:auto;
+}
 
 .Hand{
     display: grid;
@@ -9,11 +19,26 @@
     align-items: center;
 
     width:100%;
-    height:20vh;
+    height:17vh;
+
+}
+
+
+
+.PlayerSection{
+    display:flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 10px;
+    
+    height:30vh;
+
 }
 
 .PlayerHand{
-    grid-auto-columns: minmax(100px, max-content);
-    height:50vh;
-
+    grid-auto-columns: minmax(75px, max-content);
+    
 }

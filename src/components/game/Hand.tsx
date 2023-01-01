@@ -16,17 +16,34 @@ export default function Hand({player, show}:Props) {
 
     //Also print player details: name, card count
 
-    return(
-        <>
-            <p>{game.players[player].name}</p>
-            <div className={`${Styles.Hand} ${player === 0 && Styles.PlayerHand}`}>
-                {
-                    hand.map((card, index) => {
-                        return <GameCard key={index} show={show} card={card}>{card.value}</GameCard>
-                    })
-                }
+    if(player === 0){ // Player
+        return(
+            <div className={Styles.PlayerSection}>
+                <h1>{game.players[player].name} {hand.length}</h1>
+                <div className={`${Styles.Hand} ${Styles.PlayerHand}`}>
+                    {
+                        hand.map((card, index) => {
+                            return <GameCard key={index} show={show} card={card}>{card.value}</GameCard>
+                        })
+                    }
+                </div>
             </div>
-        </>
-
-    )
+    
+        )
+    }
+    else{
+        return(
+            <div className={Styles.BotSection}>
+                <h1>{game.players[player].name} {hand.length}</h1>
+                <div className={`${Styles.Hand}`}>
+                    {
+                        hand.map((card, index) => {
+                            return <GameCard key={index} show={show} card={card}>{card.value}</GameCard>
+                        })
+                    }
+                </div>
+            </div>
+    
+        )
+    }
 }
