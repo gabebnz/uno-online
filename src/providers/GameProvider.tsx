@@ -1,11 +1,13 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
+import { UnoReducer } from '../game/reducer';
 import { GameState, UnoInitialState } from '../game/uno';
 import { SettingsContext } from './SettingsProvider';
 
 
 export type UpdateGame = React.Dispatch<React.SetStateAction<GameState>>
 
-export const GameContext = createContext<GameState & {updateGame: UpdateGame}>({...UnoInitialState, updateGame: () => undefined});
+export const GameContext = createContext<GameState>(UnoInitialState);
+export const GameDispatchContext = createContext<React.Dispatch<any>>(() => {});
 
 interface GameProviderProps {
     children?: React.ReactNode;
@@ -13,33 +15,19 @@ interface GameProviderProps {
 
 export const GameProvider: React.FC<GameProviderProps> = (props) => {
     const settings = useContext(SettingsContext);
-    const [game, setGame] = useState<GameState>(UnoInitialState);  
+
+    const [uno, dispatch] = useReducer(UnoReducer, UnoInitialState);
     
     
-    
-    useEffect(()=>{ 
-        // Weird function where i have to set username state here, cant do it in init method
-        const players = [...game.players]
-        let player = {
-            ...players[0],
-            name: settings.username
-        }
-
-        players[0] = player;
-
-        setGame({...game, players});
-    },[]);
-
-    useEffect(() => {
-        
-    }, [game.currentPlayer]);
 
 
     // Here we can write the useEffect functions to store the game state locally
 
     return(
-        <GameContext.Provider value={{...game, updateGame: setGame}}>
-            {props.children}
+        <GameContext.Provider value={uno}>
+            <GameDispatchContext.Provider value={dispatch}>
+                {props.children}
+            </GameDispatchContext.Provider>
         </GameContext.Provider>
     )
 }

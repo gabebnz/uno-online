@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { botTurn, checkCards, pickUp, setInitialPlayer, UnoFinishTurn } from '../../game/uno';
-import { GameContext } from '../../providers/GameProvider';
+import { checkPlayableCards, setInitialPlayer } from '../../game/uno';
+import { GameContext, GameDispatchContext } from '../../providers/GameProvider';
 
 import Styles from './GameBoard.module.css';
 
@@ -11,42 +11,75 @@ interface Props {
     children?: React.ReactNode;
 }
 
+
 export default function GameBoard({ children }: Props) {
-    const game = useContext(GameContext)
+    const uno = useContext(GameContext);
+    const dispatch = useContext(GameDispatchContext);
+
     const [glowColor, setGlowColor] = useState('');
 
     useEffect(() => {
-        setInitialPlayer(game);
+        //setInitialPlayer(uno); // THIS IS BAD! ----------------------
     }, []);
 
     useEffect(() => { 
-        if (game.currentPlayer !== null){
-            if(game.players[game.currentPlayer!].type === 'bot'){
+        
+        if(uno.players[uno.currentPlayer!].isSkipped === true){
+            // also flash color for skipped player todo:::------
+            setTimeout(() => {
+                dispatch({
+                    type: 'finishTurn',
+                });
+            }, Math.floor(Math.random() * 1000));
+        }
+        
+
+        if (uno.currentPlayer !== null){
+            if(uno.players[uno.currentPlayer!].type === 'bot'){
                 
                 setTimeout(() => {
-                    botTurn(game);
-                }, 1000);
-                
+                    dispatch({
+                        type: 'botTurn',
+                    });
+
+                    if(uno.askForColor){
+                        dispatch({
+                            type: 'setColor',
+                            color: uno.players[uno.currentPlayer!].hand[0].color,
+                        });
+                    }
+                    
+                    dispatch({
+                        type: 'finishTurn',
+                    });
+                }, Math.floor(Math.random() * 1000) + 1500);
+
+
             }
-            else if(game.players[game.currentPlayer!].type === 'local'){
-                if(!checkCards(game)){
-                    
+            else if(uno.players[uno.currentPlayer!].type === 'local'){
+                if(!checkPlayableCards(uno)){ // no playable cards
+                    console.log('no playable cards');
                     setTimeout(() => {
-                        pickUp(game, game.currentPlayer!, 1);
-                        UnoFinishTurn(game);
+                        dispatch({
+                            type: 'pickupCard',
+                            targetPlayer: uno.currentPlayer,
+                            quantity: 1
+                        });
                     }, 1000);
-                    
+
                 }
             }
             else{
                 console.error('invalid player type');
             }
+
+
         }
-    }, [game.currentPlayer])
+    }, [uno.currentPlayer])
 
     useEffect(() => {
 
-        switch (game.currentColor) {
+        switch (uno.currentColor) {
             case 'red':
                 setGlowColor(Styles.RedGlow);
                 break;
@@ -64,7 +97,7 @@ export default function GameBoard({ children }: Props) {
                 break;
         }
 
-        if(game.currentColor === 'wild'){ 
+        if(uno.currentColor === 'wild'){ 
             // dont reset when color is wild
             // as the player will have to choose another color
             setGlowColor(Styles.WildGlow);
@@ -76,41 +109,41 @@ export default function GameBoard({ children }: Props) {
             }, 500);
         }
 
-    }, [game.currentColor])
+    }, [uno.currentColor])
+
 
     useEffect(() => {
-
-    }, [game.askForColor])
+        if(!uno.askForColor){
+            dispatch({
+                type: 'finishTurn',
+            });
+        }
+    }, [uno.discard])
 
 
 	function handleColorSelect(color:string){
 		console.log('color selected: ' + color);
 		
-		game.updateGame(prev => {
-			const newState = {...prev};
-			
-			newState.currentColor = color;
-			newState.discard[0].color = color;
+		dispatch({
+            type: 'setColor',
+            color: color
+        });
 
-
-			newState.askForColor = false;
-	
-			return newState;
-		})
-
-		UnoFinishTurn(game);
+		dispatch({
+            type: 'finishTurn',
+        });
 	}
-    
+
     return (
         <div className={Styles.BoardWrapper}>
 
             <div className={Styles.InnerBoardWrapper}>
-                <div className={`${Styles.InnerBoardBorder} ${glowColor} ${game.discard[0].color} ${game.direction}`} >
+                <div className={`${Styles.InnerBoardBorder} ${glowColor} ${uno.discard[0].color} ${uno.direction}`} >
 
                     <div className={Styles.InnerBoard}>
                         <div className={Styles.DiscardWrapper}>
                             {
-                                game.discard
+                                uno.discard
                                 .slice(0)
                                 .reverse()
                                 .map((card, index) => {
@@ -124,7 +157,7 @@ export default function GameBoard({ children }: Props) {
             </div>
 
 			{
-				game.askForColor && (
+				uno.askForColor && (
 					<div className={Styles.ColorSelect}>
 						<button className={Styles.SelectButton} onClick={() => handleColorSelect('red')}>Red</button>
 						<button className={Styles.SelectButton} onClick={() => handleColorSelect('blue')}>Blue</button>
@@ -138,20 +171,20 @@ export default function GameBoard({ children }: Props) {
 
 
         
-            <div className={`${Styles.HandWrapper} ${game.currentPlayer === 0 && Styles.ActivePlayer}`}>
+            <div className={`${Styles.HandWrapper} ${uno.currentPlayer === 0 && Styles.ActivePlayer}`}>
                 <Hand show={true} player={0}/>
             </div>
 
-            <div className={`${Styles.TopHandWrapper} ${game.currentPlayer === 2 && Styles.ActivePlayer}`}>
+            <div className={`${Styles.TopHandWrapper} ${uno.currentPlayer === 2 && Styles.ActivePlayer}`}>
                 <Hand show={false} player={2}/>
             </div>
 
-            <div className={`${Styles.RightHandWrapper} ${game.currentPlayer === 3 && Styles.ActivePlayer}`}>
+            <div className={`${Styles.RightHandWrapper} ${uno.currentPlayer === 3 && Styles.ActivePlayer}`}>
             <Hand show={false} player={3}/>
 
             </div>
 
-            <div className={`${Styles.LeftHandWrapper} ${game.currentPlayer === 1 && Styles.ActivePlayer}`}>
+            <div className={`${Styles.LeftHandWrapper} ${uno.currentPlayer === 1 && Styles.ActivePlayer}`}>
             <Hand show={false} player={1}/>
             </div>
         </div>

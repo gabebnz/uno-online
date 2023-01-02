@@ -50,14 +50,14 @@
 
   --game-color-red: #df4048;
   --game-color-blue: #3d97e0;
-  --game-color-green: #10a55b;
+  --game-color-green: #0faf5f;
   --game-color-yellow: #fade54;
   --game-color-wild: #e7e7e7;
 
-  --game-color-red-v: 218, 55, 64;
-  --game-color-blue-v: 63, 144, 211;
-  --game-color-green-v: 8, 140, 74;
-  --game-color-yellow-v: 243, 214, 67;
+  --game-color-red-v: 223, 64, 72;
+  --game-color-blue-v: 61, 151, 224;
+  --game-color-green-v: 15, 175, 95;
+  --game-color-yellow-v: 250, 222, 84;
   --game-color-wild-v: 231, 231, 231;
 
   --button-bg: #1D1B1A;
@@ -95,12 +95,12 @@
 }
 
 [data-theme="dark"] {
-  --font-color: #d6d6d6;
-  --link-color: #d6d6d6;
-  --link-hover-color: #d6d6d6;
+  --font-color: #f5f5f5;
+  --link-color: #f5f5f5;
+  --link-hover-color: #f5f5f5;
   --bg-color: #1e1f24;
   --bg-up-color: #24262c;
-  --border-colour: #E8E1DF;
+  --border-colour: #f5f5f5;
   --border-small-colour: #E8E1DF55;
   --disabled-colour: #918F9A;
 
@@ -109,7 +109,7 @@
   --button-color: #1D1B1A;
 
 
-  --game-color-wild: white;
+  --game-color-wild: #f5f5f5;
 
 
   --menu-card-bg: #292929;

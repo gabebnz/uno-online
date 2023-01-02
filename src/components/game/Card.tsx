@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScrollRestoration } from 'react-router-dom';
-import { Card } from '../../game/deck';
-import { UnoFinishTurn, UnoPlayCard } from '../../game/uno';
-import { GameContext } from '../../providers/GameProvider';
+import { GameContext, GameDispatchContext } from '../../providers/GameProvider';
+
 import styles from './Card.module.css';
+
+import { Card } from '../../game/deck';
+
 
 interface  CardProps {
     card: Card
@@ -13,18 +14,19 @@ interface  CardProps {
 }
 
 export default function GameCard({ card, show, discard }: CardProps){
-    const game = useContext(GameContext);
+    const uno = useContext(GameContext);
+    const dispatch = useContext(GameDispatchContext);
+    
     const cardColor = card?.color
 
-    const [canfinish, setCanFinish] = useState(game.askForColor)
-
-    useEffect(() => {
-        setCanFinish(game.askForColor)
-    }, [game.askForColor])
-    
 
     const handleCardClick = () => {
-        UnoPlayCard(game, card!) && UnoFinishTurn(game);
+
+        dispatch({
+            type: 'playCard',
+            card: card,
+        })
+
     }
 
     const innerCard = 
@@ -73,8 +75,8 @@ export default function GameCard({ card, show, discard }: CardProps){
     else if (card){ // LOCAL PLAYERS HAND
         return(
             <div 
-                className={`${styles.CardWrapper} ${styles.HandCard} ${styles[cardColor!]} ${game.currentPlayer === 0 && styles.Selectable}`} 
-                onClick={() => game.currentPlayer === 0 && handleCardClick()}
+                className={`${styles.CardWrapper} ${styles.HandCard} ${styles[cardColor!]} ${uno.currentPlayer === 0 && styles.Selectable}`} 
+                onClick={() => uno.currentPlayer === 0 && handleCardClick()}
             >
                 {innerCard}
             </div>

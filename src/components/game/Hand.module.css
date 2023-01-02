@@ -42,3 +42,8 @@
     grid-auto-columns: minmax(75px, max-content);
     
 }
+
+
+.ActivePlayer{
+    color: var(--accent-color);
+}
