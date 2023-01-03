@@ -26,40 +26,50 @@ export default function GameBoard({ children }: Props) {
         
         if(uno.players[uno.currentPlayer!].isSkipped === true){
             // also flash color for skipped player todo:::------
-            setTimeout(() => {
+
+            const skipDelay = setTimeout(() => {
                 dispatch({
                     type: 'finishTurn',
                 });
-            }, Math.floor(Math.random() * 1000));
+            }, 1000);
+
+            return () => {
+                clearTimeout(skipDelay);
+            }
         }
         
 
         if (uno.currentPlayer !== null){
             if(uno.players[uno.currentPlayer!].type === 'bot'){
                 
-                setTimeout(() => {
+                const cardDelay = setTimeout(() => {
                     dispatch({
                         type: 'botTurn',
                     });
+                }, Math.floor(Math.random() * 500)+1000);
 
+                const finishDelay = setTimeout(() => {
                     if(uno.askForColor){
                         dispatch({
                             type: 'setColor',
                             color: uno.players[uno.currentPlayer!].hand[0].color,
                         });
                     }
-                    
+                
                     dispatch({
                         type: 'finishTurn',
                     });
-                }, Math.floor(Math.random() * 1000) + 1500);
+                }, 2500);
 
-
+                return () => {
+                    clearTimeout(cardDelay);
+                    clearTimeout(finishDelay);
+                };
             }
             else if(uno.players[uno.currentPlayer!].type === 'local'){
                 if(!checkPlayableCards(uno)){ // no playable cards
                     console.log('no playable cards');
-                    setTimeout(() => {
+                    const pickupDelay = setTimeout(() => {
                         dispatch({
                             type: 'pickupCard',
                             targetPlayer: uno.currentPlayer,
@@ -67,6 +77,16 @@ export default function GameBoard({ children }: Props) {
                         });
                     }, 1000);
 
+                    const finishDelay = setTimeout(() => {
+                        dispatch({
+                            type: 'finishTurn',
+                        });
+                    }, 2500);
+
+                    return () => {
+                        clearTimeout(pickupDelay);
+                        clearTimeout(finishDelay);
+                    };
                 }
             }
             else{
@@ -75,7 +95,9 @@ export default function GameBoard({ children }: Props) {
 
 
         }
+
     }, [uno.currentPlayer])
+
 
     useEffect(() => {
 
@@ -112,13 +134,7 @@ export default function GameBoard({ children }: Props) {
     }, [uno.currentColor])
 
 
-    useEffect(() => {
-        if(!uno.askForColor){
-            dispatch({
-                type: 'finishTurn',
-            });
-        }
-    }, [uno.discard])
+
 
 
 	function handleColorSelect(color:string){

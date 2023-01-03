@@ -27,6 +27,12 @@ export default function GameCard({ card, show, discard }: CardProps){
             card: card,
         })
 
+        if(!uno.askForColor && uno.currentPlayer === 0){
+            dispatch({
+                type: 'finishTurn',
+            });
+        }
+
     }
 
     const innerCard = 

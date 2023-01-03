@@ -21,8 +21,10 @@ export interface PlayerState {
 export interface GameState {
     players: PlayerState[];
     currentPlayer: number | null;
+
     deck: Card[];
     discard: Card[];
+
     direction: boolean; // true = clockwise, false = counterclockwise
 
     askForColor: boolean; // true = current player must choose a color
@@ -212,20 +214,14 @@ export function finishTurn(state: GameState) {
     }
 
     if(!state.askForColor){
-        setNextPlayer(state);
+        // set current player to false
+        state.players[state.currentPlayer!].isTurn = false;
+
+        // set next player attributes
+        state.currentPlayer = getNextPlayer(state);
+        state.players[state.currentPlayer!].isTurn = true;
     }
 
-
-    return state;
-}
-
-function setNextPlayer(state: GameState){  
-    // set current player to false
-    state.players[state.currentPlayer!].isTurn = false;
-
-    // set next player attributes
-    state.currentPlayer = getNextPlayer(state);
-    state.players[state.currentPlayer!].isTurn = true;
 
     return state;
 }

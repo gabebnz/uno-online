@@ -1,5 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react';
 
+/*
+Heavy provider insperation from this project:
+https://github.com/zaccnz/sudoku/blob/main/src/providers/SettingsProvider.tsx
+Thanks zac :)
+*/
 
 export interface Settings {
     /* preferences */
