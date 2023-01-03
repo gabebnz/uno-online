@@ -103,7 +103,7 @@ function InitializeState ():GameState {
     }    
 
     state.discard[0].rotation = Math.floor(Math.random() * 30)-15; // make sure first card has readable rotation
-    
+    state.discard[0].playedBy = 4; // give special value to indicate card was drawn from deck
 
     return state;
 }
@@ -135,6 +135,9 @@ export const playCard = (state: GameState, card: Card): GameState => {
     .filter(item => {            
         return item !== card;
     }); 
+
+    // assign cards current player
+    card.playedBy = state.currentPlayer!;
 
     // Update the games current color
     state.currentColor = card.color;

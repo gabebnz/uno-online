@@ -163,7 +163,7 @@ export default function GameBoard({ children }: Props) {
                                 .slice(0)
                                 .reverse()
                                 .map((card, index) => {
-                                    return <GameCard key={index} discard={true} card={card}></GameCard>
+                                    return <GameCard key={index} player={uno.currentPlayer!} discard={true} card={card}></GameCard>
                                 })
                             }
                         </div>

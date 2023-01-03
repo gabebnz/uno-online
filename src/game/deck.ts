@@ -4,6 +4,7 @@ export type Card = {
     type: string; // number, action, wild
     color: string; // red, blue, green, yellow, wild
     value?: string; // 0-9, +2, reverse, skip, wild, +4
+    playedBy?: number; // player index of who played this card, for animations
 
     rotation?: number;
     offsetX?:number;

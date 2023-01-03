@@ -9,15 +9,18 @@ import { Card } from '../../game/deck';
 interface  CardProps {
     card: Card
     show?: boolean
+    player?: number
     discard?: boolean
     children?: React.ReactNode
 }
 
-export default function GameCard({ card, show, discard }: CardProps){
+export default function GameCard({ card, player, show, discard }: CardProps){
+    const [playerIndex, setPlayerIndex] = useState(player);
     const uno = useContext(GameContext);
     const dispatch = useContext(GameDispatchContext);
     
     const cardColor = card?.color
+
 
 
     const handleCardClick = () => {
@@ -63,11 +66,13 @@ export default function GameCard({ card, show, discard }: CardProps){
 
     if(discard && card){ // discard pile
         return(
-            <div 
-                className={`${styles.CardWrapper} ${styles.Discard} ${styles[cardColor!]}`}
-                style={{rotate:`${card.rotation}deg`, translate:`${card.offsetX}px ${card.offsetY}px`}}
-            >
-                {innerCard}
+            <div className={`${styles.RotationWrapper} ${card.playedBy}`}>
+                <div 
+                    className={`${styles.CardWrapper} ${styles.Discard} ${styles[cardColor!]}`}
+                    style={{rotate:`${card.rotation}deg`, translate:`${card.offsetX}px ${card.offsetY}px`}}
+                >
+                    {innerCard}
+                </div>
             </div>
         )
     }

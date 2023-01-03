@@ -27,6 +27,19 @@
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+.RotationWrapper{
+  position: absolute;
+
+  display: flex;
+  flex-grow: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  aspect-ratio: 0.75;
+  height: 100%;
+}
+
 .HandCard{
   box-shadow: -5px 0px 9px -1px rgba(28, 28, 28, 0.685);
   z-index: 1;
@@ -41,15 +54,17 @@
 }
 
 .Discard{
-  position: absolute;
+
+
   transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
   transition: all 0.5s;
 
-  -webkit-animation: roll-in-blurred-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
-  animation: roll-in-blurred-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+  -webkit-animation: spin-blur 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+  animation: spin-blur 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+
 }
 
 
@@ -73,6 +88,31 @@
 .wild{
     background-color: var(--game-color-wild);
     color: var(--bg-up-color);
+}
+
+.RotationWrapper[class~="4"]{
+  -webkit-animation: in-diag 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+  animation: in-diag 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+}
+
+.RotationWrapper[class~="0"]{
+  -webkit-animation: in-bottom 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+  animation: in-bottom 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+}
+
+.RotationWrapper[class~="1"]{
+  -webkit-animation: in-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+  animation: in-left 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+}
+
+.RotationWrapper[class~="2"]{
+  -webkit-animation: in-top 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+  animation: in-top 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+}
+
+.RotationWrapper[class~="3"]{
+  -webkit-animation: in-right 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
+  animation: in-right 0.65s cubic-bezier(0.230, 1.000, 0.320, 1.000) both ;
 }
 
 .Selectable{
@@ -153,38 +193,169 @@
 
 /**
  * ----------------------------------------
- * animation roll-in-blurred-left
+ * animation spin+blur
  * ----------------------------------------
  */
- @-webkit-keyframes roll-in-blurred-left {
+ @-webkit-keyframes spin-blur {
   0% {
-    -webkit-transform: translateX(-1000px) rotate(-720deg);
-            transform: translateX(-1000px) rotate(-720deg);
+    -webkit-transform: rotate(-720deg);
+            transform: rotate(-720deg);
     -webkit-filter: blur(50px);
             filter: blur(50px);
     opacity: 0;
   }
   100% {
-    -webkit-transform: translateX(0) rotate(0deg);
-            transform: translateX(0) rotate(0deg);
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
     -webkit-filter: blur(0);
             filter: blur(0);
     opacity: 1;
   }
 }
-@keyframes roll-in-blurred-left {
+@keyframes spin-blur {
   0% {
-    -webkit-transform: translateX(-1000px) rotate(-720deg);
-            transform: translateX(-1000px) rotate(-720deg);
+    -webkit-transform: rotate(-720deg);
+            transform: rotate(-720deg);
     -webkit-filter: blur(50px);
             filter: blur(50px);
     opacity: 0;
   }
   100% {
-    -webkit-transform: translateX(0) rotate(0deg);
-            transform: translateX(0) rotate(0deg);
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
     -webkit-filter: blur(0);
             filter: blur(0);
     opacity: 1;
+  }
+}
+
+
+/**
+ * ----------------------------------------
+ * animation in-left
+ * ----------------------------------------
+ */
+ @-webkit-keyframes in-left {
+  0% {
+    -webkit-transform: translateX(-1000px) ;
+            transform: translateX(-1000px) ;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+@keyframes in-left {
+  0% {
+    -webkit-transform: translateX(-1000px);
+            transform: translateX(-1000px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+/**
+ * ----------------------------------------
+ * animation in-right
+ * ----------------------------------------
+ */
+ @-webkit-keyframes in-right {
+  0% {
+    -webkit-transform: translateX(1000px) ;
+            transform: translateX(1000px) ;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+@keyframes in-right {
+  0% {
+    -webkit-transform: translateX(1000px);
+            transform: translateX(1000px);
+  }
+  100% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+
+/**
+ * ----------------------------------------
+ * animation in-top
+ * ----------------------------------------
+ */
+ @-webkit-keyframes in-top {
+  0% {
+    -webkit-transform: translateY(-1000px) ;
+            transform: translateY(-1000px) ;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+@keyframes in-top {
+  0% {
+    -webkit-transform: translateY(-1000px);
+            transform: translateY(-1000px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+/**
+ * ----------------------------------------
+ * animation in-bottom
+ * ----------------------------------------
+ */
+ @-webkit-keyframes in-bottom {
+  0% {
+    -webkit-transform: translateY(1000px) ;
+            transform: translateY(1000px) ;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+@keyframes in-bottom {
+  0% {
+    -webkit-transform: translateY(1000px);
+            transform: translateY(1000px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+}
+
+/**
+ * ----------------------------------------
+ * animation in-diag
+ * ----------------------------------------
+ */
+ @-webkit-keyframes in-diag {
+  0% {
+    -webkit-transform: translate(1000px, 1000px) ;
+            transform: translate(1000px, 1000px) ;
+  }
+  100% {
+    -webkit-transform: translate(0);
+            transform: translate(0);
+  }
+}
+@keyframes in-diag {
+  0% {
+    -webkit-transform: translate(1000px, 1000px);
+            transform: translate(1000px, 1000px);
+  }
+  100% {
+    -webkit-transform: translate(0);
+            transform: translate(0);
   }
 }
