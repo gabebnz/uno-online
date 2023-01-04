@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { checkPlayableCards } from '../../game/uno';
 import { GameContext, GameDispatchContext } from '../../providers/GameProvider';
 
 import styles from './Card.module.css';
@@ -9,33 +10,30 @@ import { Card } from '../../game/deck';
 interface  CardProps {
     card: Card
     show?: boolean
-    player?: number
     discard?: boolean
     children?: React.ReactNode
 }
 
-export default function GameCard({ card, player, show, discard }: CardProps){
-    const [playerIndex, setPlayerIndex] = useState(player);
+export default function GameCard({ card, show, discard }: CardProps){
     const uno = useContext(GameContext);
     const dispatch = useContext(GameDispatchContext);
     
     const cardColor = card?.color
 
-
-
     const handleCardClick = () => {
-
         dispatch({
             type: 'playCard',
             card: card,
         })
 
-        if(!uno.askForColor && uno.currentPlayer === 0){
+        const possibleCards = checkPlayableCards(uno);
+        if( !uno.askForColor 
+            && uno.currentPlayer === 0 
+            && (possibleCards && possibleCards.indexOf(card)) !== -1){
             dispatch({
                 type: 'finishTurn',
             });
         }
-
     }
 
     const innerCard = 
@@ -64,7 +62,7 @@ export default function GameCard({ card, player, show, discard }: CardProps){
             
         </>
 
-    if(discard && card){ // discard pile
+    if(discard && card){ // DISCARD PILE
         return(
             <div className={`${styles.RotationWrapper} ${card.playedBy}`}>
                 <div 
@@ -76,7 +74,7 @@ export default function GameCard({ card, player, show, discard }: CardProps){
             </div>
         )
     }
-    else if(!show){
+    else if(!show){ // CARD BACKSIDE
         return(
             <div className={`${styles.CardWrapper} ${styles.HandCard}`}>
                 <h1>UNO</h1>

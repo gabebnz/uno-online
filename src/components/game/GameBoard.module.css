@@ -310,6 +310,26 @@
 
 
 
+.UnoButtonWrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    grid-column: 3;
+    grid-row: 3;
+
+    border:5px solid black;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.UnoButtonWrapper button{
+    width:50%;
+}
+
+
 
 
 

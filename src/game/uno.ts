@@ -10,8 +10,11 @@ export interface PlayerState {
     hand: Card[];
     name: string;
 
+    
+    isUnoCallPossible: boolean; // true = player has 1 card left hasnt called uno
+    isUno: boolean; // the player has called uno and is on last card
+
     isSkipped: boolean;
-    isUno: boolean;
     isTurn: boolean;
     isWinner: boolean;
 
@@ -30,7 +33,6 @@ export interface GameState {
     askForColor: boolean; // true = current player must choose a color
     currentColor: string; // color chosen by current player
 
-    isUnoCallPossible: boolean; // true = player has 1 card left hasnt called uno
     wasUnoCalled: boolean; // true = uno has been called by player with last card
 
     winner : PlayerState | null;
@@ -48,10 +50,11 @@ function InitializeState ():GameState {
         players: [
             {
                 type: 'local',
-                hand: shuffledDeck.splice(0, 7),
+                hand: shuffledDeck.splice(0, 2),
                 name:'', // updatein a component -- cant use settings context here
                 isSkipped: false,
                 isUno: false,
+                isUnoCallPossible: false,
                 isTurn: false,
                 isWinner: false,
                 time_left: 0,
@@ -62,6 +65,7 @@ function InitializeState ():GameState {
                 name: botNames[0],
                 isSkipped: false,
                 isUno: false,
+                isUnoCallPossible: false,
                 isTurn: false,
                 isWinner: false,
                 time_left: 0,
@@ -72,6 +76,7 @@ function InitializeState ():GameState {
                 name: botNames[1],
                 isSkipped: false,
                 isUno: false,
+                isUnoCallPossible: false,
                 isTurn: false,
                 isWinner: false,
                 time_left: 0,
@@ -82,6 +87,7 @@ function InitializeState ():GameState {
                 name: botNames[2],
                 isSkipped: false,
                 isUno: false,
+                isUnoCallPossible: false,
                 isTurn: false,
                 isWinner: false,
                 time_left: 0,
@@ -95,11 +101,10 @@ function InitializeState ():GameState {
         askForColor: false,
         currentColor: 'wild',
 
-        isUnoCallPossible: false,
         wasUnoCalled: false,
 
         winner: null,
-        playing: false,
+        playing: true,
     }    
 
     state.discard[0].rotation = Math.floor(Math.random() * 30)-15; // make sure first card has readable rotation
@@ -126,7 +131,7 @@ export const playCard = (state: GameState, card: Card): GameState => {
         return state;
     }
 
-    state.isUnoCallPossible = false;
+    removePossibleUnoCalls(state); // Someone could have called uno, but next card was played
 
     // Remove card from player's hand
     state.discard = [card, ...state.discard];
@@ -144,7 +149,6 @@ export const playCard = (state: GameState, card: Card): GameState => {
 
     // check if player has won
     if (state.players[state.currentPlayer!].hand.length === 0 && state.players[state.currentPlayer!].isUno && state.wasUnoCalled) {
-
         state.playing = false;
         state.players[state.currentPlayer!].isWinner = true;
         state.winner = state.players[state.currentPlayer!];
@@ -154,7 +158,7 @@ export const playCard = (state: GameState, card: Card): GameState => {
 
     // check if player has 1 card left: they need to call uno before next player begins their turn
     if (state.players[state.currentPlayer!].hand.length === 1) {
-        state.isUnoCallPossible = true;
+        state.players[state.currentPlayer!].isUnoCallPossible = true;
     }
 
     // card actions
@@ -187,6 +191,8 @@ export const playCard = (state: GameState, card: Card): GameState => {
 export function pickupCard(state: GameState, targetIndex: number, quantity:number): GameState{
     const drawn = state.deck.splice(0, quantity)
     state.players[targetIndex].hand = [...state.players[targetIndex].hand, ...drawn];
+    state.players[targetIndex].isUno = false;// Player has picked up, thus uno call is cancelled
+
 
     return state;
 }
@@ -194,8 +200,6 @@ export function pickupCard(state: GameState, targetIndex: number, quantity:numbe
 function skipPlayer(state:GameState): GameState {
     const skippedPlayer = state.players[getNextPlayer(state)];
     skippedPlayer.isSkipped = true;
-
-    console.log(skippedPlayer.name, "should be skipped");
 
     return state;
 }
@@ -212,11 +216,12 @@ function getNextPlayer(state: GameState): number{
 
 export function finishTurn(state: GameState) {
 
+    // clear skipped persons state before moving to next player
     if(state.players[state.currentPlayer!].isSkipped){
         state.players[state.currentPlayer!].isSkipped = false;
     }
 
-    if(!state.askForColor){
+    if(!state.askForColor && state.playing){
         // set current player to false
         state.players[state.currentPlayer!].isTurn = false;
 
@@ -228,6 +233,8 @@ export function finishTurn(state: GameState) {
 
     return state;
 }
+
+
 
 export function checkPlayableCards(state: GameState): Card[] | false {
 
@@ -245,9 +252,25 @@ export function checkPlayableCards(state: GameState): Card[] | false {
 export function botTurn(state: GameState): GameState{
     const playableCards = checkPlayableCards(state);
 
+    const colors = ['red', 'blue', 'green', 'yellow'];
+
     if(playableCards){
+
+        if(state.players[state.currentPlayer!].isUnoCallPossible && !state.players[state.currentPlayer!].isUno ){
+
+            console.log('bot called uno');
+            
+            callUno(state, state.currentPlayer!);
+        }
+
         const card = playableCards[Math.floor(Math.random() * playableCards.length)];
         playCard(state, card);
+
+        if(card.value === 'wild' || card.value === '+4'){
+            setTimeout(() => {
+                setColor(state, colors[Math.floor(Math.random() * colors.length)]);
+            }, 500);
+        }
     } else {
         pickupCard(state, state.currentPlayer!, 1);
     }
@@ -270,18 +293,7 @@ export function setColor(state:GameState, color:string){
 
 
 
-
-
-
-
-
-
-
-
-
-
-// Maybe export this so we can check before playing card method...?
-const UnoCheckCard = (state: GameState, card: Card): boolean => {
+export function UnoCheckCard (state: GameState, card: Card): boolean {
     const topCard = state.discard[0];
     if (card.color === topCard.color) {
         return true;
@@ -296,136 +308,28 @@ const UnoCheckCard = (state: GameState, card: Card): boolean => {
     return false;
 }
 
-export const UnoPlayCard = (state: GameState & {updateGame: UpdateGame}, card: Card): boolean => {
-    // card cannot be played
-    if (!UnoCheckCard(state, card)) {
-        console.log('card cannot be played');
-        
-        return false;
-    }
-
-    // It is VERY possible to clean this up
-    // expecially the current player calls.
-
-    
-    state.updateGame(prev =>{
-        const newState = {...prev};
-        // MOVE EVERYTHING HERE
-        newState.isUnoCallPossible = false;
-
-        // Remove card from player's hand
-        newState.discard = [card, ...newState.discard];
-        
-        newState.players[newState.currentPlayer!].hand = newState.players[newState.currentPlayer!].hand.filter(item => {            
-            return item !== card;
-        }); 
 
 
-        // Update the games current color
-        newState.currentColor = card.color;
 
-        // check if player has won
-        if (state.players[newState.currentPlayer!].hand.length === 0 && state.players[newState.currentPlayer!].isUno && state.wasUnoCalled) {
-
-            newState.playing = false;
-            newState.players[newState.currentPlayer!].isWinner = true;
-            newState.winner = newState.players[newState.currentPlayer!];
-
-            return newState;
-        }
-
-        // check if player has 1 card left: they need to call uno before next player begins their turn
-        if (state.players[newState.currentPlayer!].hand.length === 1) {
-            newState.isUnoCallPossible = true;
-        }
-
-            return newState;
+function removePossibleUnoCalls(state: GameState): GameState{
+    state.players.forEach(player => {
+        player.isUnoCallPossible = false;
     });
-    
-    // card actions
-    switch (card.value) {
-        case 'skip':
-            skipNextPlayer(state);
-            break;
-        case 'reverse':
-            state.updateGame(prev => {
-                prev.direction = !prev.direction;
-                return prev;
-            })
-            break;
-        case '+2':
-            pickUp(state, getNextPlayer(state), 2)
-            //dispatch({type: 'draw', payload: card.value}); //reducer
-            break;
-        case '+4':
-            // The CHALLENGE +4 card logic should go here
-            pickUp(state, getNextPlayer(state), 4)
-
-            state.updateGame(prev => {
-                const newState = {...prev}
-                newState.askForColor = true;
-                return newState;
-            })
-            
-            break;
-        case 'wild':
-            state.updateGame(prev => {
-                const newState = {...prev}
-                newState.askForColor = true;
-                return newState;
-            })
-            break;
-        default:
-            break;
-    }
-
-    console.log(state.askForColor);
-    
-    return true; // Card played successfully
-}
-
-
-
-
- 
-
-
-
-export function pickUp(state:GameState & {updateGame: UpdateGame}, targetIndex:number, quantity: number){
-    state.updateGame(prev => {
-        const newState = {...prev};
-        
-        const drawn = newState.deck.splice(0, quantity)
-        newState.players[targetIndex].hand = [...newState.players[targetIndex].hand, ...drawn];
-
-        console.log("deck: ", newState.deck)
-
-        return newState;
-    })
-}
-
-function skipNextPlayer(state: GameState & {updateGame: UpdateGame}){
-    state.updateGame(prev => {
-        const newState = {...prev};
-
-        const skippedPlayer = newState.players[getNextPlayer(newState)];
-        skippedPlayer.isSkipped = true;
-
-        console.log(skippedPlayer.name, "was skipped");
-    
-        return newState;
-    })
-}
-
-
-
-
-export function setInitialPlayer(state:GameState){
-    state.currentPlayer = 0;
-    state.players[state.currentPlayer].isTurn = true;
-
-    state.currentColor = state.discard[0].color;
 
     return state;
 }
 
+export function callUno(state:GameState, playerIndex:number){
+    console.log("player" + playerIndex + " called uno");
+    
+    state.players[playerIndex].isUno = true;
+    state.wasUnoCalled = true;
+
+    return state;
+}
+
+export function setUnoCallPossible(state:GameState, playerIndex:number){
+    state.players[playerIndex!].isUnoCallPossible = true;
+
+    return state;
+}

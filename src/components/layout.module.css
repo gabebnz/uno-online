@@ -24,8 +24,19 @@
     justify-content: space-between;
 }
 
+.navLogo{
+    display:flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 2px;
+}
+
 .navbar h1{
     font-family: var(--font-black);
+}
+
+.navbar p{
+    font-family: var(--font-regular);
 }
 
 .navbar span{

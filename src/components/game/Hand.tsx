@@ -10,18 +10,16 @@ interface Props{
     show: boolean;
 }
 
-
 export default function Hand({player, show}:Props) {
     const uno = useContext(GameContext);
-    const dispatch = useContext(GameDispatchContext);
-
     const hand = uno.players[player].hand;
+
 
     //Also print player details: name, card count
 
     if(player === 0){ // Player
         return(
-            <div className={Styles.PlayerSection}>
+            <div className={`${Styles.PlayerSection} ${uno.players[player].isUno === true && Styles.UnoGlow}`}>
                 <h1 className={`${player === uno.currentPlayer && Styles.ActivePlayer}`}>
                     {uno.players[player].name} {hand.length}
                 </h1>
@@ -38,7 +36,7 @@ export default function Hand({player, show}:Props) {
     }
     else{
         return(
-            <div className={Styles.BotSection}>
+            <div className={`${Styles.BotSection} ${uno.players[player].isUno === true && Styles.UnoGlow}`}>
                 <h1 className={`${player === uno.currentPlayer && Styles.ActivePlayer}`}>
                     {uno.players[player].name} {hand.length}
                 </h1>

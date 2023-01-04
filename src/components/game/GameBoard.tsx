@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { checkPlayableCards, setInitialPlayer } from '../../game/uno';
+import { checkPlayableCards } from '../../game/uno';
 import { GameContext, GameDispatchContext } from '../../providers/GameProvider';
 
 import Styles from './GameBoard.module.css';
@@ -19,83 +19,91 @@ export default function GameBoard({ children }: Props) {
     const [glowColor, setGlowColor] = useState('');
 
     useEffect(() => {
-        //setInitialPlayer(uno); // THIS IS BAD! ----------------------
-    }, []);
-
-    useEffect(() => { 
-        
-        if(uno.players[uno.currentPlayer!].isSkipped === true){
-            // also flash color for skipped player todo:::------
-
-            const skipDelay = setTimeout(() => {
-                dispatch({
-                    type: 'finishTurn',
-                });
-            }, 1000);
-
-            return () => {
-                clearTimeout(skipDelay);
-            }
+        if(uno.playing === false && uno.winner){
+            console.log('game over');
+            console.log('winner: ' + uno.winner);
         }
-        
+    }, [uno.playing]);
 
-        if (uno.currentPlayer !== null){
-            if(uno.players[uno.currentPlayer!].type === 'bot'){
-                
-                const cardDelay = setTimeout(() => {
-                    dispatch({
-                        type: 'botTurn',
-                    });
-                }, Math.floor(Math.random() * 500)+1000);
 
-                const finishDelay = setTimeout(() => {
-                    if(uno.askForColor){
-                        dispatch({
-                            type: 'setColor',
-                            color: uno.players[uno.currentPlayer!].hand[0].color,
-                        });
-                    }
-                
+    // Turn logic
+    useEffect(() => { 
+        if(uno.playing){
+            if(uno.players[uno.currentPlayer!].isSkipped === true){
+                // also flash color for skipped player todo:::------
+    
+                const skipDelay = setTimeout(() => {
                     dispatch({
                         type: 'finishTurn',
                     });
-                }, 2500);
-
+                }, 1000);
+    
                 return () => {
-                    clearTimeout(cardDelay);
-                    clearTimeout(finishDelay);
-                };
+                    clearTimeout(skipDelay);
+                }
             }
-            else if(uno.players[uno.currentPlayer!].type === 'local'){
-                if(!checkPlayableCards(uno)){ // no playable cards
-                    console.log('no playable cards');
-                    const pickupDelay = setTimeout(() => {
+            
+    
+            if (uno.currentPlayer !== null){
+                
+                // if player/bot has 2 cards left and one can be played, set unoCallPossible to true
+                if(uno.players[uno.currentPlayer].hand.length === 2 && checkPlayableCards(uno)){
+                    dispatch({ 
+                        type: 'setUnoCallPossible',
+                        playerIndex: uno.currentPlayer
+                    });
+                }
+    
+    
+    
+                if(uno.players[uno.currentPlayer!].type === 'bot'){
+                    
+                    const cardDelay = setTimeout(() => {
                         dispatch({
-                            type: 'pickupCard',
-                            targetPlayer: uno.currentPlayer,
-                            quantity: 1
+                            type: 'botTurn',
                         });
-                    }, 1000);
-
+                    }, Math.floor(Math.random() * 500)+1000);
+    
                     const finishDelay = setTimeout(() => {
                         dispatch({
                             type: 'finishTurn',
                         });
                     }, 2500);
-
+    
                     return () => {
-                        clearTimeout(pickupDelay);
+                        clearTimeout(cardDelay);
                         clearTimeout(finishDelay);
                     };
                 }
+                else if(uno.players[uno.currentPlayer!].type === 'local'){
+                    // check for playable cards
+                    if(!checkPlayableCards(uno)){ 
+                        const pickupDelay = setTimeout(() => {
+                            dispatch({
+                                type: 'pickupCard',
+                                targetPlayer: uno.currentPlayer,
+                                quantity: 1
+                            });
+                        }, 1000);
+    
+                        const finishDelay = setTimeout(() => {
+                            dispatch({
+                                type: 'finishTurn',
+                            });
+                        }, 2500);
+    
+                        return () => {
+                            clearTimeout(pickupDelay);
+                            clearTimeout(finishDelay);
+                        };
+                    }
+                }
+                else{
+                    console.error('invalid player type');
+                }
             }
-            else{
-                console.error('invalid player type');
-            }
-
-
         }
-
+        
     }, [uno.currentPlayer])
 
 
@@ -150,12 +158,17 @@ export default function GameBoard({ children }: Props) {
         });
 	}
 
+    function handleUnoCall(){
+        dispatch({
+            type: 'callUno',
+            playerIndex: uno.currentPlayer!
+        });
+    }
+
     return (
         <div className={Styles.BoardWrapper}>
-
             <div className={Styles.InnerBoardWrapper}>
                 <div className={`${Styles.InnerBoardBorder} ${glowColor} ${uno.discard[0].color} ${uno.direction}`} >
-
                     <div className={Styles.InnerBoard}>
                         <div className={Styles.DiscardWrapper}>
                             {
@@ -163,17 +176,16 @@ export default function GameBoard({ children }: Props) {
                                 .slice(0)
                                 .reverse()
                                 .map((card, index) => {
-                                    return <GameCard key={index} player={uno.currentPlayer!} discard={true} card={card}></GameCard>
+                                    return <GameCard key={index} discard={true} card={card}></GameCard>
                                 })
                             }
                         </div>
                     </div>
-
                 </div>
             </div>
 
 			{
-				uno.askForColor && (
+				(uno.askForColor && uno.currentPlayer === 0) && (
 					<div className={Styles.ColorSelect}>
 						<button className={Styles.SelectButton} onClick={() => handleColorSelect('red')}>Red</button>
 						<button className={Styles.SelectButton} onClick={() => handleColorSelect('blue')}>Blue</button>
@@ -183,10 +195,18 @@ export default function GameBoard({ children }: Props) {
 				)
 			}
 
+            {
+                (
+                    uno.players[0].isUnoCallPossible 
+                    && !uno.players[0].isUno 
+                ) 
+                && (
+                    <div className={Styles.UnoButtonWrapper}>
+                        <button className={Styles.SelectButton} onClick={() => handleUnoCall()}>Call Uno!</button>
+                    </div>
+                )
+            }
 
-
-
-        
             <div className={`${Styles.HandWrapper} ${uno.currentPlayer === 0 && Styles.ActivePlayer}`}>
                 <Hand show={true} player={0}/>
             </div>
@@ -196,12 +216,11 @@ export default function GameBoard({ children }: Props) {
             </div>
 
             <div className={`${Styles.RightHandWrapper} ${uno.currentPlayer === 3 && Styles.ActivePlayer}`}>
-            <Hand show={false} player={3}/>
-
+                <Hand show={false} player={3}/>
             </div>
 
             <div className={`${Styles.LeftHandWrapper} ${uno.currentPlayer === 1 && Styles.ActivePlayer}`}>
-            <Hand show={false} player={1}/>
+                <Hand show={false} player={1}/>
             </div>
         </div>
     )

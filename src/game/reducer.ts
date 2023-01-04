@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import { GameContext } from '../providers/GameProvider';
 import { type Card } from './deck';
-import { botTurn, finishTurn, newGame, pickupCard, playCard, setColor, startTimer, type GameState } from './uno';
+import { botTurn, callUno, finishTurn, newGame, pickupCard, playCard, setColor, setUnoCallPossible, startTimer, type GameState } from './uno';
 
 export type UnoAction = {
     type: 'newGame'
@@ -17,6 +17,10 @@ export type UnoAction = {
     type: 'startTimer', playerIndex: number
 } | {
     type: 'botTurn'
+} | {
+    type: 'callUno', playerIndex: number
+} | {
+    type: 'setUnoCallPossible', playerIndex: number
 };
 
 export const UnoReducer = (state: GameState, action: UnoAction): GameState => {
@@ -26,12 +30,7 @@ export const UnoReducer = (state: GameState, action: UnoAction): GameState => {
     }
 
     state = cloneUno(state);
-
-    console.log('State', state);
-    console.log('Action', action);
     
-    
-
     switch(action.type){
         case 'newGame':
             return newGame();
@@ -47,5 +46,9 @@ export const UnoReducer = (state: GameState, action: UnoAction): GameState => {
             return startTimer(state, action.playerIndex);
         case 'botTurn':
             return botTurn(state);
+        case 'callUno':
+            return callUno(state, action.playerIndex);
+        case 'setUnoCallPossible':
+            return setUnoCallPossible(state, action.playerIndex);
     }
 }
