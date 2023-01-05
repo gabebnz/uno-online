@@ -25,6 +25,11 @@ export default function GameBoard({ children }: Props) {
         }
     }, [uno.playing]);
 
+    useEffect(() => {
+        dispatch({
+            type: 'newGame',
+        });
+    }, []);
 
     // Turn logic
     useEffect(() => { 

@@ -14,6 +14,8 @@ export default function Create({ title } : Props ) {
 	  }, []);
 
 	return(
-		<h1>Create</h1>
+		<>
+			<h1>Create | Coming soon</h1>
+		</>
 	)
 }

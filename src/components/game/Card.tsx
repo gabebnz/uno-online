@@ -85,7 +85,7 @@ export default function GameCard({ card, show, discard }: CardProps){
         return(
             <div 
                 className={`${styles.CardWrapper} ${styles.HandCard} ${styles[cardColor!]} ${uno.currentPlayer === 0 && styles.Selectable}`} 
-                onClick={() => uno.currentPlayer === 0 && handleCardClick()}
+                onClick={() => (uno.currentPlayer === 0 && uno.players[uno.currentPlayer].isSkipped === false) && handleCardClick()}
             >
                 {innerCard}
             </div>

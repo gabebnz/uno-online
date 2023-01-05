@@ -50,7 +50,7 @@ function InitializeState ():GameState {
         players: [
             {
                 type: 'local',
-                hand: shuffledDeck.splice(0, 2),
+                hand: shuffledDeck.splice(0, 7),
                 name:'', // updatein a component -- cant use settings context here
                 isSkipped: false,
                 isUno: false,
@@ -108,7 +108,12 @@ function InitializeState ():GameState {
     }    
 
     state.discard[0].rotation = Math.floor(Math.random() * 30)-15; // make sure first card has readable rotation
-    state.discard[0].playedBy = 4; // give special value to indicate card was drawn from deck
+    state.discard[0].playedBy = 4; // give special value to indicate card was drawn from deck for animations
+
+    if(state.discard[0].type === 'wild'){
+        const colors = ['red', 'blue', 'green', 'yellow'];
+        state.discard[0].color = colors[Math.floor(Math.random() * colors.length)];
+    }
 
     return state;
 }
@@ -233,8 +238,6 @@ export function finishTurn(state: GameState) {
 
     return state;
 }
-
-
 
 export function checkPlayableCards(state: GameState): Card[] | false {
 
