@@ -21,23 +21,23 @@ function App() {
 			errorElement: <ErrorBoundary />,
 			children: [
 				{
-					path: '/',
+					path: '/uno-online/',
 					element: <Menu title="Main Menu | UNO!" />,
 				},
 				{
-					path: '/game',
+					path: '/uno-online/game',
 					element: <Game title="UNO!" />,
 				},
 				{
-					path: '/game/:gameID',
+					path: '/uno-online/game/:gameID',
 					element: <Game title="UNO!" />,
 				},
 				{
-					path: '/create',
+					path: '/uno-online/create',
 					element: <Create title="Create Game | UNO!" />,
 				},
 				{
-					path: '/join',
+					path: '/uno-online/join',
 					element: <Join title="Multiplayer | UNO!" />,
 				},
 			]

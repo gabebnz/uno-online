@@ -26,9 +26,9 @@ export default function Menu({ title } : Props ) {
     return(
 
             <div className={styles.MenuWrapper}>  
-                <MenuCard title="play" link="/game" icon={<AiOutlineUser className='icon'/>}/>
-                <MenuCard title="create" link="/create" icon={<AiOutlineUsergroupAdd className='icon'/>}/>
-                <MenuCard title="join" link="/join" icon={<CiGlobe className='icon'/>}/>
+                <MenuCard title="play" link="/uno-online/game" icon={<AiOutlineUser className='icon'/>}/>
+                <MenuCard title="create" link="/uno-online/create" icon={<AiOutlineUsergroupAdd className='icon'/>}/>
+                <MenuCard title="join" link="/uno-online/join" icon={<CiGlobe className='icon'/>}/>
             </div>
 
 

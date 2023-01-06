@@ -9,7 +9,7 @@ export default function Footer() {
     return(
         <>
             <div className={styles.footer}>
-                <a href="https://github.com/gabebnz" >
+                <a href="https://github.com/gabebnz" target="_blank">
                     <img src={signSVG} alt='made by gabriel'/>
                 </a>
             </div>

@@ -115,6 +115,22 @@ function InitializeState ():GameState {
         state.discard[0].color = colors[Math.floor(Math.random() * colors.length)];
     }
 
+
+
+    //give wildcard for testing
+    // state.players[0].hand.push(
+    //     {
+    //         type: 'wild', // number, action, wild
+    //         color: 'wild', // red, blue, green, yellow, wild
+    //         value: 'wild', // 0-9, +2, reverse, skip, wild, +4
+    //         playedBy: 0, // player index of who played this card, for animations
+        
+    //         rotation: 5,
+    //         offsetX:10,
+    //         offsetY:15,
+    //     }
+    // )
+
     return state;
 }
 
@@ -153,7 +169,7 @@ export const playCard = (state: GameState, card: Card): GameState => {
     state.currentColor = card.color;
 
     // check if player has won
-    if (state.players[state.currentPlayer!].hand.length === 0 && state.players[state.currentPlayer!].isUno && state.wasUnoCalled) {
+    if (state.players[state.currentPlayer!].hand.length === 0) {
         state.playing = false;
         state.players[state.currentPlayer!].isWinner = true;
         state.winner = state.players[state.currentPlayer!];
@@ -161,10 +177,7 @@ export const playCard = (state: GameState, card: Card): GameState => {
         return state; // game is over -- no need to continue to update other state values
     }
 
-    // check if player has 1 card left: they need to call uno before next player begins their turn
-    if (state.players[state.currentPlayer!].hand.length === 1) {
-        state.players[state.currentPlayer!].isUnoCallPossible = true;
-    }
+
 
     // card actions
     switch (card.value) {
@@ -239,8 +252,7 @@ export function finishTurn(state: GameState) {
     return state;
 }
 
-export function checkPlayableCards(state: GameState): Card[] | false {
-
+export function checkPlayableCards(state: GameState): Card[] | false { 
     const playableCards = state.players[state.currentPlayer!].hand.filter(card => {
         return UnoCheckCard(state, card);
     });

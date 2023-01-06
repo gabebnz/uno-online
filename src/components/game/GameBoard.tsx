@@ -25,11 +25,7 @@ export default function GameBoard({ children }: Props) {
         }
     }, [uno.playing]);
 
-    useEffect(() => {
-        dispatch({
-            type: 'newGame',
-        });
-    }, []);
+
 
     // Turn logic
     useEffect(() => { 
@@ -52,7 +48,7 @@ export default function GameBoard({ children }: Props) {
             if (uno.currentPlayer !== null){
                 
                 // if player/bot has 2 cards left and one can be played, set unoCallPossible to true
-                if(uno.players[uno.currentPlayer].hand.length === 2 && checkPlayableCards(uno)){
+                if(uno.players[uno.currentPlayer].hand.length <= 2 && checkPlayableCards(uno)){
                     dispatch({ 
                         type: 'setUnoCallPossible',
                         playerIndex: uno.currentPlayer
@@ -62,7 +58,6 @@ export default function GameBoard({ children }: Props) {
     
     
                 if(uno.players[uno.currentPlayer!].type === 'bot'){
-                    
                     const cardDelay = setTimeout(() => {
                         dispatch({
                             type: 'botTurn',
@@ -81,7 +76,6 @@ export default function GameBoard({ children }: Props) {
                     };
                 }
                 else if(uno.players[uno.currentPlayer!].type === 'local'){
-                    // check for playable cards
                     if(!checkPlayableCards(uno)){ 
                         const pickupDelay = setTimeout(() => {
                             dispatch({
@@ -95,7 +89,7 @@ export default function GameBoard({ children }: Props) {
                             dispatch({
                                 type: 'finishTurn',
                             });
-                        }, 2500);
+                        }, 3000);
     
                         return () => {
                             clearTimeout(pickupDelay);
@@ -147,22 +141,6 @@ export default function GameBoard({ children }: Props) {
     }, [uno.currentColor])
 
 
-
-
-
-	function handleColorSelect(color:string){
-		console.log('color selected: ' + color);
-		
-		dispatch({
-            type: 'setColor',
-            color: color
-        });
-
-		dispatch({
-            type: 'finishTurn',
-        });
-	}
-
     function handleUnoCall(){
         dispatch({
             type: 'callUno',
@@ -189,25 +167,19 @@ export default function GameBoard({ children }: Props) {
                 </div>
             </div>
 
-			{
-				(uno.askForColor && uno.currentPlayer === 0) && (
-					<div className={Styles.ColorSelect}>
-						<button className={Styles.SelectButton} onClick={() => handleColorSelect('red')}>Red</button>
-						<button className={Styles.SelectButton} onClick={() => handleColorSelect('blue')}>Blue</button>
-						<button className={Styles.SelectButton} onClick={() => handleColorSelect('green')}>Green</button>
-						<button className={Styles.SelectButton} onClick={() => handleColorSelect('yellow')}>Yellow</button>
-					</div>
-				)
-			}
-
             {
                 (
                     uno.players[0].isUnoCallPossible 
                     && !uno.players[0].isUno 
+                    
                 ) 
                 && (
                     <div className={Styles.UnoButtonWrapper}>
-                        <button className={Styles.SelectButton} onClick={() => handleUnoCall()}>Call Uno!</button>
+                        <div className={Styles.UnoButton} onClick={() => handleUnoCall()}>
+                            <div className={Styles.UnoButtonCircle}/>
+                            <h1 className={Styles.SelectButton}>UNO</h1>
+                        </div>
+
                     </div>
                 )
             }

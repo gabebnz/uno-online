@@ -26,6 +26,7 @@ export default function GameCard({ card, show, discard }: CardProps){
             card: card,
         })
 
+        // if card is playable, finish turn
         const possibleCards = checkPlayableCards(uno);
         if( !uno.askForColor 
             && uno.currentPlayer === 0 
@@ -83,8 +84,12 @@ export default function GameCard({ card, show, discard }: CardProps){
     }
     else if (card){ // LOCAL PLAYERS HAND
         return(
-            <div 
-                className={`${styles.CardWrapper} ${styles.HandCard} ${styles[cardColor!]} ${uno.currentPlayer === 0 && styles.Selectable}`} 
+            <div className={`
+                    ${styles.CardWrapper} 
+                    ${styles.HandCard} 
+                    ${styles[cardColor!]} 
+                    ${(uno.currentPlayer === 0 && !uno.askForColor && !uno.players[uno.currentPlayer].isSkipped) && styles.Selectable}
+                `} 
                 onClick={() => (uno.currentPlayer === 0 && uno.players[uno.currentPlayer].isSkipped === false) && handleCardClick()}
             >
                 {innerCard}
