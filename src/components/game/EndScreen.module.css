@@ -42,25 +42,18 @@
 
     justify-content: center;
     align-items: center;
-
     position:absolute;
 
     border-radius: 50%;
-
     overflow: hidden;
-
-
-
     background-color: var(--bg-color);
-
     aspect-ratio: 1/1;
-
     height:100%;
     box-shadow: rgba(0, 0, 0, 0.445) 0px 60px 60px -7px;
 
     transition: box-shadow 0.7s;
     z-index: 86;
-    -webkit-animation: circle-fade 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both; 
+
     animation: circle-fade 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
 }
 
@@ -73,7 +66,6 @@
 
     background: conic-gradient(var(--game-color-red) 0% 25%, var(--game-color-blue) 25% 50%, var(--game-color-green) 50% 75%,var(--game-color-yellow) 75% 100%);
     
-    -webkit-animation: rotate 10s linear infinite;
     animation: rotate 10s linear infinite;
 
 }
@@ -105,8 +97,6 @@
     aspect-ratio: 0.75;
     height: 100%;
 
-
-    -webkit-animation: fade-in-top 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both; 
     animation: fade-in-top 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
 
 }
@@ -130,13 +120,11 @@
 }
 
 .Card[class~='LeftCard']{
-    -webkit-animation: left-card 1.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) 2s both; 
     animation: left-card 1.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) 2s both;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
 } 
 
 .Card[class~='RightCard']{
-    -webkit-animation: right-card 1.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both; 
     animation: right-card 1.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
 
@@ -154,7 +142,6 @@
     width: 10vh;
     height:10vh;
 
-    -webkit-animation: color-change-4x 4s linear infinite alternate both;
     animation: color-change-4x 4s linear infinite alternate both;
 }
 
@@ -166,14 +153,6 @@
  * animation fade-in
  * ----------------------------------------
  */
- @-webkit-keyframes fade-in {
-    0% {
-        background-color: transparent;    
-    }
-    100% {
-        background-color: var(--bg-color);
-    }
-  }
   @keyframes fade-in {
     0% {
         background-color: transparent;    
@@ -198,20 +177,6 @@
  * animation color-change-4x
  * ----------------------------------------
  */
- @-webkit-keyframes color-change-4x {
-    0% {
-      color: var(--game-color-red);
-    }
-    33.3333% {
-        color: var(--game-color-blue);
-    }
-    66.666% {
-        color: var(--game-color-green);
-    }
-    100% {
-        color: var(--game-color-yellow);
-    }
-  }
   @keyframes color-change-4x {
     0% {
         color: var(--game-color-red);
@@ -232,27 +197,13 @@
  * animation circle-fade
  * ----------------------------------------
  */
-@-webkit-keyframes circle-fade {
-    0% {
-      -webkit-transform: translateY(-50px) perspective(2000px)  rotateX(53deg);
-              transform: translateY(-50px) perspective(2000px)  rotateX(53deg);
-      opacity: 0;
-    }
-    100% {
-      -webkit-transform: translateY(0) perspective(2000px)  rotateX(53deg);
-              transform: translateY(0) perspective(2000px)  rotateX(53deg);
-      opacity: 1;
-    }
-  }
   @keyframes circle-fade {
     0% {
-      -webkit-transform: translateY(-50px) perspective(2000px)  rotateX(53deg);
-              transform: translateY(-50px) perspective(2000px)  rotateX(53deg);
+      transform: translateY(-50px) perspective(2000px)  rotateX(53deg);
       opacity: 0;
     }
     100% {
-      -webkit-transform: translateY(0) perspective(2000px)  rotateX(53deg);
-              transform: translateY(0) perspective(2000px)  rotateX(53deg);
+      transform: translateY(0) perspective(2000px)  rotateX(53deg);
       opacity: 1;
     }
   }
@@ -263,27 +214,13 @@
  * animation fade-in-top
  * ----------------------------------------
  */
- @-webkit-keyframes fade-in-top {
-    0% {
-      -webkit-transform: translateY(-100px);
-              transform: translateY(-100px);
-      opacity: 0;
-    }
-    100% {
-      -webkit-transform: translateY(0);
-              transform: translateY(0);
-      opacity: 1;
-    }
-  }
   @keyframes fade-in-top {
     0% {
-      -webkit-transform: translateY(-100px);
-              transform: translateY(-100px);
+      transform: translateY(-100px);
       opacity: 0;
     }
     100% {
-      -webkit-transform: translateY(0);
-              transform: translateY(0);
+      transform: translateY(0);
       opacity: 1;
     }
   }
@@ -294,36 +231,15 @@
  * animation left-card
  * ----------------------------------------
  */
-@-webkit-keyframes left-card {
-    0% {
-        -webkit-transform: perspective(2000px)  rotateX(53deg) translate(-100px, -50px);
-        transform: perspective(2000px)  rotateX(53deg) translate(-100px, -50px); 
-
-    }
-    10%{
-        -webkit-transform: perspective(2000px)  rotateX(53deg) translate(-100px, -50px);
-        transform: perspective(2000px)  rotateX(53deg) translate(-100px, -50px);
-    } 
-    100% {
-      -webkit-transform: perspective(2000px) rotateY(-30deg)  rotateX(5deg) translate(-150px, -40px);
-              transform: perspective(2000px) rotateY(-30deg)  rotateX(5deg) translate(-150px, -40px);
-
-    }
-  }
   @keyframes left-card {
     0% {
-        -webkit-transform: perspective(2000px)  rotateX(53deg) translate(-100px, -50px);
         transform: perspective(2000px)  rotateX(53deg) translate(-100px, -50px); 
-
     }
     10%{
-        -webkit-transform: perspective(2000px)  rotateX(53deg) translate(-100px, -50px);
         transform: perspective(2000px)  rotateX(53deg) translate(-100px, -50px);
     } 
     100% {
-      -webkit-transform: perspective(2000px) rotateY(-30deg)  rotateX(5deg) translate(-150px, -40px);
-              transform: perspective(2000px) rotateY(-30deg)  rotateX(5deg) translate(-150px, -40px);
-
+        transform: perspective(2000px) rotateY(-30deg)  rotateX(5deg) translate(-150px, -40px);
     }
   }
 
@@ -333,35 +249,16 @@
  * animation right-card
  * ----------------------------------------
  */
-@-webkit-keyframes right-card {
-    0% {
-        -webkit-transform: perspective(2000px)  rotateX(53deg) translate(100px, 40px);
-        transform: perspective(2000px)  rotateX(53deg) translate(100px, 40px); 
-
-    }
-    10%{
-        -webkit-transform: perspective(2000px)  rotateX(53deg) translate(100px, 40px);
-        transform: perspective(2000px)  rotateX(53deg) translate(100px, 40px);
-    } 
-    100% {
-      -webkit-transform: perspective(2000px) rotateY(20deg)  rotateX(0deg) translate(150px, 40px);
-              transform: perspective(2000px) rotateY(20deg)  rotateX(0deg) translate(150px, 40px);
-
-    }
-  }
   @keyframes right-card {
     0% {
-        -webkit-transform: perspective(2000px)  rotateX(53deg) translate(100px, 40px);
         transform: perspective(2000px)  rotateX(53deg) translate(100px, 40px); 
 
     }
     10%{
-        -webkit-transform: perspective(2000px)  rotateX(53deg) translate(100px, 40px);
         transform: perspective(2000px)  rotateX(53deg) translate(100px, 40px);
     } 
     100% {
-      -webkit-transform: perspective(2000px) rotateY(20deg)  rotateX(0deg) translate(150px, 40px);
-              transform: perspective(2000px) rotateY(20deg)  rotateX(0deg) translate(150px, 40px);
+        transform: perspective(2000px) rotateY(20deg)  rotateX(0deg) translate(150px, 40px);
 
     }
   }

@@ -118,28 +118,24 @@
 .SelectCard[class~="red"]{
     background-color: var(--game-color-red);
 
-    -webkit-animation: swing-in-bottom-fwd 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
     animation: swing-in-bottom-fwd 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
 }
 
 .SelectCard[class~="blue"]{
     background-color: var(--game-color-blue);
 
-    -webkit-animation: swing-in-bottom-fwd 0.4s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
     animation: swing-in-bottom-fwd 0.4s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
 }
 
 .SelectCard[class~="green"]{   
     background-color: var(--game-color-green);
 
-    -webkit-animation: swing-in-bottom-fwd 0.6s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
     animation: swing-in-bottom-fwd 0.6s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
 }
 
 .SelectCard[class~="yellow"]{
     background-color: var(--game-color-yellow);
 
-    -webkit-animation: swing-in-bottom-fwd 0.8s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
     animation: swing-in-bottom-fwd 0.8s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
 }
 
@@ -156,23 +152,6 @@
  * animation unoGlow
  * ----------------------------------------
  */
- @-webkit-keyframes unoGlow {
-    0% {
-        filter: drop-shadow(0px 5px 10px var(--game-color-red));
-    }
-    25% {
-        filter: drop-shadow(0px 5px 10px var(--game-color-blue));
-    }
-    50%{
-        filter: drop-shadow(0px 5px 10px var(--game-color-yellow));
-    }
-    75% {
-        filter: drop-shadow(0px 5px 10px var(--game-color-green));
-    }
-    100% {
-        filter: drop-shadow(0px 5px 10px var(--game-color-red));
-    }
-  }
   @keyframes unoGlow {
     0% {
         filter: drop-shadow(0px 5px 10px var(--game-color-red));
@@ -197,35 +176,15 @@
  * animation swing-in-bottom-fwd
  * ----------------------------------------
  */
-@-webkit-keyframes swing-in-bottom-fwd {
-    0% {
-      -webkit-transform: rotateX(100deg);
-              transform: rotateX(100deg);
-      -webkit-transform-origin: bottom;
-              transform-origin: bottom;
-      opacity: 0;
-    }
-    100% {
-      -webkit-transform: rotateX(0);
-              transform: rotateX(0);
-      -webkit-transform-origin: bottom;
-              transform-origin: bottom;
-      opacity: 1;
-    }
-  }
   @keyframes swing-in-bottom-fwd {
     0% {
-      -webkit-transform: rotateX(100deg);
-              transform: rotateX(100deg);
-      -webkit-transform-origin: bottom;
-              transform-origin: bottom;
-      opacity: 0;
+        transform: rotateX(100deg);
+        transform-origin: bottom;
+        opacity: 0;
     }
     100% {
-      -webkit-transform: rotateX(0);
-              transform: rotateX(0);
-      -webkit-transform-origin: bottom;
-              transform-origin: bottom;
-      opacity: 1;
+        transform: rotateX(0);
+        transform-origin: bottom;
+        opacity: 1;
     }
   }
