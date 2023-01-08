@@ -41,7 +41,7 @@
 }
 
 .HandCard{
-  box-shadow: -5px 0px 9px -1px rgba(28, 28, 28, 0.685);
+  box-shadow: -5px 0px 9px -1px rgba(28, 28, 28, 0.37);
   z-index: 0;
 
   transform: translateZ(0);
@@ -69,25 +69,24 @@
 
 
 .red{
-    background-color: var(--game-color-red);
-
+    background-color: var(--game-color-red);   
+    color: var(--card-font-white);
 }
 .green{
     background-color: var(--game-color-green);
-
+    color: var(--card-font-white);
 }
 .blue{
     background-color: var(--game-color-blue);
-
+    color: var(--card-font-white);
 }
 .yellow{
     background-color: var(--game-color-yellow);
-    color: var(--bg-up-color);
-
+    color: var(--card-font-dark);
 }
 .wild{
-    background-color: var(--game-color-wild);
-    color: var(--bg-up-color);
+    background-color: var(--bg-up-color);
+    color: var(--font-color);
 }
 
 .RotationWrapper[class~="4"]{

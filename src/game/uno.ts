@@ -37,7 +37,6 @@ export interface GameState {
 
     winner : PlayerState | null;
     playing: boolean;
-
 }
 
 export const UnoInitialState: GameState = InitializeState();
@@ -172,7 +171,7 @@ export const playCard = (state: GameState, card: Card): GameState => {
     if (state.players[state.currentPlayer!].hand.length === 0) {
         state.playing = false;
         state.players[state.currentPlayer!].isWinner = true;
-        state.winner = state.players[state.currentPlayer!];
+        state.winner = {...state.players[state.currentPlayer!]};
 
         return state; // game is over -- no need to continue to update other state values
     }

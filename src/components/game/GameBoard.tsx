@@ -5,6 +5,7 @@ import { GameContext, GameDispatchContext } from '../../providers/GameProvider';
 import Styles from './GameBoard.module.css';
 
 import GameCard from './Card';
+import EndScreen from './EndScreen';
 import Hand from './Hand';
 
 interface Props {
@@ -15,24 +16,13 @@ interface Props {
 export default function GameBoard({ children }: Props) {
     const uno = useContext(GameContext);
     const dispatch = useContext(GameDispatchContext);
-
     const [glowColor, setGlowColor] = useState('');
-
-    useEffect(() => {
-        if(uno.playing === false && uno.winner){
-            console.log('game over');
-            console.log('winner: ' + uno.winner);
-        }
-    }, [uno.playing]);
-
-
 
     // Turn logic
     useEffect(() => { 
         if(uno.playing){
+
             if(uno.players[uno.currentPlayer!].isSkipped === true){
-                // also flash color for skipped player todo:::------
-    
                 const skipDelay = setTimeout(() => {
                     dispatch({
                         type: 'finishTurn',
@@ -44,9 +34,7 @@ export default function GameBoard({ children }: Props) {
                 }
             }
             
-    
             if (uno.currentPlayer !== null){
-                
                 // if player/bot has 2 cards left and one can be played, set unoCallPossible to true
                 if(uno.players[uno.currentPlayer].hand.length <= 2 && checkPlayableCards(uno)){
                     dispatch({ 
@@ -54,8 +42,6 @@ export default function GameBoard({ children }: Props) {
                         playerIndex: uno.currentPlayer
                     });
                 }
-    
-    
     
                 if(uno.players[uno.currentPlayer!].type === 'bot'){
                     const cardDelay = setTimeout(() => {
@@ -107,7 +93,6 @@ export default function GameBoard({ children }: Props) {
 
 
     useEffect(() => {
-
         switch (uno.currentColor) {
             case 'red':
                 setGlowColor(Styles.RedGlow);
@@ -148,7 +133,15 @@ export default function GameBoard({ children }: Props) {
         });
     }
 
+
     return (
+        <>
+        {
+            uno.winner && (
+                <EndScreen />
+            )
+        }
+
         <div className={Styles.BoardWrapper}>
             <div className={Styles.InnerBoardWrapper}>
                 <div className={`${Styles.InnerBoardBorder} ${glowColor} ${uno.discard[0].color} ${uno.direction}`} >
@@ -167,10 +160,10 @@ export default function GameBoard({ children }: Props) {
                 </div>
             </div>
 
-            {
+            { // UNO CALL BUTTON
                 (
                     uno.players[0].isUnoCallPossible 
-                    && !uno.players[0].isUno 
+                    && !uno.players[0].isUno // user hasnt already called uno
                     
                 ) 
                 && (
@@ -200,5 +193,8 @@ export default function GameBoard({ children }: Props) {
                 <Hand show={false} player={1}/>
             </div>
         </div>
+        </>
+
     )
+    
 }

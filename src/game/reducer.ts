@@ -21,6 +21,8 @@ export type UnoAction = {
     type: 'callUno', playerIndex: number
 } | {
     type: 'setUnoCallPossible', playerIndex: number
+} | {
+    type: 'setPlayerName', name: string
 };
 
 export const UnoReducer = (state: GameState, action: UnoAction): GameState => {
@@ -50,5 +52,8 @@ export const UnoReducer = (state: GameState, action: UnoAction): GameState => {
             return callUno(state, action.playerIndex);
         case 'setUnoCallPossible':
             return setUnoCallPossible(state, action.playerIndex);
+        case 'setPlayerName':
+            state.players[0].name = action.name;
+            return state;
     }
 }

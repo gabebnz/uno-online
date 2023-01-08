@@ -32,7 +32,7 @@
 
     background-color: var(--bg-up-color);
     height:400px;
-    width:350px;
+    aspect-ratio: 0.75;
 
     border-radius: 0px 20px 0px 20px;
     box-shadow: rgba(var(--accent-color-v), 0.4) 5px 5px, rgba(var(--accent-color-v), 0.3) 10px 10px, rgba(var(--accent-color-v), 0.2) 15px 15px, rgba(var(--accent-color-v), 0.1) 20px 20px, rgba(var(--accent-color-v), 0.05) 25px 25px;

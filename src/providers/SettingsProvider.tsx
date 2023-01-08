@@ -16,8 +16,8 @@ export interface Settings {
 }
 
 const InitialSettings: Settings = {
-    darkTheme: false,
-    username: '',
+    darkTheme: true,
+    username: 'user',
 
     loaded: false,
 };

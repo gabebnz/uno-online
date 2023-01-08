@@ -80,7 +80,7 @@
 
     align-items: center;
     justify-content: center;
-
+    position: relative;
     overflow:hidden;
     
     padding: 0 25px;
