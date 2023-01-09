@@ -30,17 +30,12 @@ export default function EndScreen() {
                         <h1>{uno.winner?.name}</h1>
                     </div> 
                 </div>
-
-
-
             </div>
 
-
-
             <button 
-                    onClick={() => handleNewGame()} 
-                >   new game
-                </button>
+                onClick={() => handleNewGame()} 
+                >new game
+            </button>
         </div>
     )
 }

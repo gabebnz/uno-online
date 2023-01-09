@@ -137,7 +137,7 @@ export default function GameBoard({ children }: Props) {
     return (
         <>
         {
-            uno.winner && (
+            true && (
                 <EndScreen />
             )
         }
