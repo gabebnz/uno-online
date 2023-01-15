@@ -33,12 +33,14 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 5px;
+
     
     height:30vh;
 }
 
 .PlayerHand{
     grid-auto-columns: minmax(75px, max-content);
+
 }
 
 
@@ -85,8 +87,6 @@
 }
 
 
-
-
 .ColorSelect{
     position: absolute;
     margin-bottom: 17vh;    
@@ -95,7 +95,7 @@
 
 .SelectCard{
     aspect-ratio: 0.75;
-    height: 10vh;
+    height: 12vh;
 
     position: relative;
 
@@ -139,12 +139,20 @@
     animation: swing-in-bottom-fwd 0.8s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
 }
 
+@media screen and (max-width: 1100px) {
+    .SelectCard{
+        height:12vh;
+    }
+}
 
-
-
-
-
-
+@media screen and (max-width: 800px) {
+    .PlayerHand{
+        grid-auto-columns: minmax(40px, max-content);
+    }
+    .SelectCard{
+        height:10vh;
+    }
+}
 
 
 /**

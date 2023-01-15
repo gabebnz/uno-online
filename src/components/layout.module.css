@@ -28,7 +28,7 @@
     display:flex;
     flex-direction: row;
     align-items: baseline;
-    gap: 2px;
+    gap: 0px;
 }
 
 .navbar h1{
@@ -87,6 +87,13 @@
     width:100%;
     height:100%;
 }
+
+@media screen and (max-width: 800px) {
+    .childWrapper {
+        padding:0;
+    }
+}
+
 
 .darkThemeInput{
     display:flex;

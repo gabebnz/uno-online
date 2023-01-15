@@ -51,14 +51,13 @@
 
     border-radius: 50%;
     overflow: hidden;
-    background-color: var(--bg-color);
     aspect-ratio: 1/1;
-    height:75%;
+    height:80%;
     box-shadow: rgba(0, 0, 0, 0.445) 0px 60px 60px -7px;
 
     transition: box-shadow 0.7s;
     z-index: 86;
-
+    
     animation: circle-fade 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
 }
 
@@ -100,6 +99,7 @@
     aspect-ratio: 0.75;
     height: 100%;
 
+
     animation: fade-in-top 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
 
 }
@@ -116,7 +116,7 @@
     aspect-ratio: 0.75;
     height: 40%;
  
-
+    overflow: hidden;
 
     border-radius: 0px 20px 0px 20px;
     background-color: var(--bg-up-color);
@@ -126,12 +126,29 @@
 .Card[class~='LeftCard']{
     animation: left-card 1.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) 2s both;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+    translate: -5vw -20px;
 } 
 
 .Card[class~='RightCard']{
     animation: right-card 1.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+    translate: 5vw 20px;
 } 
+
+@media screen and (max-width: 600px) {
+  .Card[class~='LeftCard']{
+    translate: -10vw -20px;
+  } 
+
+  .Card[class~='RightCard']{
+      translate: 10vw -10px;
+  } 
+
+  .Card h1{
+    font-size: 3vh;
+  }
+
+}
 
 
 
@@ -236,13 +253,13 @@
  */
   @keyframes left-card {
     0% {
-        transform: perspective(2000px)  rotateX(53deg) translate(-10vh, 20px); 
+        transform: perspective(2000px)  rotateX(53deg) ; 
     }
     10%{
-        transform: perspective(2000px)  rotateX(53deg) translate(-10vh, -20px);
+        transform: perspective(2000px)  rotateX(53deg) ;
     } 
     100% {
-        transform: perspective(2000px) rotateY(-30deg)  rotateX(5deg) translate(-10vh, -20px);
+        transform: perspective(2000px) rotateY(-30deg)  rotateX(5deg) ;
     }
   }
 
@@ -254,14 +271,14 @@
  */
   @keyframes right-card {
     0% {
-        transform: perspective(2000px)  rotateX(53deg) translate(10vh, 20px); 
+        transform: perspective(2000px)  rotateX(53deg) ; 
 
     }
     10%{
-        transform: perspective(2000px)  rotateX(53deg) translate(10vh, 20px);
+        transform: perspective(2000px)  rotateX(53deg) ;
     } 
     100% {
-        transform: perspective(2000px) rotateY(20deg)  rotateX(0deg) translate(10vh, 20px);
+        transform: perspective(2000px) rotateY(20deg)  rotateX(0deg) ;
 
     }
   }

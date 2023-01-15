@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { AiOutlineUser, AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { AiOutlinePlayCircle, AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { BsPlay } from 'react-icons/bs';
 import { CiGlobe } from 'react-icons/ci';
-import { Link } from 'react-router-dom';
-import Layout from '../components/Layout';
 import MenuCard from '../components/MenuCard';
 import styles from './Menu.module.css';
 
@@ -26,9 +25,9 @@ export default function Menu({ title } : Props ) {
     return(
 
             <div className={styles.MenuWrapper}>  
-                <MenuCard title="play" link="/uno-online/game" icon={<AiOutlineUser className='icon'/>}/>
-                <MenuCard title="create" link="/uno-online/create" icon={<AiOutlineUsergroupAdd className='icon'/>}/>
-                <MenuCard title="join" link="/uno-online/join" icon={<CiGlobe className='icon'/>}/>
+                <MenuCard title="play" link="/game" icon={<BsPlay className='icon'/>}/>
+                <MenuCard title="create" link="/create" icon={<AiOutlineUsergroupAdd className='icon'/>}/>
+                <MenuCard title="join" link="/join" icon={<CiGlobe className='icon'/>}/>
             </div>
 
 

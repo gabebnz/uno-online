@@ -31,9 +31,9 @@ export default function Navbar() {
                 {/* first ciSettings HIDDEN for justify-content symmetry */}
                 <CiSettings className={styles.navLeftInvis}/> 
 
-                    <Link to="/uno-online/" className={styles.navLogo}>
-                        <h1>uno<span>online</span></h1><p>beta</p>
-                    </Link>
+                <Link to="/" className={styles.navLogo}>
+                    <h1>uno<span>online</span></h1><p>beta</p>
+                </Link>
                 
                 <CiSettings onClick={() => setSettingsOpen(true)} className={styles.navSettings}/>
             </div>

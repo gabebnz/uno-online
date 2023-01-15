@@ -1,8 +1,9 @@
 import { useContext, useState } from 'react';
-import { BrowserRouter, createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
+import { BrowserRouter, createHashRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import ErrorBoundary from './routes/ErrorBoundary';
 
 import Layout from './components/Layout';
+import { GameContext, GameProvider } from './providers/GameProvider';
 
 import { SettingsContext, SettingsProvider } from './providers/SettingsProvider';
 import Create from './routes/Create';
@@ -15,29 +16,29 @@ import Menu from './routes/Menu';
 function App() {
 	const settings = useContext(SettingsContext);
 
-	const router = createBrowserRouter([
+	const router = createHashRouter([
 		{
 			element: <Layout />,
 			errorElement: <ErrorBoundary />,
 			children: [
 				{
-					path: '/uno-online/',
+					path: '/',
 					element: <Menu title="Main Menu | UNO!" />,
 				},
 				{
-					path: '/uno-online/game',
+					path: '/game',
 					element: <Game title="UNO!" />,
 				},
 				{
-					path: '/uno-online/game/:gameID',
+					path: '/game/:gameID',
 					element: <Game title="UNO!" />,
 				},
 				{
-					path: '/uno-online/create',
+					path: '/create',
 					element: <Create title="Create Game | UNO!" />,
 				},
 				{
-					path: '/uno-online/join',
+					path: '/join',
 					element: <Join title="Multiplayer | UNO!" />,
 				},
 			]
@@ -46,7 +47,10 @@ function App() {
 
 	return (
 		<SettingsProvider>
-			<RouterProvider router={router} />
+			<GameProvider>
+				<RouterProvider router={router} />
+
+			</GameProvider>
 		</SettingsProvider>
 	)
 }

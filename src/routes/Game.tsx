@@ -24,9 +24,9 @@ export default function Game({ title } : Props ) {
 	  }, []);
 
 	return(
-        <GameProvider>
-			<GameBoard />
-        </GameProvider>
+
+		<GameBoard />
+
 	)
 }
 

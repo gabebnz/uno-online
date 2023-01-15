@@ -144,34 +144,42 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-
+    
     border-radius: 50%;
     
     height: 25%;
     width: 25%;
 }
 
+
+
 .InnerBoardBorder{
     display: flex;
     flex-direction: row;
-
     justify-content: center;
     align-items: center;
-
     position:relative;
-
     border-radius: 50%;
-
     overflow: hidden;
 
     aspect-ratio: 1/1;
 
     width: 80%;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
-
     transition: box-shadow 0.7s;
-
 }
+
+@media screen and (max-width: 800px) {
+    .InnerBoardBorder{
+        width: 100%;
+    }
+
+    .DiscardWrapper{
+        width:35%;
+        height:35%;
+    }
+}
+    
 
 .GreenGlow{
     box-shadow: rgba(var(--game-color-green-v), 0.7) 0px 60px 40px -7px;
@@ -364,7 +372,7 @@
 }
 
 
-
+/* Breakpoints for alt layout*/
 @media only screen and (max-width: 1500px) {
     .RightHandWrapper{
         margin: 0;
@@ -382,6 +390,7 @@
 
     .InnerBoardWrapper{
         grid-column: 1/4;
+        margin-top: -20px;
         
     }
 
