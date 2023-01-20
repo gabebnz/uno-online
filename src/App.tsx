@@ -1,29 +1,24 @@
-import { useContext, useState } from 'react';
-import { BrowserRouter, createHashRouter, Route, RouterProvider, Routes } from "react-router-dom";
-import ErrorBoundary from './routes/ErrorBoundary';
+import { createHashRouter, RouterProvider } from "react-router-dom";
+
+import { GameProvider } from './providers/GameProvider';
+import { SettingsProvider } from './providers/SettingsProvider';
 
 import Layout from './components/Layout';
-import { GameContext, GameProvider } from './providers/GameProvider';
-
-import { SettingsContext, SettingsProvider } from './providers/SettingsProvider';
-import Create from './routes/Create';
+import ErrorBoundary from './routes/ErrorBoundary';
 import Game from './routes/Game';
-import Join from './routes/Join';
+import Help from './routes/Help';
+import Lobby from './routes/Lobby';
 import Menu from './routes/Menu';
 
-
-
 function App() {
-	const settings = useContext(SettingsContext);
-
-	const router = createHashRouter([
+	const router = createHashRouter([ // Use createBrowserRouter when not using github pages
 		{
 			element: <Layout />,
 			errorElement: <ErrorBoundary />,
 			children: [
 				{
 					path: '/',
-					element: <Menu title="Main Menu | UNO!" />,
+					element: <Menu title="UNO!" />,
 				},
 				{
 					path: '/game',
@@ -31,15 +26,11 @@ function App() {
 				},
 				{
 					path: '/game/:gameID',
-					element: <Game title="UNO!" />,
+					element: <Lobby title="Multiplayer | UNO!" />,
 				},
 				{
-					path: '/create',
-					element: <Create title="Create Game | UNO!" />,
-				},
-				{
-					path: '/join',
-					element: <Join title="Multiplayer | UNO!" />,
+					path: '/help',
+					element: <Help title="Help | UNO!" />,
 				},
 			]
 		}
@@ -49,7 +40,6 @@ function App() {
 		<SettingsProvider>
 			<GameProvider>
 				<RouterProvider router={router} />
-
 			</GameProvider>
 		</SettingsProvider>
 	)

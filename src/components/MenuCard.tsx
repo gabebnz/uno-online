@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './MenuCard.module.css';
 
 
@@ -10,13 +10,41 @@ interface Props {
 }
 
 export default function MenuCard({title, icon, link}:Props){
+    const redirect = useNavigate();
+
+
+    // May need to do check if lobby already exists.
+	const generateLobbyCode = () => {
+		const length = 6;
+		var result = 'uno-';
+	  	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	  	var charactersLength = characters.length;
+	  	for ( var i = 0; i < length; i++ ) {
+		  	result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	  	}
+	
+	  	return result;
+	}
+
+    const navCode = () => {
+        if(link === ""){
+            const code = generateLobbyCode();
+            console.log(code);
+            
+    
+            redirect(`/game/${code}`)
+            return
+        }
+
+        redirect(link)
+    }
 
     return(
-        <Link className={styles[title]}to={link}>
+        <a className={styles[title]} onClick={() => navCode()}>
             <div className={styles.CardHeader}>
                 {icon}
                 <p className={styles.regularFont}>{title}</p>
             </div>
-        </Link>
+        </a>
     )
 }

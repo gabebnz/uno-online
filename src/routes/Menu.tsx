@@ -1,35 +1,48 @@
-import React, { useEffect } from 'react';
-import { AiOutlinePlayCircle, AiOutlineUsergroupAdd } from 'react-icons/ai';
-import { BsPlay } from 'react-icons/bs';
-import { CiGlobe } from 'react-icons/ci';
+import React, { useEffect, useState } from 'react';
+import { AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { BsPlay, BsQuestion } from 'react-icons/bs';
 import MenuCard from '../components/MenuCard';
 import styles from './Menu.module.css';
 
+import { useNavigate } from 'react-router-dom';
 
-export const menuLoader = () => {
-    
-};
 
 type Props = {
-    title?: string;
+	title?: string;
 }
 
 export default function Menu({ title } : Props ) {
+	const redirect = useNavigate();
+	const [lobbyCode, setLobbyCode] = useState<string>('');
 
-    useEffect(() => {
-        if (title) {
-          document.title = title;
-        } 
-      }, []);
+	useEffect(() => {
+		if (title) {
+		  document.title = title;
+		} 
+	  }, []);
+
+	const handleLobbySubmit = (event : React.FormEvent<HTMLFormElement>) =>{
+		event.preventDefault();
+		redirect(`/game/${lobbyCode}`)
+	}
  
-    return(
+	return(
+		<div className={styles.OuterWrapper}>
+			<div className={styles.MenuWrapper}>  
+				<MenuCard title="play" link="/game" icon={<BsPlay className='icon'/>}/>
+				<MenuCard title="create" link="" icon={<AiOutlineUsergroupAdd className='icon'/>}/>
+				<MenuCard title="help" link="/help" icon={<BsQuestion className='icon'/>}/>
+			</div>
 
-            <div className={styles.MenuWrapper}>  
-                <MenuCard title="play" link="/game" icon={<BsPlay className='icon'/>}/>
-                <MenuCard title="create" link="/create" icon={<AiOutlineUsergroupAdd className='icon'/>}/>
-                <MenuCard title="join" link="/join" icon={<CiGlobe className='icon'/>}/>
-            </div>
-
-
-    )
+			<form className={styles.LobbyCodeForm} onSubmit={handleLobbySubmit}>
+				<input 
+					type="text" 
+					value={lobbyCode} 
+					placeholder="lobby code" 
+					onChange={(e) => setLobbyCode(e.target.value)}
+					/>
+			</form>
+			
+		</div>
+	)
 }

@@ -25,7 +25,6 @@ export default function Hand({player, show}:Props) {
         });
     }, [settings.username]);
 
-
     function handleColorSelect(color:string){
 		console.log('color selected: ' + color);
 		

@@ -19,7 +19,7 @@ export default function Game({ title } : Props ) {
 	  }, []);
 
 	return(
-		<GameBoard />
+		<h1>Help / About</h1>
 	)
 }
 

@@ -11,7 +11,6 @@ export default function EndScreen() {
         dispatch({
             type: 'newGame'
         })
-        window.location.reload();
     }
 
     return (

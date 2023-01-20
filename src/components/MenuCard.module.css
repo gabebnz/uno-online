@@ -13,14 +13,14 @@
     animation: fade-in-bottom 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) 125ms backwards;
 }
 
-.join{
+.help{
     z-index:1;
 
     animation: fade-in-top 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) 250ms backwards;
 }
 
 
-.play, .create, .join {
+.play, .create, .help {
     display:flex;
     flex-direction: row;
     justify-content: center;
@@ -28,16 +28,22 @@
 
     aspect-ratio: 0.75;
 
-    height: 40%;
+    height: 60%;
+    max-height:450px;
+
+    user-select: none;
+
+    cursor: pointer;
 
     border-radius: 0px 20px 0px 20px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     background-color: var(--bg-up-color);
+    color: var(--font-color);
 
     transition:  0.2s;
 }
 
-.create:hover,.join:hover{
+.create:hover,.help:hover{
     transform: translateY(-15px) rotate(2deg);
     transition: transform 0.2s;
 }
@@ -47,7 +53,7 @@
     transition: transform 0.2s;
 }
 
-.play:hover .CardHeader, .create:hover .CardHeader, .join:hover .CardHeader{
+.play:hover .CardHeader, .create:hover .CardHeader, .help:hover .CardHeader{
     color: var(--accent-color);
     transition: color 0.2s;
 }
@@ -63,6 +69,8 @@
     font-family: var(--font-regular);
     font-size:3em ;
 
+    transition: 0.2s;
+
 
     height:auto;
 }
@@ -74,7 +82,7 @@
 }
 
 @media screen and (max-width: 700px) {
-    .play, .create, .join {
+    .play, .create, .help {
         max-height:175px;
     }
 
