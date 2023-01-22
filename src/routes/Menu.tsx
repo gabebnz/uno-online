@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { BsPlay, BsQuestion } from 'react-icons/bs';
 import MenuCard from '../components/MenuCard';
+import { SocketContext } from '../providers/SocketProvider';
 import styles from './Menu.module.css';
 
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +13,7 @@ type Props = {
 }
 
 export default function Menu({ title } : Props ) {
+	const socket = useContext(SocketContext)
 	const redirect = useNavigate();
 	const [lobbyCode, setLobbyCode] = useState<string>('');
 
@@ -23,6 +25,8 @@ export default function Menu({ title } : Props ) {
 
 	const handleLobbySubmit = (event : React.FormEvent<HTMLFormElement>) =>{
 		event.preventDefault();
+
+		socket.emit('join', lobbyCode);
 		redirect(`/game/${lobbyCode}`)
 	}
  

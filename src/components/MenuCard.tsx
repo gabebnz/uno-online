@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { SocketContext } from '../providers/SocketProvider';
 import styles from './MenuCard.module.css';
 
 
@@ -11,6 +12,7 @@ interface Props {
 
 export default function MenuCard({title, icon, link}:Props){
     const redirect = useNavigate();
+    const socket = useContext(SocketContext);
 
 
     // May need to do check if lobby already exists.
@@ -31,7 +33,8 @@ export default function MenuCard({title, icon, link}:Props){
             const code = generateLobbyCode();
             console.log(code);
             
-    
+
+            socket.emit('create-game', code);
             redirect(`/game/${code}`)
             return
         }

@@ -1,20 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import io from 'socket.io-client';
+import { GameState } from '../game/uno';
+import { SocketContext } from '../providers/SocketProvider';
 import Styles from './Lobby.module.css';
 
 
-import GameBoard from '../components/game/GameBoard';
 
 type Props = {
 	title?: string,
 }
 
-const socket = io('http://localhost:4000');
+
+interface RoomState {
+  roomID: string;
+
+  clients: string[];
+  host: string;
+
+  game: GameState;
+  inLobby: boolean;
+}
+
 
 export default function Lobby({ title } : Props ) {
+    const socket = useContext(SocketContext);
+
     const { gameID } = useParams<{ gameID: string }>();
-    const [users, setUsers] = useState(0);
+    const [roomData, setRoomData] = useState<RoomState>();
 
     useEffect(() => {
         socket.emit('join', gameID);
@@ -24,7 +36,7 @@ export default function Lobby({ title } : Props ) {
         });
 
         socket.on('data', (data) => {
-            setUsers(data)
+            setRoomData(data)
         })
 
 
@@ -42,12 +54,19 @@ export default function Lobby({ title } : Props ) {
 		} 
 	  }, []);
 
-	return(
-        <div className={Styles.Lobby}>
-        	<h1>Lobby</h1>
-            <p>Users in room: {users}</p>
-            <p>Game code: {gameID}</p>
-            <p>My id: {socket.id}</p>
-        </div>
-	)
+    if (roomData) {
+        return(
+            <div className={Styles.Lobby}>
+                <h1>Lobby</h1>
+                <p>Users in room: {roomData.clients.length}</p>
+                <p>Game code: {gameID}</p>
+                <p>My id: {socket.id}</p>
+            </div>
+        )
+    } 
+    else {
+        return(
+            <h1>no data...</h1>  
+        )
+    }
 }
