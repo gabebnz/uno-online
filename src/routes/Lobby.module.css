@@ -3,4 +3,63 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap:50px;
+    height:100%;
+    width: 100%;
+
+    animation: fade-in 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.1s backwards;
+
 }
+
+
+.PlayerCards{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    height:35%;
+    width:100%;
+}
+
+.RoomCode{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap:15px;
+
+    font-size: 1.4em;
+    font-family: var(--font-regular);
+
+    padding: 15px 20px;
+    text-align: center;
+
+    background-color: var(--bg-up-color);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;    
+
+}
+
+.CopyIcon{
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.CopyIcon:hover{
+    color: var(--accent-color);
+}
+
+
+/**
+ * ----------------------------------------
+ * animation fade-in
+ * ----------------------------------------
+ */
+ @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }

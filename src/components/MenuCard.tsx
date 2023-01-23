@@ -32,7 +32,6 @@ export default function MenuCard({title, icon, link}:Props){
         if(link === ""){
             const code = generateLobbyCode();
             console.log(code);
-            
 
             socket.emit('create-game', code);
             redirect(`/game/${code}`)

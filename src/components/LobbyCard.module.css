@@ -1,0 +1,123 @@
+.CardWrapper{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    
+
+    aspect-ratio: 0.75;
+
+    height: 90%;
+    max-height:450px;
+
+    user-select: none;
+
+    font-size: 10px;
+
+    overflow: hidden;
+
+    border-radius: 0px 20px 0px 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: var(--bg-up-color);
+    color: var(--font-color);
+
+    transition: transform 1s;
+    transform-style: preserve-3d;
+
+    animation: fade-in-bottom 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) backwards;
+
+
+    transition:  0.5s;
+}
+
+
+
+
+.CardWrapper[class~="1"]{
+    translate: 30px;
+    rotate: -10deg;
+
+    background-color: var(--game-color-red);
+    color: var(--card-font-white);
+    animation-delay: 100ms;
+    z-index: 4;
+}
+.CardWrapper[class~="2"]{
+    translate: 8px -30px;
+    rotate: -3deg;
+
+    background-color: var(--game-color-green);
+    color: var(--card-font-white);
+    animation-delay: 150ms;
+    z-index: 3;
+}
+.CardWrapper[class~="3"]{
+    translate: -8px -30px;
+    rotate: 3deg;
+
+    background-color: var(--game-color-blue);
+    color: var(--card-font-white);
+    animation-delay: 200ms;
+    z-index: 2;
+}
+.CardWrapper[class~="4"]{
+    translate: -30px;
+    rotate: 10deg;
+
+    background-color: var(--game-color-yellow);
+    animation-delay: 250ms;
+    z-index: 1;
+
+    color: var(--card-font-dark);
+}
+.CardWrapper[class~="MissingPlayer"]{
+    background-color: var(--bg-up-color);
+    color: var(--font-color);
+}
+
+
+
+.TopLeft{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5em;
+    margin: 0.5em;
+
+    max-width:100%;
+}
+
+.Middle{
+  font-size: 0.8em;
+  max-width:100%;
+}
+
+.BotRight{
+    rotate: 180deg;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 0.5em;
+    margin: 0.5em;
+    max-width:100%;
+}
+
+
+
+/**
+ * ----------------------------------------
+ * animation fade-in-bottom
+ * ----------------------------------------
+ */
+ @keyframes fade-in-bottom {
+    0% {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(initial);
+      opacity: 1;
+    }
+  }
+  

@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { HiOutlineClipboardCopy } from 'react-icons/hi';
 import { useParams } from 'react-router-dom';
 import { GameState } from '../game/uno';
 import { SocketContext } from '../providers/SocketProvider';
 import Styles from './Lobby.module.css';
+
+import LobbyCard from '../components/LobbyCard';
 
 type Props = {
 	title?: string,
@@ -19,19 +22,12 @@ interface RoomState {
   inLobby: boolean;
 }
 
-const testData = {
-    roomID: 'uno-j5I0Le',
-    clients: ['test1', 'test2'],
-    host: 'test1',
-    game: null,
-    inLobby: true
-}
 
 export default function Lobby({ title } : Props ) {
     const socket = useContext(SocketContext);
 
     const { gameID } = useParams<{ gameID: string }>();
-    const [roomData, setRoomData] = useState<RoomState>(testData);
+    const [roomData, setRoomData] = useState<RoomState>();
 
     useEffect(() => {
         socket.emit('join', gameID);
@@ -61,16 +57,29 @@ export default function Lobby({ title } : Props ) {
     if (roomData) {
         return(
             <div className={Styles.Lobby}>
-                <h1>Lobby</h1>
-                <p>Users in room: {roomData.clients.length}</p>
-                <p>Game code: {gameID}</p>
-                <p>My id: {socket.id}</p>
+                <div className={Styles.PlayerCards}>
+                    <LobbyCard name={roomData.clients[0]} card={1}/>
+                    <LobbyCard name={roomData.clients[1]} card={2}/>
+                    <LobbyCard name={roomData.clients[2]} card={3}/>
+                    <LobbyCard name={roomData.clients[3]} card={4}/>
+                </div>
+
+                <div className={Styles.RoomCode}>
+                    <p>{roomData.roomID}</p>
+                    <HiOutlineClipboardCopy 
+                        className={Styles.CopyIcon} 
+                        onClick={() => navigator.clipboard.writeText(roomData.roomID)}
+                    />
+                </div>
+
+                <a href="">start</a>
+
             </div>
         )
     } 
     else {
         return(
-            <h1>no data...</h1>  
+            <p></p>  
         )
     }
 }
