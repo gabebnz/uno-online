@@ -374,6 +374,9 @@
 
 /* Breakpoints for alt layout*/
 @media only screen and (max-width: 1500px) {
+    .InnerBoardBorder{
+        width: 60%;
+    }
     .RightHandWrapper{
         margin: 0;
         grid-column: 3;
@@ -404,7 +407,11 @@
         grid-row: 2/4;
     }
   }
-
+  @media only screen and (max-width: 800px) {
+    .InnerBoardBorder{
+        width: 95%;
+    }
+}
 
 
 

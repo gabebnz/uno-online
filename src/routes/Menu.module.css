@@ -28,7 +28,6 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;    
     animation: fade-in 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.3s backwards;
 
-    transition:0.5s;
 }
 
 .MenuWrapper {

@@ -4,29 +4,34 @@ import { GameState } from '../game/uno';
 import { SocketContext } from '../providers/SocketProvider';
 import Styles from './Lobby.module.css';
 
-
-
 type Props = {
 	title?: string,
 }
 
-
+// Lobby data structure, make sure server has same interface
 interface RoomState {
   roomID: string;
 
   clients: string[];
   host: string;
 
-  game: GameState;
+  game: GameState | null;
   inLobby: boolean;
 }
 
+const testData = {
+    roomID: 'uno-j5I0Le',
+    clients: ['test1', 'test2'],
+    host: 'test1',
+    game: null,
+    inLobby: true
+}
 
 export default function Lobby({ title } : Props ) {
     const socket = useContext(SocketContext);
 
     const { gameID } = useParams<{ gameID: string }>();
-    const [roomData, setRoomData] = useState<RoomState>();
+    const [roomData, setRoomData] = useState<RoomState>(testData);
 
     useEffect(() => {
         socket.emit('join', gameID);
@@ -38,7 +43,6 @@ export default function Lobby({ title } : Props ) {
         socket.on('data', (data) => {
             setRoomData(data)
         })
-
 
 		return () => {
             socket.emit('leave', gameID);
