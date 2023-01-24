@@ -1,9 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { HiOutlineClipboardCopy } from 'react-icons/hi';
+import { ImExit } from 'react-icons/im';
 import { useParams } from 'react-router-dom';
+import Styles2 from '../components/game/GameBoard.module.css';
 import { GameState } from '../game/uno';
+import { SettingsContext } from '../providers/SettingsProvider';
 import { SocketContext } from '../providers/SocketProvider';
 import Styles from './Lobby.module.css';
+
 
 import LobbyCard from '../components/LobbyCard';
 
@@ -15,22 +21,24 @@ type Props = {
 interface RoomState {
   roomID: string;
 
-  clients: string[];
+  clients: [] | undefined;
   host: string;
 
   game: GameState | null;
   inLobby: boolean;
 }
 
-
 export default function Lobby({ title } : Props ) {
     const socket = useContext(SocketContext);
+    const settings = useContext(SettingsContext);
+	const redirect = useNavigate();
+
 
     const { gameID } = useParams<{ gameID: string }>();
     const [roomData, setRoomData] = useState<RoomState>();
 
     useEffect(() => {
-        socket.emit('join', gameID);
+        socket.emit('join', gameID, settings.username);
 
         socket.on('message', (msg) => {
             console.log(msg);
@@ -54,14 +62,39 @@ export default function Lobby({ title } : Props ) {
 		} 
 	  }, []);
 
+    const renderCards = (data: RoomState) => {
+        // this function is awful. But works so...
+        let cards = [];
+
+        for (let i = 0; i < 4; i++) {
+            if(data.clients){
+                cards.push(
+                    <LobbyCard 
+                        key={i}
+                        name={data.clients[i]?.['name']} 
+                        card={i+1} 
+                    />
+                )
+            }
+            else{
+                cards.push(
+                    <LobbyCard 
+                        key={i}
+                        name={undefined} 
+                        card={i+1} 
+                    />
+                )
+            }
+        }
+        return cards;
+    }
+
+
     if (roomData) {
         return(
             <div className={Styles.Lobby}>
                 <div className={Styles.PlayerCards}>
-                    <LobbyCard name={roomData.clients[0]} card={1}/>
-                    <LobbyCard name={roomData.clients[1]} card={2}/>
-                    <LobbyCard name={roomData.clients[2]} card={3}/>
-                    <LobbyCard name={roomData.clients[3]} card={4}/>
+                    {renderCards(roomData)}
                 </div>
 
                 <div className={Styles.RoomCode}>
@@ -72,8 +105,25 @@ export default function Lobby({ title } : Props ) {
                     />
                 </div>
 
-                <a href="">start</a>
-
+                <div className={`${Styles.ActionWrapper} ${roomData.clients!.length >= 2 && 'active'}`}>
+                    {
+                        (socket.id === roomData.host) ?
+                            (roomData.clients!.length >= 2) ? 
+                                <div className={Styles2.UnoButton} onClick={() => alert()}>
+                                    <div className={Styles2.UnoButtonCircle}/>
+                                    <h1 className={Styles2.SelectButton}>PLAY</h1>
+                                </div>
+                            :
+                                <p>waiting for players...</p>
+                        :
+                            <p>waiting for host...</p>
+                    }
+                </div>
+                
+                <ImExit 
+                    className={Styles.ExitIcon}    
+                    onClick={() => redirect('/')}
+                />
             </div>
         )
     } 

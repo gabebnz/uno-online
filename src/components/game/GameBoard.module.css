@@ -320,7 +320,7 @@
     transform-style:preserve-3d;
     justify-content: center;
     align-items: center;
-    transition:  ease 0.4s;
+    transition:  ease 0.3s;
 
 }
 
@@ -337,9 +337,9 @@
 
 
 .UnoButton:hover{
-    transition: ease  0.4s;
-    transform: perspective(900px)  rotateY(-15deg) rotateX(15deg);
-    box-shadow: rgba(0, 0, 0, 0.671) 15px 15px 35px 0px;
+    transition: ease  0.3s;
+    transform: perspective(900px)  rotateY(-10deg) rotateX(15deg);
+    box-shadow: rgba(0, 0, 0, 0.555) 15px 15px 35px 0px;
 }
 
 

@@ -9,8 +9,6 @@
     aspect-ratio: 0.75;
 
     height: 90%;
-    max-height:450px;
-
     user-select: none;
 
     font-size: 10px;
@@ -28,7 +26,7 @@
     animation: fade-in-bottom 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) backwards;
 
 
-    transition:  0.5s;
+    transition: 0.5s;
 }
 
 

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { SettingsContext } from '../providers/SettingsProvider';
 import { SocketContext } from '../providers/SocketProvider';
 import styles from './MenuCard.module.css';
 
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function MenuCard({title, icon, link}:Props){
+    const settings = useContext(SettingsContext);
     const redirect = useNavigate();
     const socket = useContext(SocketContext);
 
@@ -31,9 +33,8 @@ export default function MenuCard({title, icon, link}:Props){
     const navCode = () => {
         if(link === ""){
             const code = generateLobbyCode();
-            console.log(code);
 
-            socket.emit('create-game', code);
+            socket.emit('create-game', code, settings.username);
             redirect(`/game/${code}`)
             return
         }

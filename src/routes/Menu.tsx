@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { BsPlay, BsQuestion } from 'react-icons/bs';
 import MenuCard from '../components/MenuCard';
+import { SettingsContext } from '../providers/SettingsProvider';
 import { SocketContext } from '../providers/SocketProvider';
 import styles from './Menu.module.css';
 
@@ -13,9 +14,11 @@ type Props = {
 }
 
 export default function Menu({ title } : Props ) {
+	const settings = useContext(SettingsContext);
 	const socket = useContext(SocketContext)
 	const redirect = useNavigate();
 	const [lobbyCode, setLobbyCode] = useState<string>('');
+	const [errorMsg, setErrorMsg] = useState<string>('');
 
 	useEffect(() => {
 		if (title) {
@@ -25,9 +28,18 @@ export default function Menu({ title } : Props ) {
 
 	const handleLobbySubmit = (event : React.FormEvent<HTMLFormElement>) =>{
 		event.preventDefault();
+		setErrorMsg('');
 
-		socket.emit('join', lobbyCode);
-		redirect(`/game/${lobbyCode}`)
+		socket.emit('join', lobbyCode, settings.username);
+
+		socket.on('error', (msg) => {
+			console.log(msg);
+			setErrorMsg(msg);
+		})
+		
+		if(!errorMsg){
+			redirect(`/game/${lobbyCode}`)
+		}
 	}
  
 	return(
@@ -45,8 +57,10 @@ export default function Menu({ title } : Props ) {
 					placeholder="lobby code" 
 					onChange={(e) => setLobbyCode(e.target.value)}
 					/>
+				
 			</form>
-			
+			<p>{errorMsg}</p>
+
 		</div>
 	)
 }
