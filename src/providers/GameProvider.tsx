@@ -1,27 +1,56 @@
-import React, { createContext, useContext, useEffect, useReducer, useState } from 'react';
+import React, { createContext, useState } from 'react';
+
+import io, { type Socket } from 'socket.io-client';
 import { UnoReducer } from '../game/reducer';
 import { GameState, UnoInitialState } from '../game/uno';
-import { SettingsContext } from './SettingsProvider';
 
+interface RoomState { // Room data structure, make sure server has same interface
+    roomID?: string;
+    clients?: Client[];
+    host?: string;
+    game?: GameState;
+    inLobby?: boolean;
+}
 
-
-export type UpdateGame = React.Dispatch<React.SetStateAction<GameState>>
-
-export const GameContext = createContext<GameState>(UnoInitialState);
-export const GameDispatchContext = createContext<React.Dispatch<any>>(() => {});
+interface Client{
+    id: string;
+    name: string;
+}
 
 interface GameProviderProps {
     children?: React.ReactNode;
 }
 
+const RoomInitialState: RoomState = {
+    roomID: undefined,
+    clients: undefined,
+    host: undefined,
+    game: undefined,
+    inLobby: undefined,
+}
+
+
+// Connection to server, does not update/change
+const socket = io('http://localhost:4000'); 
+export const SocketContext = createContext<Socket>(socket);
+
+
+type UpdateGameState = React.Dispatch<React.SetStateAction<GameState>>;
+type UpdateRoomState = React.Dispatch<React.SetStateAction<RoomState>>;
+
+export const GameContext = createContext<GameState & {updateGame: UpdateGameState}>({...UnoInitialState, updateGame: () => undefined});
+export const RoomContext = createContext<RoomState & {updateRoom: UpdateRoomState}>({...RoomInitialState, updateRoom: () => undefined});
+
+
 export const GameProvider: React.FC<GameProviderProps> = (props) => {
-    const [uno, dispatch] = useReducer(UnoReducer, UnoInitialState);
+    const [room, setRoom] = useState<RoomState>(RoomInitialState); // Multiplayer room instance
+    const [uno, setUno] = useState<GameState>(UnoInitialState); // Singleplayer game instance
 
     return(
-        <GameContext.Provider value={uno}>
-            <GameDispatchContext.Provider value={dispatch}>
+        <GameContext.Provider value={{...uno, updateGame: setUno}}>
+            <RoomContext.Provider value={{...room, updateRoom: setRoom}}>
                 {props.children}
-            </GameDispatchContext.Provider>
+            </RoomContext.Provider>
         </GameContext.Provider>
     )
 }

@@ -1,6 +1,5 @@
-import { UpdateGame } from '../providers/GameProvider';
 import { getBotNames } from './bot';
-import { Card, cardToString, getShuffledDeck } from "./deck";
+import { Card, getShuffledDeck } from "./deck";
 
 export type PlayerType = 'local' | 'bot' | 'online';
 

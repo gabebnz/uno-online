@@ -20,16 +20,11 @@
     background-color: var(--bg-up-color);
     color: var(--font-color);
 
-    transition: transform 1s;
     transform-style: preserve-3d;
 
     animation: fade-in-bottom 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) backwards;
-
-
     transition: 0.5s;
 }
-
-
 
 
 .CardWrapper[class~="1"]{
@@ -80,9 +75,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    padding: 0.5em;
-    margin: 0.5em;
-
+    margin: 15px;
     max-width:100%;
 }
 
@@ -96,8 +89,7 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    padding: 0.5em;
-    margin: 0.5em;
+    margin: 15px;
     max-width:100%;
 }
 
@@ -110,11 +102,11 @@
  */
  @keyframes fade-in-bottom {
     0% {
-      transform: translateY(50px);
+      transform: translateY(50px) rotate(5deg);
       opacity: 0;
     }
     100% {
-      transform: translateY(initial);
+      transform: translateY(initial) rotate(initial);
       opacity: 1;
     }
   }

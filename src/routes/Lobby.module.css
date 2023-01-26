@@ -43,11 +43,11 @@
 
 .ActionWrapper{
   max-height: 0;
-  transition: max-height 0.2s ease;
+  transition: max-height 0.1s cubic-bezier(0.390, 0.575, 0.565, 1.000)  ;
 }
 .ActionWrapper[class~='active']{
   max-height: 200px;
-  transition: max-height 0.2s ease;
+  transition: max-height 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) ;
 
 }
 
@@ -70,38 +70,6 @@
   color: var(--accent-color);
 }
 
-
-
-.StartButton{
-  position:relative;
-
-  border-radius: 50%;
-  overflow: hidden;
-  aspect-ratio: 1/1;
-
-  height: 17vh;
-
-  transition: box-shadow 0.7s;
-  z-index: 1;
-}
-
-.StartButton::before{
-  content: "";
-  position: absolute;
-  width: 100%; /* width of the spinning circle bars */
-  height: 100%; /* make sure this is very long */
-  transition: background 0.5s;
-  background: conic-gradient(var(--game-color-red) 0% 25%, var(--game-color-blue) 25% 50%, var(--game-color-green) 50% 75%,var(--game-color-yellow) 75% 100%);
-  animation: rotate 10s linear infinite;
-}
-
-.StartButton::after{
-  content: "";
-  position: absolute;
-  background-color: var(--bg-up-color);
-  inset:7px;
-  border-radius: 50%;
-}
 
 /**
  * ----------------------------------------

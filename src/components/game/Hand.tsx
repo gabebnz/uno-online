@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { GameContext, GameDispatchContext } from '../../providers/GameProvider';
+import { GameContext } from '../../providers/GameProvider';
 import { SettingsContext } from '../../providers/SettingsProvider';
 
 
@@ -15,15 +15,8 @@ interface Props{
 export default function Hand({player, show}:Props) {
     const settings = useContext(SettingsContext);
     const uno = useContext(GameContext);
-    const dispatch = useContext(GameDispatchContext);
     const hand = uno.players[player].hand;
 
-    useEffect(() => {
-        dispatch({
-            type: 'setPlayerName',
-            name: settings.username,
-        });
-    }, [settings.username]);
 
     function handleColorSelect(color:string){
 		console.log('color selected: ' + color);

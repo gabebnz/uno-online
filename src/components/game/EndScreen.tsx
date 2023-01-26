@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
 import { AiFillTrophy } from 'react-icons/ai';
-import { GameContext, GameDispatchContext } from '../../providers/GameProvider';
+import { GameContext } from '../../providers/GameProvider';
 import Styles from './EndScreen.module.css';
 
 export default function EndScreen() {
     const uno = useContext(GameContext);
-    const dispatch = useContext(GameDispatchContext);
 
     const handleNewGame = () => {
         dispatch({

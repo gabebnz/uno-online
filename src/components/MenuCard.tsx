@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { SocketContext } from '../providers/GameProvider';
 import { SettingsContext } from '../providers/SettingsProvider';
-import { SocketContext } from '../providers/SocketProvider';
 import styles from './MenuCard.module.css';
 
 

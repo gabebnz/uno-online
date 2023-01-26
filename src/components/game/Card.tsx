@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { checkPlayableCards } from '../../game/uno';
-import { GameContext, GameDispatchContext } from '../../providers/GameProvider';
+import { GameContext } from '../../providers/GameProvider';
 
 import styles from './Card.module.css';
 

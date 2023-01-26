@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { checkPlayableCards } from '../../game/uno';
-import { GameContext, GameDispatchContext } from '../../providers/GameProvider';
+import { checkPlayableCards, type GameState } from '../../game/uno';
+import { GameContext, SocketContext } from '../../providers/GameProvider';
 
 import Styles from './GameBoard.module.css';
 
@@ -10,12 +10,11 @@ import Hand from './Hand';
 
 interface Props {
     children?: React.ReactNode;
+    uno: GameState;
 }
 
-
-export default function GameBoard({ children }: Props) {
-    const uno = useContext(GameContext);
-    const dispatch = useContext(GameDispatchContext);
+export default function GameBoard({ children, uno }: Props) {
+    const socket = useContext(SocketContext);
     const [glowColor, setGlowColor] = useState('');
 
     // Turn logic
@@ -172,7 +171,6 @@ export default function GameBoard({ children }: Props) {
                             <div className={Styles.UnoButtonCircle}/>
                             <h1 className={Styles.SelectButton}>UNO</h1>
                         </div>
-
                     </div>
                 )
             }

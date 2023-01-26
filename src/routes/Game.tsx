@@ -10,7 +10,7 @@ type Props = {
 export default function Game({ title } : Props ) {
     const { gameID } = useParams<{ gameID: string }>();
 
-	//Todo: multiplayer
+	// THIS CAN BE THE SINGLEPLAYER GAME LOGIC 
 
 	useEffect(() => {
 		if (title) {
