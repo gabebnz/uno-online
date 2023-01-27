@@ -1,7 +1,7 @@
 import { createHashRouter, RouterProvider } from "react-router-dom";
 
-import { GameProvider } from './providers/GameProvider';
 import { SettingsProvider } from './providers/SettingsProvider';
+import { RoomProvider } from './providers/SocketProvider';
 
 import Layout from './components/Layout';
 import ErrorBoundary from './routes/ErrorBoundary';
@@ -38,9 +38,9 @@ function App() {
 
 	return (
 		<SettingsProvider>
-			<GameProvider>
+			<RoomProvider>
 				<RouterProvider router={router} />
-			</GameProvider>
+			</RoomProvider>
 		</SettingsProvider>
 	)
 }

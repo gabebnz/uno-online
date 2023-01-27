@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { UnoContext } from '../../components/game/GameBoard';
 import { checkPlayableCards } from '../../game/uno';
-import { GameContext } from '../../providers/GameProvider';
 
 import styles from './Card.module.css';
 
@@ -15,9 +15,7 @@ interface  CardProps {
 }
 
 export default function GameCard({ card, show, discard }: CardProps){
-    const uno = useContext(GameContext);
-    const dispatch = useContext(GameDispatchContext);
-    
+    const uno = useContext(UnoContext);    
     const cardColor = card?.color
 
     const handleCardClick = () => {

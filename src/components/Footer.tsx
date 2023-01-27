@@ -1,5 +1,3 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import signSVG from '../assets/signature.svg';
 import styles from './layout.module.css';
 

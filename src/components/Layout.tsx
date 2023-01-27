@@ -1,6 +1,3 @@
-import React, { useContext, useEffect } from 'react';
-import { SettingsContext } from '../providers/SettingsProvider';
-
 import styles from './layout.module.css';
 
 import { Outlet } from 'react-router-dom';

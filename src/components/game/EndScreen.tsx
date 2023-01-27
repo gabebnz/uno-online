@@ -1,15 +1,16 @@
 import React, { useContext } from 'react';
 import { AiFillTrophy } from 'react-icons/ai';
-import { GameContext } from '../../providers/GameProvider';
+import { UnoContext } from '../../components/game/GameBoard';
+import { SocketContext } from '../../providers/SocketProvider';
 import Styles from './EndScreen.module.css';
 
+
 export default function EndScreen() {
-    const uno = useContext(GameContext);
+    const socket = useContext(SocketContext);
+    const uno = useContext(UnoContext);
 
     const handleNewGame = () => {
-        dispatch({
-            type: 'newGame'
-        })
+        socket.emit('new-game', uno.roomID);
     }
 
     return (

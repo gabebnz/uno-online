@@ -5,8 +5,8 @@ import { GameState } from '../game/uno';
 import { HiOutlineClipboardCopy } from 'react-icons/hi';
 import { ImExit } from 'react-icons/im';
 
-import { RoomContext, SocketContext } from '../providers/GameProvider';
 import { SettingsContext } from '../providers/SettingsProvider';
+import { RoomContext, SocketContext } from '../providers/SocketProvider';
 
 import Styles2 from '../components/game/GameBoard.module.css';
 import Styles from './Lobby.module.css';
@@ -34,26 +34,20 @@ export default function Lobby({ title } : Props ) {
     const socket = useContext(SocketContext);
     const room = useContext(RoomContext);
     const settings = useContext(SettingsContext);
-    
 
 	const redirect = useNavigate();
 
     const { gameID } = useParams<{ gameID: string }>();
 
+
     useEffect(() => {
         socket.emit('join', gameID, settings.username);
-        socket.emit('update-name', gameID, settings.username)
+        socket.on('error', (msg) => {
+			console.log(msg);
+            redirect('/');
+		})
 
-
-        socket.on('message', (msg) => {
-            console.log(msg);
-        });
-
-        socket.on('data', (data) => {
-            room.updateRoom(data)
-        })
-
-		return () => {
+        return () => {
             socket.emit('leave', gameID);
             socket.off('connect');
 			socket.off('disconnect');
@@ -64,7 +58,7 @@ export default function Lobby({ title } : Props ) {
 	useEffect(() => {
 		if (title) {
 		  document.title = title;
-		} 
+		}         
 	  }, []);
 
     const renderCards = (data: any) => {
@@ -139,9 +133,8 @@ export default function Lobby({ title } : Props ) {
             )
         }
     } 
-    else {
-        return(
-            <p></p> // Data error / loading
-        )
-    }
+
+    return(
+        <p></p> // Data error / loading
+    )
 }

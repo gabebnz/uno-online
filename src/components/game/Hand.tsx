@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
-import { GameContext } from '../../providers/GameProvider';
+import { UnoContext } from '../../components/game/GameBoard';
 import { SettingsContext } from '../../providers/SettingsProvider';
+import { SocketContext } from '../../providers/SocketProvider';
 
 
 import GameCard from './Card';
@@ -14,24 +15,18 @@ interface Props{
 
 export default function Hand({player, show}:Props) {
     const settings = useContext(SettingsContext);
-    const uno = useContext(GameContext);
-    const hand = uno.players[player].hand;
+    const socket = useContext(SocketContext);
+    const uno = useContext(UnoContext);
 
+    const hand = uno.players[player].hand;
 
     function handleColorSelect(color:string){
 		console.log('color selected: ' + color);
-		
-		dispatch({
-            type: 'setColor',
-            color: color
-        });
-
-		dispatch({
-            type: 'finishTurn',
-        });
+        socket.emit('set-color', uno.roomID, color)
+		socket.emit('finish-turn', uno.roomID )
 	}
 
-    if(player === 0){ // Player
+    if(player === uno.playerIndex){ // Player
         return(
             <div className={`${Styles.PlayerSection}`}>
                 
@@ -45,7 +40,7 @@ export default function Hand({player, show}:Props) {
 
 
                 {
-                    (uno.askForColor && uno.currentPlayer === 0) && (
+                    (uno.askForColor && uno.currentPlayer === uno.playerIndex) && (
                         <div className={`${Styles.ColorSelect} ${(uno.askForColor && uno.currentPlayer === 0) ? 'true' : 'false'}`}>
                             <button className={`${Styles.SelectCard} ${'red'}`} onClick={() => handleColorSelect('red')}></button>
                             <button className={`${Styles.SelectCard} ${'blue'}`} onClick={() => handleColorSelect('blue')}></button>

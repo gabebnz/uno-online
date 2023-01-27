@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { BsPlay, BsQuestion } from 'react-icons/bs';
 import MenuCard from '../components/MenuCard';
-import { SocketContext } from '../providers/GameProvider';
 import { SettingsContext } from '../providers/SettingsProvider';
+import { SocketContext } from '../providers/SocketProvider';
 import styles from './Menu.module.css';
 
 import { useNavigate } from 'react-router-dom';
@@ -16,30 +16,31 @@ type Props = {
 export default function Menu({ title } : Props ) {
 	const settings = useContext(SettingsContext);
 	const socket = useContext(SocketContext)
+
 	const redirect = useNavigate();
+	
 	const [lobbyCode, setLobbyCode] = useState<string>('');
-	const [errorMsg, setErrorMsg] = useState<string>('');
+	const [errorMsg, setErrorMsg] = useState<string | undefined>(undefined);
 
 	useEffect(() => {
 		if (title) {
 		  document.title = title;
 		} 
-	  }, []);
+	}, []);
 
 	const handleLobbySubmit = (event : React.FormEvent<HTMLFormElement>) =>{
 		event.preventDefault();
-		setErrorMsg('');
+		setErrorMsg(undefined);
 
 		socket.emit('join', lobbyCode, settings.username);
 
+		socket.on('join-success', () => {
+			redirect(`/game/${lobbyCode}`)
+		})
+
 		socket.on('error', (msg) => {
-			console.log(msg);
 			setErrorMsg(msg);
 		})
-		
-		if(!errorMsg){
-			redirect(`/game/${lobbyCode}`)
-		}
 	}
  
 	return(

@@ -1,13 +1,16 @@
 import { getBotNames } from './bot';
 import { Card, getShuffledDeck } from "./deck";
 
-export type PlayerType = 'local' | 'bot' | 'online';
+export type PlayerType = 'player' | 'bot';
 
 export interface PlayerState {
     type: PlayerType;
 
+
     hand: Card[];
     name: string;
+
+    socketID?: string;
 
     
     isUnoCallPossible: boolean; // true = player has 1 card left hasnt called uno
@@ -47,7 +50,7 @@ function InitializeState ():GameState {
     const state: GameState = {
         players: [
             {
-                type: 'local',
+                type: 'bot',
                 hand: shuffledDeck.splice(0, 7),
                 name:'', // updatein a component -- cant use settings context here
                 isSkipped: false,
