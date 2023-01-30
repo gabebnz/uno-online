@@ -13,9 +13,30 @@ export const GameContext = createContext<GameState | null>(null);
 
 export const GameProvider: React.FC<GameProviderProps> = (props) => {
     const [uno, setUno] = useState<GameState>(UnoInitialState); 
-    const settings = useContext(SettingsContext);
     const socket = useContext(SocketContext);
 
+    useEffect(() => {
+        if(
+            uno.playing &&
+            uno.players[uno.currentPlayer!].type === 'bot' && 
+            uno.players[uno.currentPlayer!].socketID !== socket.id
+            ){
+            const cardDelay = setTimeout(() => {
+                socket.emit('bot-turn')
+            }, Math.floor(Math.random() * 1000)+1000);
+
+            const finishDelay = setTimeout(() => {
+                socket.emit('finish-turn')
+            }, 2600); 
+            // This timeout value must be longer than the max 
+            // card timeout + bot color choose timeout
+            
+            return () => {
+                clearTimeout(cardDelay);
+                clearTimeout(finishDelay);
+            };
+        }
+    }, [uno.currentPlayer])
 
 	useEffect(() => {
         socket.on('data-sp', (data) => {            

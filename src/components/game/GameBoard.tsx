@@ -31,34 +31,26 @@ export default function GameBoard({ uno, roomID }: Props) {
             
             if (uno.currentPlayer !== null){
                 // if player/bot has 2 cards left and one can be played, set unoCallPossible to true
-                if(uno.players[uno.currentPlayer].hand.length <= 2 && checkPlayableCards(uno)){
+                if(
+                    uno.players[uno.currentPlayer].hand.length <= 2 && 
+                    checkPlayableCards(uno) &&
+                    !uno.players[uno.currentPlayer].isUnoCallPossible){
                     socket.emit('set-uno-call-possible', roomID, uno.currentPlayer);
-                }
-    
-                // if(uno.players[uno.currentPlayer!].type === 'bot' && uno.players[uno.currentPlayer!].socketID !== socket.id){
-                //     console.log('BOT TURN APPARENTLY');
+                }  
+
+                if(uno.currentPlayer === localPlayerIndex){
+                    console.log(uno.players[uno.currentPlayer].hand);
                     
-                //     const cardDelay = setTimeout(() => {
-                //         socket.emit('bot-turn', roomID)
-                //     }, Math.floor(Math.random() * 500)+1000);
-            
-                //     const finishDelay = setTimeout(() => {
-                //         socket.emit('finish-turn', roomID)
-                //     }, 2500);
-                  
-    
-                //     return () => {
-                //         clearTimeout(cardDelay);
-                //         clearTimeout(finishDelay);
-                //     };
-                // }
-                else if(uno.currentPlayer === localPlayerIndex){
-                    if(!checkPlayableCards(uno)){ 
+                    console.log('your turn', checkPlayableCards(uno));
+                    
+                    if(!checkPlayableCards(uno) && !uno.players[uno.currentPlayer].isSkipped){ 
+                        console.log('no playable cards');
+                        
                         const pickupDelay = setTimeout(() => {
                             socket.emit('pickup-card', roomID, uno.currentPlayer, 1);
                         }, 1000);
     
-                        const finishDelay = setTimeout(() => {
+                        const finishDelay = setTimeout(() => {        
                             socket.emit('finish-turn', roomID)
                         }, 3000);
     
@@ -67,9 +59,6 @@ export default function GameBoard({ uno, roomID }: Props) {
                             clearTimeout(finishDelay);
                         };
                     }
-                }
-                else{
-                    console.error('invalid player type');
                 }
             }
         }

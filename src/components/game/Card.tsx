@@ -15,6 +15,11 @@ interface  CardProps {
     children?: React.ReactNode
 }
 
+// mod function for card animation origin positioning
+function mod(n:number, m:number) {
+    return ((n % m) + m) % m;
+  }
+
 export default function GameCard({ card, show, discard }: CardProps){
     const uno = useContext(UnoContext);    
     const socket = useContext(SocketContext)
@@ -59,10 +64,10 @@ export default function GameCard({ card, show, discard }: CardProps){
             </div>
             
         </>
-
+ 
     if(discard && card){ // DISCARD PILE
         return(
-            <div className={`${styles.RotationWrapper} ${card.playedBy}`}>
+            <div className={`${styles.RotationWrapper} ${mod(card.playedBy!-uno.playerIndex, 4) }`}> 
                 <div 
                     className={`${styles.CardWrapper} ${styles.Discard} ${styles[cardColor!]}`}
                     style={{rotate:`${card.rotation}deg`, translate:`${card.offsetX}px ${card.offsetY}px`}}

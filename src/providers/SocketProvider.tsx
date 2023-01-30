@@ -34,25 +34,25 @@ export const RoomProvider: React.FC<GameProviderProps> = (props) => {
         if(
             room?.game?.playing &&
             room?.host === socket.id &&
+            room.game.players[room.game.currentPlayer!].socketID !== socket.id &&
             room?.game?.players[room.game.currentPlayer!].type === 'bot' 
-            ){
-                console.log('BOT TURN APPARENTLY');
-                    
-                const cardDelay = setTimeout(() => {
-                    socket.emit('bot-turn', room.roomID)
-                }, Math.floor(Math.random() * 500)+1000);
-        
-                const finishDelay = setTimeout(() => {
-                    socket.emit('finish-turn', room.roomID)
-                }, 2500);
-              
+            ){                    
+            const cardDelay = setTimeout(() => {
+                socket.emit('bot-turn')
+            }, Math.floor(Math.random() * 1000)+1000);
 
-                return () => {
-                    clearTimeout(cardDelay);
-                    clearTimeout(finishDelay);
-                };
+            const finishDelay = setTimeout(() => {
+                socket.emit('finish-turn')
+            }, 2600); 
+            // This delay value must be longer than the max 
+            // card delay + bot color choose delay
+
+            return () => {
+                clearTimeout(cardDelay);
+                clearTimeout(finishDelay);
+            };
         }
-    }, [room?.game?.currentPlayer])
+    }, [room?.game?.currentPlayer, room?.game?.players])
 
     useEffect(() => {
         socket.on('message', (msg) => {

@@ -105,7 +105,7 @@ function InitializeState ():GameState {
         wasUnoCalled: false,
 
         winner: null,
-        playing: true,
+        playing: false,
     }    
 
     state.discard[0].rotation = Math.floor(Math.random() * 30)-15; // make sure first card has readable rotation
