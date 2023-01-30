@@ -34,7 +34,7 @@ const loadSettingString = (settings: Settings, key: keyof Settings) => {
 }
  
 // load existing settings from local storage
-const findExistingSettings = (): Settings => {
+function findExistingSettings(): Settings {
     const settings = { ...InitialSettings };
 
     loadSettingBool(settings, 'darkTheme');
@@ -63,11 +63,11 @@ interface SettingsProviderProps {
 }
 
 export const SettingsProvider: React.FC<SettingsProviderProps> = (props) => {
-    const [settings, setSettings] = useState<Settings>(InitialSettings);
+    const [settings, setSettings] = useState<Settings>(findExistingSettings());
     
     // run once on load to load existing settings
     useEffect(() => {
-        setSettings(findExistingSettings)
+        setSettings(findExistingSettings())
     }, []);
 
     // toggle dark theme attribute on settings state change

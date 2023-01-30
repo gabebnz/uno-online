@@ -32,7 +32,7 @@ export default function Hand({player, show}:Props) {
                 
                 <div className={Styles.HandHeader}>
                     <h1 className={`${player === uno.currentPlayer && Styles.ActivePlayer} `}>
-                        {settings.username} 
+                        {uno.players[uno.playerIndex].name} 
                     </h1>
 
                     <p>{hand.length}</p>
@@ -41,7 +41,7 @@ export default function Hand({player, show}:Props) {
 
                 {
                     (uno.askForColor && uno.currentPlayer === uno.playerIndex) && (
-                        <div className={`${Styles.ColorSelect} ${(uno.askForColor && uno.currentPlayer === 0) ? 'true' : 'false'}`}>
+                        <div className={`${Styles.ColorSelect} ${(uno.askForColor && uno.currentPlayer === uno.playerIndex) ? 'true' : 'false'}`}>
                             <button className={`${Styles.SelectCard} ${'red'}`} onClick={() => handleColorSelect('red')}></button>
                             <button className={`${Styles.SelectCard} ${'blue'}`} onClick={() => handleColorSelect('blue')}></button>
                             <button className={`${Styles.SelectCard} ${'green'}`} onClick={() => handleColorSelect('green')}></button>

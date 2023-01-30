@@ -1,5 +1,6 @@
 import { createHashRouter, RouterProvider } from "react-router-dom";
 
+import { GameProvider } from './providers/GameProvider';
 import { SettingsProvider } from './providers/SettingsProvider';
 import { RoomProvider } from './providers/SocketProvider';
 
@@ -39,7 +40,9 @@ function App() {
 	return (
 		<SettingsProvider>
 			<RoomProvider>
-				<RouterProvider router={router} />
+				<GameProvider>
+					<RouterProvider router={router} />
+				</GameProvider>
 			</RoomProvider>
 		</SettingsProvider>
 	)

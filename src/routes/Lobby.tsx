@@ -129,7 +129,7 @@ export default function Lobby({ title } : Props ) {
         }
         else if(room.game){
             return(
-                <GameBoard uno={room.game!}/>
+                <GameBoard uno={room.game!} roomID={room.roomID}/>
             )
         }
     } 

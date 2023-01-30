@@ -32,6 +32,9 @@ export default function Menu({ title } : Props ) {
 		event.preventDefault();
 		setErrorMsg(undefined);
 
+		console.log('lobby code: ' + lobbyCode);
+		
+
 		socket.emit('join', lobbyCode, settings.username);
 
 		socket.on('join-success', () => {

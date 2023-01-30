@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UnoContext } from '../../components/game/GameBoard';
 import { checkPlayableCards } from '../../game/uno';
+import { SocketContext } from '../../providers/SocketProvider';
 
 import styles from './Card.module.css';
 
@@ -16,22 +17,20 @@ interface  CardProps {
 
 export default function GameCard({ card, show, discard }: CardProps){
     const uno = useContext(UnoContext);    
+    const socket = useContext(SocketContext)
     const cardColor = card?.color
 
-    const handleCardClick = () => {
-        dispatch({
-            type: 'playCard',
-            card: card,
-        })
+    const handleCardClick = () => {        
+        socket.emit('play-card', uno.roomID, card)
 
         // if card is playable, finish turn
         const possibleCards = checkPlayableCards(uno);
         if( !uno.askForColor 
-            && uno.currentPlayer === 0 
+            && uno.currentPlayer === uno.playerIndex
             && (possibleCards && possibleCards.indexOf(card)) !== -1){
-            dispatch({
-                type: 'finishTurn',
-            });
+            console.log(possibleCards);
+            
+            socket.emit('finish-turn', uno.roomID)
         }
     }
 
@@ -86,9 +85,9 @@ export default function GameCard({ card, show, discard }: CardProps){
                     ${styles.CardWrapper} 
                     ${styles.HandCard} 
                     ${styles[cardColor!]} 
-                    ${(uno.currentPlayer === 0 && !uno.askForColor && !uno.players[uno.currentPlayer].isSkipped) && styles.Selectable}
+                    ${(uno.currentPlayer === uno.playerIndex && !uno.askForColor && !uno.players[uno.currentPlayer].isSkipped) && styles.Selectable}
                 `} 
-                onClick={() => (uno.currentPlayer === 0 && uno.players[uno.currentPlayer].isSkipped === false) && handleCardClick()}
+                onClick={() => (uno.currentPlayer === uno.playerIndex && uno.players[uno.currentPlayer].isSkipped === false) && handleCardClick()}
             >
                 {innerCard}
             </div>

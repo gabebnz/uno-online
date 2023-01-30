@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { GameContext } from '../providers/GameProvider';
+import { GameContext, GameProvider } from '../providers/GameProvider';
+import { SettingsContext } from '../providers/SettingsProvider';
 import { SocketContext } from '../providers/SocketProvider';
 
 import GameBoard from '../components/game/GameBoard';
@@ -10,20 +11,20 @@ type Props = {
 }
 
 export default function Game({ title } : Props ) {
-    const { gameID } = useParams<{ gameID: string }>();
+	const settings = useContext(SettingsContext);
 	const socket = useContext(SocketContext);
 	const uno = useContext(GameContext);
 
-	// THIS CAN BE THE SINGLEPLAYER GAME LOGIC 
-
 	useEffect(() => {
+        
+		socket.emit('create-sp-game', settings.username)
 		if (title) {
 		  document.title = title;
 		} 
 	  }, []);
 
 	return(
-		<GameBoard uno={uno}/>
+		<GameBoard uno={uno!}/>
 	)
 }
 

@@ -14,13 +14,13 @@ interface Props {
     roomID?: string;
 }
 
-export const UnoContext = React.createContext<GameState & {roomID: string, playerIndex: number}>(null!);
+export const UnoContext = React.createContext<GameState & {roomID: string | undefined, playerIndex: number}>(null!);
 
-export default function GameBoard({ uno, roomID}: Props) {
+export default function GameBoard({ uno, roomID }: Props) {
     const [glowColor, setGlowColor] = useState('');
     const socket = useContext(SocketContext);
     
-    let localPlayerIndex = uno.players.findIndex(player => player.socketID === socket.id) ;
+    let localPlayerIndex = uno.players?.findIndex(player => player.socketID === socket.id) ;
     if (localPlayerIndex === -1){
         localPlayerIndex = 0;
     }
@@ -28,60 +28,38 @@ export default function GameBoard({ uno, roomID}: Props) {
     // Turn logic
     useEffect(() => { 
         if(uno.playing){
-
-            if(uno.players[uno.currentPlayer!].isSkipped === true){
-                const skipDelay = setTimeout(() => {
-                    // dispatch({
-                    //     type: 'finishTurn',
-                    // });
-                }, 1000);
-    
-                return () => {
-                    clearTimeout(skipDelay);
-                }
-            }
             
             if (uno.currentPlayer !== null){
                 // if player/bot has 2 cards left and one can be played, set unoCallPossible to true
                 if(uno.players[uno.currentPlayer].hand.length <= 2 && checkPlayableCards(uno)){
-                    // dispatch({ 
-                    //     type: 'setUnoCallPossible',
-                    //     playerIndex: uno.currentPlayer
-                    // });
+                    socket.emit('set-uno-call-possible', roomID, uno.currentPlayer);
                 }
     
-                if(uno.players[uno.currentPlayer!].type === 'bot'){
-                    const cardDelay = setTimeout(() => {
-                        // dispatch({
-                        //     type: 'botTurn',
-                        // });
-                    }, Math.floor(Math.random() * 500)+1000);
+                // if(uno.players[uno.currentPlayer!].type === 'bot' && uno.players[uno.currentPlayer!].socketID !== socket.id){
+                //     console.log('BOT TURN APPARENTLY');
+                    
+                //     const cardDelay = setTimeout(() => {
+                //         socket.emit('bot-turn', roomID)
+                //     }, Math.floor(Math.random() * 500)+1000);
+            
+                //     const finishDelay = setTimeout(() => {
+                //         socket.emit('finish-turn', roomID)
+                //     }, 2500);
+                  
     
-                    const finishDelay = setTimeout(() => {
-                        // dispatch({
-                        //     type: 'finishTurn',
-                        // });
-                    }, 2500);
-    
-                    return () => {
-                        clearTimeout(cardDelay);
-                        clearTimeout(finishDelay);
-                    };
-                }
-                else if(uno.players[uno.currentPlayer!].socketID === socket.id){
+                //     return () => {
+                //         clearTimeout(cardDelay);
+                //         clearTimeout(finishDelay);
+                //     };
+                // }
+                else if(uno.currentPlayer === localPlayerIndex){
                     if(!checkPlayableCards(uno)){ 
                         const pickupDelay = setTimeout(() => {
-                            // dispatch({
-                            //     type: 'pickupCard',
-                            //     targetPlayer: uno.currentPlayer,
-                            //     quantity: 1
-                            // });
+                            socket.emit('pickup-card', roomID, uno.currentPlayer, 1);
                         }, 1000);
     
                         const finishDelay = setTimeout(() => {
-                            // dispatch({
-                            //     type: 'finishTurn',
-                            // });
+                            socket.emit('finish-turn', roomID)
                         }, 3000);
     
                         return () => {
@@ -134,15 +112,16 @@ export default function GameBoard({ uno, roomID}: Props) {
 
 
     function handleUnoCall(){
-        // dispatch({
-        //     type: 'callUno',
-        //     playerIndex: uno.currentPlayer!
-        // });
+        socket.emit('call-uno', roomID, localPlayerIndex)
+    }
+
+    if(!uno){
+        return <div>DATA ERROR...</div>
     }
 
 
     return (
-        <UnoContext.Provider value={{...uno, roomID: roomID!, playerIndex: localPlayerIndex}}>
+        <UnoContext.Provider value={{...uno, roomID: roomID, playerIndex: localPlayerIndex}}>
             {
                 uno.winner && (
                     <EndScreen />
@@ -187,15 +166,15 @@ export default function GameBoard({ uno, roomID}: Props) {
                     <Hand show={true} player={localPlayerIndex}/>
                 </div>
 
-                <div className={`${Styles.LeftHandWrapper} ${uno.currentPlayer === 0 && Styles.ActivePlayer}`}>
+                <div className={`${Styles.LeftHandWrapper} ${(localPlayerIndex! + 1) % 4 && Styles.ActivePlayer}`}>
                     <Hand show={false} player={(localPlayerIndex! + 1) % 4}/>
                 </div>
 
-                <div className={`${Styles.TopHandWrapper} ${uno.currentPlayer === 2 && Styles.ActivePlayer}`}>
+                <div className={`${Styles.TopHandWrapper} ${(localPlayerIndex! + 2) % 4 && Styles.ActivePlayer}`}>
                     <Hand show={false} player={(localPlayerIndex! + 2) % 4}/>
                 </div>
 
-                <div className={`${Styles.RightHandWrapper} ${uno.currentPlayer === 3 && Styles.ActivePlayer}`}>
+                <div className={`${Styles.RightHandWrapper} ${(localPlayerIndex! + 3) % 4 && Styles.ActivePlayer}`}>
                     <Hand show={false} player={(localPlayerIndex! + 3) % 4}/>
                 </div>
 

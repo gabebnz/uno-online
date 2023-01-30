@@ -1,7 +1,6 @@
 
 .play {
     z-index:3;
-
     animation: fade-in-top 0.3s cubic-bezier(0.390, 0.575, 0.565, 1.000) backwards;
 }
 
@@ -15,7 +14,6 @@
 
 .help{
     z-index:1;
-
     animation: fade-in-top 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) 250ms backwards;
 }
 
@@ -45,12 +43,12 @@
 
 .create:hover,.help:hover{
     transform: translateY(-15px) rotate(2deg);
-    transition: transform 0.2s;
+    transition: transform 0.15s;
 }
 
 .play:hover{
     transform: translateY(-15px) rotate(-2deg);
-    transition: transform 0.2s;
+    transition: transform 0.15s;
 }
 
 .play:hover .CardHeader, .create:hover .CardHeader, .help:hover .CardHeader{
