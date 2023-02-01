@@ -33,10 +33,24 @@ export default function GameCard({ card, show, discard }: CardProps){
         if( !uno.askForColor 
             && uno.currentPlayer === uno.playerIndex
             && (possibleCards && possibleCards.indexOf(card)) !== -1){
-            console.log(possibleCards);
+
+            console.log(uno.players[uno.currentPlayer!].hand.length,uno.players[uno.currentPlayer!].hand.length === 1,
+                uno.players[uno.currentPlayer!].isUnoCallPossible,
+                !uno.players[uno.currentPlayer!].isUno
+                );
+            
+
+            if( // player should have called uno but didn't
+                uno.players[uno.currentPlayer!].isUnoCallPossible &&
+                !uno.players[uno.currentPlayer!].isUno
+            ){
+                socket.emit('set-uno-challenge', uno.roomID, uno.currentPlayer);
+            }
             
             socket.emit('finish-turn', uno.roomID)
         }
+
+
     }
 
     const innerCard = 

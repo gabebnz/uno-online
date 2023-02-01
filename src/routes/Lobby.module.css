@@ -42,7 +42,13 @@
 }
 
 .ActionWrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   max-height: 0;
+  width:100%;
+
   transition: max-height 0.1s cubic-bezier(0.390, 0.575, 0.565, 1.000)  ;
 }
 .ActionWrapper[class~='active']{

@@ -4,6 +4,7 @@ import { SocketContext } from '../../providers/SocketProvider';
 
 import Styles from './GameBoard.module.css';
 
+import AlertButton from './AlertButton';
 import GameCard from './Card';
 import EndScreen from './EndScreen';
 import Hand from './Hand';
@@ -25,27 +26,28 @@ export default function GameBoard({ uno, roomID }: Props) {
         localPlayerIndex = 0;
     }
 
+    
+
     // Turn logic
     useEffect(() => { 
         if(uno.playing){
-            
             if (uno.currentPlayer !== null){
-                // if player/bot has 2 cards left and one can be played, set unoCallPossible to true
-                if(
-                    uno.players[uno.currentPlayer].hand.length <= 2 && 
-                    checkPlayableCards(uno) &&
-                    !uno.players[uno.currentPlayer].isUnoCallPossible){
-                    socket.emit('set-uno-call-possible', roomID, uno.currentPlayer);
-                }  
-
                 if(uno.currentPlayer === localPlayerIndex){
-                    console.log(uno.players[uno.currentPlayer].hand);
-                    
-                    console.log('your turn', checkPlayableCards(uno));
-                    
-                    if(!checkPlayableCards(uno) && !uno.players[uno.currentPlayer].isSkipped){ 
-                        console.log('no playable cards');
+
+                    if( // if player/bot has 2 cards left and one can be played, set unoCallPossible to true
+                        uno.players[uno.currentPlayer].hand.length <= 2 && 
+                        !uno.players[uno.currentPlayer].isSkipped &&
+                        checkPlayableCards(uno) &&
+                        !uno.players[uno.currentPlayer].isUnoCallPossible
+                        ){
+                        console.log('set uno call possible');
                         
+                        socket.emit('set-uno-call-possible', roomID, uno.currentPlayer);
+                    } 
+
+
+
+                    if(!checkPlayableCards(uno) && !uno.players[uno.currentPlayer].isSkipped){                         
                         const pickupDelay = setTimeout(() => {
                             socket.emit('pickup-card', roomID, uno.currentPlayer, 1);
                         }, 1000);
@@ -104,19 +106,20 @@ export default function GameBoard({ uno, roomID }: Props) {
         socket.emit('call-uno', roomID, localPlayerIndex)
     }
 
-    if(!uno){
+    if(!uno || uno === undefined){
         return <div>DATA ERROR...</div>
     }
 
 
     return (
         <UnoContext.Provider value={{...uno, roomID: roomID, playerIndex: localPlayerIndex}}>
-            {
+
+            {   // END SCREEN
                 uno.winner && (
                     <EndScreen />
                 )
             }
-
+            
             <div className={Styles.BoardWrapper}>
                 <div className={Styles.InnerBoardWrapper}>
                     <div className={`${Styles.InnerBoardBorder} ${glowColor} ${uno.discard[0].color} ${uno.direction}`} >
@@ -137,18 +140,25 @@ export default function GameBoard({ uno, roomID }: Props) {
 
                 { // UNO CALL BUTTON
                     (
-                        uno.players[localPlayerIndex].isUnoCallPossible 
-                        && !uno.players[localPlayerIndex].isUno // user hasnt already called uno
-                        
+                        uno.playing &&
+                        uno.players[localPlayerIndex].isUnoCallPossible &&
+                        !uno.players[localPlayerIndex].isSkipped && 
+                        !uno.players[localPlayerIndex].isUno // user hasnt already called uno
                     ) 
                     && (
-                        <div className={Styles.UnoButtonWrapper}>
-                            <div className={Styles.UnoButton} onClick={() => handleUnoCall()}>
-                                <div className={Styles.UnoButtonCircle}/>
-                                <h1 className={Styles.SelectButton}>UNO</h1>
-                            </div>
-                        </div>
+                        <AlertButton text="UNO" action={() => handleUnoCall()} alert={true}/>
                     ) 
+                }
+
+                { // UNO CHALLENGE BUTTON
+                    (
+                        uno.shouldCallUno &&
+                        uno.shouldCallUno !== socket.id &&
+                        uno.playing
+                    ) 
+                    && (
+                        <AlertButton text="!" action={() => socket.emit('challenge-uno', roomID)} alert={true}/>
+                    )
                 }
 
                 <div className={`${Styles.HandWrapper} ${uno.currentPlayer === localPlayerIndex && Styles.ActivePlayer}`}>

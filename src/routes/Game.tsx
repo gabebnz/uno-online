@@ -23,8 +23,18 @@ export default function Game({ title } : Props ) {
 		} 
 	  }, []);
 
-	return(
-		<GameBoard uno={uno!}/>
-	)
+	if(uno === undefined){
+		return(
+			<div>
+				<h1>Loading...</h1>
+			</div>
+		)
+	}
+	else{		
+		return(
+
+			<GameBoard uno={uno!}/>
+		)
+	}
 }
 

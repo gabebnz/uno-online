@@ -21,7 +21,15 @@ interface GameProviderProps {
 }
 
 // Connection to server, does not update/change
-const socket = io('http://localhost:4000'); 
+const socket = io('http://localhost:4000', {
+    transports: ["websocket", "polling"]
+}); 
+
+socket.on("connect_error", () => {
+    // revert to classic upgrade
+    socket.io.opts.transports = ["polling", "websocket"];
+});
+
 export const SocketContext = createContext<Socket>(socket);
 
 type UpdateRoomState = React.Dispatch<React.SetStateAction<RoomState | undefined>>;
@@ -31,18 +39,19 @@ export const RoomProvider: React.FC<GameProviderProps> = (props) => {
     const [room, setRoom] = useState<RoomState | undefined>(); // Multiplayer room instance
 
     useEffect(() => {
-        if(
+        if( // Room host controls bot turns
+            socket.connected &&
             room?.game?.playing &&
             room?.host === socket.id &&
             room.game.players[room.game.currentPlayer!].socketID !== socket.id &&
             room?.game?.players[room.game.currentPlayer!].type === 'bot' 
             ){                    
             const cardDelay = setTimeout(() => {
-                socket.emit('bot-turn')
+                socket.emit('bot-turn', room.roomID)
             }, Math.floor(Math.random() * 1000)+1000);
 
             const finishDelay = setTimeout(() => {
-                socket.emit('finish-turn')
+                socket.emit('finish-turn', room.roomID)
             }, 2600); 
             // This delay value must be longer than the max 
             // card delay + bot color choose delay
@@ -52,16 +61,15 @@ export const RoomProvider: React.FC<GameProviderProps> = (props) => {
                 clearTimeout(finishDelay);
             };
         }
-    }, [room?.game?.currentPlayer, room?.game?.players])
+    }, [room?.game?.currentPlayer])
 
+    // Data in from server
     useEffect(() => {
-        socket.on('message', (msg) => {
-            console.log(msg);
-        });
-
         socket.on('data', (data) => {
             setRoom(data)
         })
+
+
 
 	}, []);
 

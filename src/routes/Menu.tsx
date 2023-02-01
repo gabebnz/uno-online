@@ -44,6 +44,12 @@ export default function Menu({ title } : Props ) {
 		socket.on('error', (msg) => {
 			setErrorMsg(msg);
 		})
+
+		socket.on("connect_error", (error) => {
+            console.log(error);
+			setErrorMsg(error.message);
+			redirect(`/`)
+        });
 	}
  
 	return(

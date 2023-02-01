@@ -8,9 +8,9 @@ import { ImExit } from 'react-icons/im';
 import { SettingsContext } from '../providers/SettingsProvider';
 import { RoomContext, SocketContext } from '../providers/SocketProvider';
 
-import Styles2 from '../components/game/GameBoard.module.css';
 import Styles from './Lobby.module.css';
 
+import AlertButton from '../components/game/AlertButton';
 import GameBoard from '../components/game/GameBoard';
 import LobbyCard from '../components/LobbyCard';
 
@@ -109,10 +109,7 @@ export default function Lobby({ title } : Props ) {
                         {
                             (socket.id === room.host) ?
                                 (room.clients!.length >= 2) ? 
-                                    <div className={Styles2.UnoButton} onClick={() => socket.emit('start-game', gameID)}>
-                                        <div className={Styles2.UnoButtonCircle}/>
-                                        <h1 className={Styles2.SelectButton}>PLAY</h1>
-                                    </div>
+                                    <AlertButton text="PLAY" action={() => socket.emit('start-game', gameID)}/>
                                 :
                                     <p>waiting for players...</p>
                             :

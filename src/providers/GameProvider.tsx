@@ -9,18 +9,20 @@ interface GameProviderProps {
     roomID?: string;
 }
 
-export const GameContext = createContext<GameState | null>(null);
+export const GameContext = createContext<GameState | undefined>(undefined);
 
 export const GameProvider: React.FC<GameProviderProps> = (props) => {
-    const [uno, setUno] = useState<GameState>(UnoInitialState); 
+    const [uno, setUno] = useState<GameState | undefined>(undefined); 
     const socket = useContext(SocketContext);
 
     useEffect(() => {
         if(
+            socket.connected &&
+            uno &&
             uno.playing &&
             uno.players[uno.currentPlayer!].type === 'bot' && 
             uno.players[uno.currentPlayer!].socketID !== socket.id
-            ){
+            ){            
             const cardDelay = setTimeout(() => {
                 socket.emit('bot-turn')
             }, Math.floor(Math.random() * 1000)+1000);
@@ -36,7 +38,7 @@ export const GameProvider: React.FC<GameProviderProps> = (props) => {
                 clearTimeout(finishDelay);
             };
         }
-    }, [uno.currentPlayer])
+    }, [uno?.currentPlayer])
 
 	useEffect(() => {
         socket.on('data-sp', (data) => {            
@@ -46,7 +48,7 @@ export const GameProvider: React.FC<GameProviderProps> = (props) => {
 
 
     return(
-        <GameContext.Provider value={{...uno}}>
+        <GameContext.Provider value={uno}>
                 {props.children}
         </GameContext.Provider>
     )

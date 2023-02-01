@@ -54,8 +54,8 @@ export default function Hand({player, show}:Props) {
                 <div className={`
                     ${Styles.Hand} 
                     ${Styles.PlayerHand} 
-                    ${uno.players[player].isUno === true && Styles.UnoGlow}
                     ${uno.players[player].isSkipped === true && 'skipped'}
+                    ${(uno.players[player].isUno && uno.players[player].hand.length === 1) === true && Styles.UnoGlow}
                 `}>
                     {
                         hand.map((card, index) => {
@@ -80,7 +80,7 @@ export default function Hand({player, show}:Props) {
 
                 <div className={`
                     ${Styles.Hand} 
-                    ${uno.players[player].isUno === true && Styles.UnoGlow}
+                    ${(uno.players[player].isUno && uno.players[player].hand.length === 1) === true && Styles.UnoGlow}
                     ${uno.players[player].isSkipped === true && 'skipped'}
                 `}>
                     {

@@ -35,6 +35,8 @@ export interface GameState {
     askForColor: boolean; // true = current player must choose a color
     currentColor: string; // color chosen by current player
 
+    shouldCallUno: string | null; // player socketid of who should call uno 
+
     wasUnoCalled: boolean; // true = uno has been called by player with last card
 
     winner : PlayerState | null;
@@ -102,6 +104,7 @@ function InitializeState ():GameState {
         askForColor: false,
         currentColor: 'wild',
 
+        shouldCallUno: null,
         wasUnoCalled: false,
 
         winner: null,
