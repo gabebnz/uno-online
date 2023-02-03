@@ -385,7 +385,9 @@ function removePlayerFromRoom(socketID: string, room: string){
   }
 
   // change host to next player
-  roomData.host = roomData.clients[0].id || undefined
+  if(roomData.clients[0]){
+    roomData.host = roomData.clients[0].id || undefined
+  }
 
   rooms.set(room, roomData)
 }
