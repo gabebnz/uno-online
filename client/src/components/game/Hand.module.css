@@ -1,0 +1,199 @@
+.BotSection{
+    display:flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+
+    width:auto;
+    height:auto;
+}
+
+
+
+.Hand{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(5px, max-content);
+
+    justify-content: center;
+    align-items: center;
+    filter: brightness(1) drop-shadow(0px 10px 25px transparent);
+
+
+    transition: filter 0.7s;
+    width:100%;
+    height:17vh;
+}
+
+.PlayerSection{
+    display:flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+
+    
+    height:30vh;
+}
+
+.PlayerHand{
+    grid-auto-columns: minmax(75px, max-content);
+}
+
+.ActivePlayer{
+    transition: color 0.7s;
+    color: var(--accent-color) !important;
+}
+
+.UnoGlow{
+    transition: 0.7s;
+    animation: unoGlow 3s linear infinite;
+}
+
+.Hand[class~="skipped"]{
+    filter: brightness(0.4) drop-shadow(0px 10px 25px var(--game-color-red));
+    transition: 0.7s;
+}
+
+.HandHeader{
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+    gap:20px;
+
+    width: 100%;
+
+    margin-bottom: 5px;
+
+    transition: 0.2s;
+}
+
+.HandHeader h1{
+    transition: 0.7s;
+    font-size: 2.5rem;
+    color: var(--font-color);
+    -webkit-font-smoothing: antialiased;
+}
+
+.HandHeader p{
+    font-size: 1.5rem;
+    font-family: var(--font-bold);
+    -webkit-font-smoothing: antialiased;
+
+}
+
+
+.ColorSelect{
+    position: absolute;
+    margin-bottom: 17vh;    
+    z-index: 0;
+}
+
+.SelectCard{
+    aspect-ratio: 0.75;
+    height: 12vh;
+
+    position: relative;
+
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    
+    border-radius: 0px 20px 0px 20px;
+    margin: 0 -15px;
+    box-shadow: -5px 0px 9px -1px rgba(28, 28, 28, 0.685); 
+    transition: transform 0.2s;
+    z-index: 1;
+}
+
+.SelectCard:hover{
+    transform: translateY(-5px) rotate(1deg);
+    transition: transform 0.2s;
+}
+
+.SelectCard[class~="red"]{
+    background-color: var(--game-color-red);
+
+    animation: swing-in-bottom-fwd 0.2s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
+}
+
+.SelectCard[class~="blue"]{
+    background-color: var(--game-color-blue);
+
+    animation: swing-in-bottom-fwd 0.4s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
+}
+
+.SelectCard[class~="green"]{   
+    background-color: var(--game-color-green);
+
+    animation: swing-in-bottom-fwd 0.6s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
+}
+
+.SelectCard[class~="yellow"]{
+    background-color: var(--game-color-yellow);
+
+    animation: swing-in-bottom-fwd 0.8s cubic-bezier(0.175, 0.885, 0.320, 1.275) backwards;
+}
+
+@media screen and (max-width: 1100px) {
+    .SelectCard{
+        height:12vh;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .PlayerHand{
+        grid-auto-columns: minmax(40px, max-content);
+    }
+    .SelectCard{
+        height:10vh;
+    }
+}
+
+
+/**
+ * ----------------------------------------
+ * animation unoGlow
+ * ----------------------------------------
+ */
+  @keyframes unoGlow {
+    0% {
+        filter: drop-shadow(0px 2px 17px var(--game-color-red));
+    }
+    25% {
+        filter: drop-shadow(0px 2px 17px var(--game-color-blue));
+    }
+    50%{
+        filter: drop-shadow(0px 2px 17px var(--game-color-yellow));
+    }
+    75% {
+        filter: drop-shadow(0px 2px 17px var(--game-color-green));
+    }
+    100% {
+        filter: drop-shadow(0px 2px 17px var(--game-color-red));
+    }
+  }
+
+
+/**
+ * ----------------------------------------
+ * animation swing-in-bottom-fwd
+ * ----------------------------------------
+ */
+  @keyframes swing-in-bottom-fwd {
+    0% {
+        transform: rotateX(100deg);
+        transform-origin: bottom;
+        opacity: 0;
+    }
+    100% {
+        transform: rotateX(0);
+        transform-origin: bottom;
+        opacity: 1;
+    }
+  }
