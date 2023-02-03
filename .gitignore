@@ -22,6 +22,8 @@ dist
 *.sln
 *.sw?
 
+package-lock.json
+
 
 # Logs
 logs
