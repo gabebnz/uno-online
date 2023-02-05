@@ -23,11 +23,11 @@ app.use(cors());
 const http = createServer(app);
 const io = new Server(http, {
   cors: {
-      origin: "http://127.0.0.1:5173",
+      origin: "https://uno-online.onrender.com",
       methods: ["GET", "POST"]
   }
 });
-
+ 
 
 
 // SERVER INTERFACES

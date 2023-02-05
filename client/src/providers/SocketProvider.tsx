@@ -15,13 +15,13 @@ interface Client{
     id: string;
     name: string;
 }
-
+ 
 interface GameProviderProps {
     children?: React.ReactNode;
 }
 
 // Connection to server, does not update/change
-const socket = io('http://localhost:4000', {
+const socket = io('https://uno-server-uc8m.onrender.com:4000', {
     transports: ["websocket", "polling"]
 }); 
 
