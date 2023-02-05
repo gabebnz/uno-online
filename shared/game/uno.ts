@@ -1,3 +1,4 @@
+// @ts-ignore
 import util from '../../client/node_modules/util';
 import { getBotNames } from './bot';
 import { getShuffledDeck } from "./deck";
