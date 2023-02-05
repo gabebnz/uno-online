@@ -15,12 +15,10 @@
 
     opacity: 1;
     transition: opacity 1s ease;
+    animation: fade-in 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) backwards;
 }
 
-.modalOuterContainer{
-    border-radius: 20px 20px 20px 20px;
-    box-shadow: rgba(var(--accent-color-v), 0.01) -15px -20px 30px;
-}
+
 
 .modalContainer {
     display:flex;
@@ -33,11 +31,9 @@
     background-color: var(--bg-up-color);
     height:400px;
     aspect-ratio: 0.75;
-
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     border-radius: 0px 20px 0px 20px;
-    box-shadow: rgba(var(--accent-color-v), 0.4) 5px 5px, rgba(var(--accent-color-v), 0.3) 10px 10px, rgba(var(--accent-color-v), 0.2) 15px 15px, rgba(var(--accent-color-v), 0.1) 20px 20px, rgba(var(--accent-color-v), 0.05) 25px 25px;
 
-    animation: bgColor 3s infinite linear;
     opacity: 1;
     z-index: 101;
 }
@@ -75,40 +71,16 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-@keyframes bgColor {
-    12.5% {
-        box-shadow: rgba(var(--accent-color-v), 0.4) 5px 5px, rgba(var(--accent-color-v), 0.3) 10px 10px, rgba(var(--accent-color-v), 0.2) 15px 15px, rgba(var(--accent-color-v), 0.1) 20px 20px, rgba(var(--accent-color-v), 0.05) 25px 25px;
+/**
+ * ----------------------------------------
+ * animation fade-in
+ * ----------------------------------------
+ */
+ @keyframes fade-in {
+    0% {
+      opacity: 0;
     }
-    25% {
-        box-shadow: rgba(var(--accent-color-v), 0.085) 5px 5px, rgba(var(--accent-color-v), 0.3) 10px 10px, rgba(var(--accent-color-v), 0.2) 15px 15px, rgba(var(--accent-color-v), 0.1) 20px 20px, rgba(var(--accent-color-v), 0.05) 25px 25px;
+    100% {
+      opacity: 1;
     }
-    37.5% {
-        box-shadow: rgba(var(--accent-color-v), 0.255) 5px 5px, rgba(var(--accent-color-v), 0.1) 10px 10px, rgba(var(--accent-color-v), 0.2) 15px 15px, rgba(var(--accent-color-v), 0.1) 20px 20px, rgba(var(--accent-color-v), 0.05) 25px 25px;
-    }
-    50% {
-        box-shadow: rgba(var(--accent-color-v), 0.4) 5px 5px, rgba(var(--accent-color-v), 0.225) 10px 10px, rgba(var(--accent-color-v), 0.075) 15px 15px, rgba(var(--accent-color-v), 0.1) 20px 20px, rgba(var(--accent-color-v), 0.05) 25px 25px;
-    }
-    62.5% {
-        box-shadow: rgba(var(--accent-color-v), 0.4) 5px 5px, rgba(var(--accent-color-v), 0.3) 10px 10px, rgba(var(--accent-color-v), 0.2) 15px 15px, rgba(var(--accent-color-v), 0.04) 20px 20px, rgba(var(--accent-color-v), 0.05) 25px 25px;
-    }
-    75%{
-        box-shadow: rgba(var(--accent-color-v), 0.4) 5px 5px, rgba(var(--accent-color-v), 0.3) 10px 10px, rgba(var(--accent-color-v), 0.2) 15px 15px, rgba(var(--accent-color-v), 0.08) 20px 20px, rgba(var(--accent-color-v), 0.025) 25px 25px;
-    }
-    87.5%{
-        box-shadow: rgba(var(--accent-color-v), 0.4) 5px 5px, rgba(var(--accent-color-v), 0.3) 10px 10px, rgba(var(--accent-color-v), 0.2) 15px 15px, rgba(var(--accent-color-v), 0.1) 20px 20px, rgba(var(--accent-color-v), 0.035) 25px 25px;
-    }
-    100%{
-        box-shadow: rgba(var(--accent-color-v), 0.4) 5px 5px, rgba(var(--accent-color-v), 0.3) 10px 10px, rgba(var(--accent-color-v), 0.2) 15px 15px, rgba(var(--accent-color-v), 0.1) 20px 20px, rgba(var(--accent-color-v), 0.05) 25px 25px;
-    }
-
   }
-

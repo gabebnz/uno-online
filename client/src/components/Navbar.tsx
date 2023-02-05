@@ -39,7 +39,7 @@ export default function Navbar() {
                 <CiSettings onClick={() => setSettingsOpen(true)} className={styles.navSettings}/>
             </div>
             
-            <Modal open={settingsOpen} setOpen={setSettingsOpen} title="user settings">
+            <Modal open={settingsOpen} setOpen={setSettingsOpen} title="settings">
                     <div className={styles.darkThemeInput}>
                         <p className="titleFont">dark theme:</p>
                         <input
@@ -56,6 +56,7 @@ export default function Navbar() {
                             type='text' 
                             ref={usernameInputBox} 
                             value={settings.username}
+                            maxLength={10}
                             onChange={() => updateSettings()}
                         />
                     </div>

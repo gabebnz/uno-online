@@ -19,6 +19,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Nunito-Regular';
+  src: url(fonts/Nunito-Regular.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
 * , *:before, *:after{ 
   box-sizing:border-box; 
   -moz-box-sizing:border-box; 
@@ -79,6 +86,7 @@
   --font-regular: 'MuseoModerno-regular', sans-serif;
   --font-bold: 'MuseoModerno-bold', sans-serif;
   --font-black: 'MuseoModerno-black', sans-serif;
+  --font-body: 'Nunito-Regular', sans-serif;
 
   
   font-family: Helvetica, Arial, sans-serif;
