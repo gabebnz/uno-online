@@ -12,6 +12,7 @@ import Styles from './Lobby.module.css';
 
 import AlertButton from '../components/game/AlertButton';
 import GameBoard from '../components/game/GameBoard';
+import Loader from '../components/Loader';
 import LobbyCard from '../components/LobbyCard';
 
 
@@ -88,7 +89,6 @@ export default function Lobby({ title } : Props ) {
         return cards;
     }
 
-
     if (room) {
         if(room.inLobby){
             return(
@@ -132,6 +132,6 @@ export default function Lobby({ title } : Props ) {
     } 
 
     return(
-        <p></p> // Data error / loading
+        <Loader /> // Data error / loading
     )
 }

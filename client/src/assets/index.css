@@ -209,3 +209,18 @@ button:disabled {
   background-color: var(--button-bg-disabled);
   transition: 0.2s ease;
 }
+
+
+/**
+ * ----------------------------------------
+ * animation fade-in
+ * ----------------------------------------
+ */
+ @keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -21,7 +21,7 @@ interface GameProviderProps {
 }
 
 // Connection to server, does not update/change
-const socket = io('https://uno-server-uc8m.onrender.com:4000', {
+const socket = io('https://uno-server-uc8m.onrender.com', {
     transports: ["websocket", "polling"]
 }); 
 

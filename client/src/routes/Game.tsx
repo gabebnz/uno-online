@@ -5,6 +5,7 @@ import { SettingsContext } from '../providers/SettingsProvider';
 import { SocketContext } from '../providers/SocketProvider';
 
 import GameBoard from '../components/game/GameBoard';
+import Loader from '../components/Loader';
 
 type Props = {
 	title?: string,
@@ -25,9 +26,7 @@ export default function Game({ title } : Props ) {
 
 	if(uno === undefined){
 		return(
-			<div>
-				<h1>Loading...</h1>
-			</div>
+			<Loader /> // Data error / loading
 		)
 	}
 	else{		
