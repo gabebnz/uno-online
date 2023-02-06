@@ -8,12 +8,14 @@
   <i>2023</i>
   <br><br>
   TypeScript | React | Vite
+  <br>
+  SocketIO | Express
 </p>
 
 <hr>
 
 <p align="center">
- <a href="https://gabebnz.github.io/uno-online/"> Play UNO </a>
+ <a href="https://uno-online.onrender.com/"> Play UNO </a>
 </p>
 
 <hr>

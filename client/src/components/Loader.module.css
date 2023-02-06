@@ -8,7 +8,7 @@
     width:70%;
     height:100%;
 
-    animation: fade-in 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.1s backwards;
+    animation: fade-in 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) 0.1s backwards;
 }
 
 .Wrapper h1{
@@ -75,3 +75,17 @@
         transform: rotate(360deg);
     }
 }
+
+/**
+ * ----------------------------------------
+ * animation fade-in
+ * ----------------------------------------
+ */
+ @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
