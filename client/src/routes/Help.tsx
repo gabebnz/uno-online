@@ -38,7 +38,7 @@ export default function Game({ title } : Props ) {
 				The game will automatically be filled with bots if the lobby is not full. <br/><br/>
 			</p>
 
-			<a className={Styles.GitButton} href='https://github.com/gabebnz/uno-online' target="_blank">
+			<a className={Styles.GitButton} href='https://github.com/gabrielbelcher/uno-online' target="_blank">
 				<AiFillGithub/>
 			</a>
 		</div>
